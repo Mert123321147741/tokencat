@@ -46,8 +46,10 @@ const MAX_CODE_LINE: usize = 240;
 /// should edit, so they are dropped from stacks and never get snippets.
 pub fn is_library_path(p: &str) -> bool {
     let p = &p.replace('\\', "/");
-    // CPython's standard library on Windows: C:\Python312\Lib\unittest\case.py
-    if p.ends_with(".py") && p.contains("/Lib/") {
+    // CPython's standard library on Windows: C:\Python312\Lib\unittest\case.py.
+    // Elsewhere a `Lib/` directory is a project's own (a CPython checkout).
+    let drive = matches!(p.as_bytes(), [d, b':', b'/', ..] if d.is_ascii_alphabetic());
+    if drive && p.ends_with(".py") && p.contains("/Lib/") {
         return true;
     }
     const MARKERS: &[&str] = &[
@@ -463,7 +465,13 @@ mod tests {
         ] {
             assert!(is_library_path(p), "{p}");
         }
-        for p in [r"C:\proj\src\shop\auth.py", r"src\lib.rs", "src/lib.rs"] {
+        for p in [
+            r"C:\proj\src\shop\auth.py",
+            r"src\lib.rs",
+            "src/lib.rs",
+            "/home/u/cpython/Lib/test/test_os.py",
+            "Lib/test/helper.py",
+        ] {
             assert!(!is_library_path(p), "{p}");
         }
     }

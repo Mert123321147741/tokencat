@@ -157,10 +157,13 @@ fn run_pipes(cmd: &[String]) -> Result<Captured, SpawnError> {
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
     #[cfg(unix)]
-    unix::prepare(&mut command);
-    let mut child = command.spawn().map_err(|e| spawn_error(cmd, e))?;
-    #[cfg(unix)]
-    unix::track_child(child.id());
+    let spawned = {
+        unix::prepare(&mut command);
+        unix::spawn(&mut command)
+    };
+    #[cfg(not(unix))]
+    let spawned = command.spawn();
+    let mut child = spawned.map_err(|e| spawn_error(cmd, e))?;
     let (tx, rx) = mpsc::channel();
     for stream in [
         child
@@ -256,7 +259,15 @@ mod unix {
     use std::os::unix::process::CommandExt;
     use std::sync::atomic::{AtomicI32, Ordering};
 
+    /// The child's pid; 0 when there is none, STARTING while it is being
+    /// forked and exec'd.
     static CHILD: AtomicI32 = AtomicI32::new(0);
+    const STARTING: i32 = -1;
+    /// A signal that arrived while the child was starting, replayed to it.
+    static PENDING: AtomicI32 = AtomicI32::new(0);
+    /// tokencat's own pid, to tell it apart from the forked child, which runs
+    /// our handler until it execs.
+    static OWN_PID: AtomicI32 = AtomicI32::new(0);
 
     pub struct Pty {
         master: OwnedFd,
@@ -305,8 +316,38 @@ mod unix {
         CHILD.store(pid as i32, Ordering::SeqCst);
     }
 
+    /// Spawns the child so that a signal sent to us while it starts is
+    /// passed on to it rather than leaving it running without us.
+    pub fn spawn(command: &mut Command) -> io::Result<Child> {
+        CHILD.store(STARTING, Ordering::SeqCst);
+        let result = command.spawn();
+        let pid = match &result {
+            Ok(child) => child.id() as i32,
+            Err(_) => 0,
+        };
+        CHILD.store(pid, Ordering::SeqCst);
+        let sig = PENDING.swap(0, Ordering::SeqCst);
+        if sig != 0 {
+            // SAFETY: plain libc calls on our own child or ourselves.
+            unsafe {
+                if pid > 0 {
+                    libc::kill(pid, sig);
+                } else {
+                    libc::signal(sig, libc::SIG_DFL);
+                    libc::raise(sig);
+                }
+            }
+        }
+        result
+    }
+
     extern "C" fn forward(sig: libc::c_int, info: *mut libc::siginfo_t, _: *mut libc::c_void) {
         let pid = CHILD.load(Ordering::SeqCst);
+        // SAFETY: getpid is async-signal-safe.
+        if pid == STARTING && unsafe { libc::getpid() } == OWN_PID.load(Ordering::SeqCst) {
+            PENDING.store(sig, Ordering::SeqCst);
+            return;
+        }
         if pid <= 0 {
             // No child to hand it to (not started yet, or already gone):
             // act on the signal ourselves instead of swallowing it.
@@ -347,10 +388,19 @@ mod unix {
     }
 
     fn install_forwarders() {
+        // SAFETY: getpid cannot fail.
+        OWN_PID.store(unsafe { libc::getpid() }, Ordering::SeqCst);
         for sig in [libc::SIGINT, libc::SIGTERM, libc::SIGHUP, libc::SIGQUIT] {
             // SAFETY: plain sigaction setup with a handler that only calls
             // async-signal-safe functions.
             unsafe {
+                // A signal our caller ignores (nohup, `cmd &` in a script)
+                // stays ignored, for us and for the child.
+                let mut old: libc::sigaction = std::mem::zeroed();
+                libc::sigaction(sig, std::ptr::null(), &mut old);
+                if old.sa_sigaction == libc::SIG_IGN {
+                    continue;
+                }
                 let mut sa: libc::sigaction = std::mem::zeroed();
                 sa.sa_sigaction = forward as *const () as usize;
                 sa.sa_flags = libc::SA_SIGINFO | libc::SA_RESTART;
@@ -381,8 +431,7 @@ mod unix {
             .stdout(Stdio::from(slave))
             .stderr(Stdio::from(slave_err));
         prepare(&mut command);
-        let child = command.spawn().map_err(|e| spawn_error(cmd, e))?;
-        track_child(child.id());
+        let child = spawn(&mut command).map_err(|e| spawn_error(cmd, e))?;
         // Close our copies of the slave so the master sees EOF/EIO once the
         // child (and anything it spawned) is gone.
         drop(command);
