@@ -9,6 +9,7 @@ pub enum Engine {
     Vitest,
     Go,
     Cargo,
+    Unittest,
     Generic,
 }
 
@@ -20,6 +21,7 @@ impl fmt::Display for Engine {
             Engine::Vitest => "vitest",
             Engine::Go => "go",
             Engine::Cargo => "cargo",
+            Engine::Unittest => "unittest",
             Engine::Generic => "output",
         })
     }
@@ -54,6 +56,8 @@ pub struct Frame {
 pub struct Code {
     pub lang: Option<&'static str>,
     pub lines: Vec<String>,
+    /// Read from the source file by tokencat rather than printed by the tool.
+    pub from_disk: bool,
 }
 
 #[derive(Debug, Clone, Default)]

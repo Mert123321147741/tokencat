@@ -7,12 +7,13 @@ use crate::report::Engine;
 const MIN_SCORE: u32 = 5;
 
 pub fn detect(lines: &[String], cmd: Option<&[String]>) -> Engine {
-    let mut score = [0u32; 5]; // pytest, jest, vitest, go, cargo
+    let mut score = [0u32; 6]; // pytest, jest, vitest, go, cargo, unittest
     const PY: usize = 0;
     const JEST: usize = 1;
     const VITEST: usize = 2;
     const GO: usize = 3;
     const CARGO: usize = 4;
+    const UNITTEST: usize = 5;
 
     // Look at the head and the tail; summaries live at the end.
     let head = lines.iter().take(3000);
@@ -89,6 +90,21 @@ pub fn detect(lines: &[String], cmd: Option<&[String]>) -> Engine {
         } else if t.starts_with("--> ") && line.contains(".rs:") {
             score[CARGO] += 2;
         }
+        // unittest / Django
+        if line.starts_with("Ran ") && line.contains(" test") && line.ends_with('s') {
+            score[UNITTEST] += 8;
+        } else if ((line.starts_with("FAIL: ") || line.starts_with("ERROR: "))
+            && line.contains(" ("))
+            || line == "OK"
+            || line.starts_with("OK (")
+            || line.starts_with("FAILED (")
+        {
+            score[UNITTEST] += 3;
+        } else if line.starts_with("Creating test database for alias")
+            || line.starts_with("System check identified")
+        {
+            score[UNITTEST] += 4;
+        }
     }
 
     // The command line is a strong hint, but output wins when it is clear.
@@ -113,6 +129,13 @@ pub fn detect(lines: &[String], cmd: Option<&[String]>) -> Engine {
         if has("cargo") || has("rustc") {
             score[CARGO] += 6;
         }
+        if has("unittest")
+            || has("nose2")
+            || has("runtests.py")
+            || ((has("manage.py") || has("django-admin")) && has("test"))
+        {
+            score[UNITTEST] += 6;
+        }
     }
 
     // Vitest prints some jest-like lines; prefer it when its markers exist.
@@ -129,7 +152,8 @@ pub fn detect(lines: &[String], cmd: Option<&[String]>) -> Engine {
         JEST => Engine::Jest,
         VITEST => Engine::Vitest,
         GO => Engine::Go,
-        _ => Engine::Cargo,
+        CARGO => Engine::Cargo,
+        _ => Engine::Unittest,
     }
 }
 
@@ -170,6 +194,9 @@ mod tests {
             ("go_build.log", Engine::Go),
             ("cargo_test.log", Engine::Cargo),
             ("cargo_compile_err.log", Engine::Cargo),
+            ("unittest_plain.log", Engine::Unittest),
+            ("unittest_verbose.log", Engine::Unittest),
+            ("unittest_django.log", Engine::Unittest),
         ];
         for (name, want) in cases {
             assert_eq!(detect(&fixture(name), None), want, "{name}");

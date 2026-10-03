@@ -1,0 +1,111 @@
+test_low_items (tests.test_stock.ReorderTests.test_low_items) ... FAIL
+test_nothing_low (tests.test_stock.ReorderTests.test_nothing_low) ... ok
+test_reorder_point_per_item (tests.test_stock.ReorderTests.test_reorder_point_per_item) ... FAIL
+test_live_prices (tests.test_stock.ReportTests.test_live_prices) ... skipped 'needs the pricing service'
+test_summary (tests.test_stock.ReportTests.test_summary) ... ok
+test_summary_missing_price (tests.test_stock.ReportTests.test_summary_missing_price) ... ok
+test_sku_00 (tests.test_stock.SkuFormatTests.test_sku_00) ... ok
+test_sku_01 (tests.test_stock.SkuFormatTests.test_sku_01) ... ok
+test_sku_02 (tests.test_stock.SkuFormatTests.test_sku_02) ... ok
+test_sku_03 (tests.test_stock.SkuFormatTests.test_sku_03) ... ok
+test_sku_04 (tests.test_stock.SkuFormatTests.test_sku_04) ... ok
+test_sku_05 (tests.test_stock.SkuFormatTests.test_sku_05) ... ok
+test_sku_06 (tests.test_stock.SkuFormatTests.test_sku_06) ... ok
+test_sku_07 (tests.test_stock.SkuFormatTests.test_sku_07) ... ok
+test_sku_08 (tests.test_stock.SkuFormatTests.test_sku_08) ... ok
+test_sku_09 (tests.test_stock.SkuFormatTests.test_sku_09) ... ok
+test_sku_10 (tests.test_stock.SkuFormatTests.test_sku_10) ... ok
+test_sku_11 (tests.test_stock.SkuFormatTests.test_sku_11) ... ok
+test_sku_12 (tests.test_stock.SkuFormatTests.test_sku_12) ... ok
+test_sku_13 (tests.test_stock.SkuFormatTests.test_sku_13) ... ok
+test_sku_14 (tests.test_stock.SkuFormatTests.test_sku_14) ... ok
+test_sku_15 (tests.test_stock.SkuFormatTests.test_sku_15) ... ok
+test_sku_16 (tests.test_stock.SkuFormatTests.test_sku_16) ... ok
+test_sku_17 (tests.test_stock.SkuFormatTests.test_sku_17) ... ok
+test_sku_18 (tests.test_stock.SkuFormatTests.test_sku_18) ... ok
+test_sku_19 (tests.test_stock.SkuFormatTests.test_sku_19) ... ok
+test_sku_20 (tests.test_stock.SkuFormatTests.test_sku_20) ... ok
+test_sku_21 (tests.test_stock.SkuFormatTests.test_sku_21) ... ok
+test_sku_22 (tests.test_stock.SkuFormatTests.test_sku_22) ... ok
+test_sku_23 (tests.test_stock.SkuFormatTests.test_sku_23) ... ok
+test_sku_24 (tests.test_stock.SkuFormatTests.test_sku_24) ... ok
+test_sku_25 (tests.test_stock.SkuFormatTests.test_sku_25) ... ok
+test_sku_26 (tests.test_stock.SkuFormatTests.test_sku_26) ... ok
+test_sku_27 (tests.test_stock.SkuFormatTests.test_sku_27) ... ok
+test_sku_28 (tests.test_stock.SkuFormatTests.test_sku_28) ... ok
+test_sku_29 (tests.test_stock.SkuFormatTests.test_sku_29) ... ok
+test_sku_30 (tests.test_stock.SkuFormatTests.test_sku_30) ... ok
+test_sku_31 (tests.test_stock.SkuFormatTests.test_sku_31) ... ok
+test_sku_32 (tests.test_stock.SkuFormatTests.test_sku_32) ... ok
+test_sku_33 (tests.test_stock.SkuFormatTests.test_sku_33) ... ok
+test_sku_34 (tests.test_stock.SkuFormatTests.test_sku_34) ... ok
+test_sku_35 (tests.test_stock.SkuFormatTests.test_sku_35) ... ok
+test_sku_36 (tests.test_stock.SkuFormatTests.test_sku_36) ... ok
+test_sku_37 (tests.test_stock.SkuFormatTests.test_sku_37) ... ok
+test_sku_38 (tests.test_stock.SkuFormatTests.test_sku_38) ... ok
+test_sku_39 (tests.test_stock.SkuFormatTests.test_sku_39) ... ok
+test_take_everything (tests.test_stock.TakeTests.test_take_everything) ... ok
+test_take_in_steps (tests.test_stock.TakeTests.test_take_in_steps) ... 
+  test_take_in_steps (tests.test_stock.TakeTests.test_take_in_steps) (qty=3) ... FAIL
+test_take_reduces_on_hand (tests.test_stock.TakeTests.test_take_reduces_on_hand) ... ok
+test_take_too_many (tests.test_stock.TakeTests.test_take_too_many) ... ok
+test_unknown_sku (tests.test_stock.TakeTests.test_unknown_sku) ... ERROR
+
+======================================================================
+ERROR: test_unknown_sku (tests.test_stock.TakeTests.test_unknown_sku)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 26, in test_unknown_sku
+    self.assertEqual(self.stock.take("screw", 1), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dev/ut/inventory/stock.py", line 22, in take
+    item = self.items[sku]
+           ~~~~~~~~~~^^^^^
+KeyError: 'screw'
+
+======================================================================
+FAIL: test_low_items (tests.test_stock.ReorderTests.test_low_items)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 41, in test_low_items
+    self.assertEqual(stock.needs_reorder(), ["nut", "washer"])
+AssertionError: Lists differ: ['washer'] != ['nut', 'washer']
+
+First differing element 0:
+'washer'
+'nut'
+
+Second list contains 1 additional elements.
+First extra element 1:
+'washer'
+
+- ['washer']
++ ['nut', 'washer']
+
+======================================================================
+FAIL: test_reorder_point_per_item (tests.test_stock.ReorderTests.test_reorder_point_per_item)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 45, in test_reorder_point_per_item
+    self.assertEqual(stock.needs_reorder(), ["a"])
+AssertionError: Lists differ: [] != ['a']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'a'
+
+- []
++ ['a']
+
+======================================================================
+FAIL: test_take_in_steps (tests.test_stock.TakeTests.test_take_in_steps) (qty=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 31, in test_take_in_steps
+    self.assertEqual(self.stock.take("bolt", qty), left)
+AssertionError: 4 != 5
+
+----------------------------------------------------------------------
+Ran 51 tests in 0.004s
+
+FAILED (failures=3, errors=1, skipped=1)

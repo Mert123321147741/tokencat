@@ -28,26 +28,79 @@ const SHELL_CHARS: &[char] = &[
 /// `tokencat run -- "cd web && npm test"` is run through the shell; a plain
 /// argv (`tokencat run -- npm test`) is executed directly.
 fn build_command(cmd: &[String]) -> Command {
-    if cmd.len() == 1 && cmd[0].contains(SHELL_CHARS) {
-        #[cfg(windows)]
-        {
-            let mut c = Command::new("cmd");
-            c.arg("/C").arg(&cmd[0]);
-            quiet_colors(&mut c);
-            return c;
-        }
-        #[cfg(not(windows))]
-        {
-            let mut c = Command::new("/bin/sh");
-            c.arg("-c").arg(&cmd[0]);
-            quiet_colors(&mut c);
-            return c;
-        }
+    let shell_string = cmd.len() == 1 && cmd[0].contains(SHELL_CHARS);
+    #[cfg(windows)]
+    if shell_string || windows::is_script(&cmd[0]) {
+        // npm, npx, yarn and friends are .cmd scripts on Windows, which
+        // only cmd.exe can start. cmd has its own quoting rules, so hand it
+        // the command line verbatim instead of letting Rust escape it.
+        use std::os::windows::process::CommandExt;
+        let line = if shell_string {
+            cmd[0].clone()
+        } else {
+            windows::join(cmd)
+        };
+        let mut c = Command::new("cmd");
+        c.arg("/C").raw_arg(line);
+        quiet_colors(&mut c);
+        return c;
+    }
+    #[cfg(not(windows))]
+    if shell_string {
+        let mut c = Command::new("/bin/sh");
+        c.arg("-c").arg(&cmd[0]);
+        quiet_colors(&mut c);
+        return c;
     }
     let mut c = Command::new(&cmd[0]);
     c.args(&cmd[1..]);
     quiet_colors(&mut c);
     c
+}
+
+#[cfg(windows)]
+mod windows {
+    use std::path::Path;
+
+    /// True when `prog` resolves to a .cmd/.bat script rather than an .exe.
+    pub fn is_script(prog: &str) -> bool {
+        let lower = prog.to_ascii_lowercase();
+        if lower.ends_with(".cmd") || lower.ends_with(".bat") {
+            return true;
+        }
+        if Path::new(prog).extension().is_some() || prog.contains(['/', '\\']) {
+            return false;
+        }
+        let Some(paths) = std::env::var_os("PATH") else {
+            return false;
+        };
+        for dir in std::env::split_paths(&paths) {
+            if dir.join(format!("{prog}.exe")).is_file()
+                || dir.join(format!("{prog}.com")).is_file()
+            {
+                return false;
+            }
+            if dir.join(format!("{prog}.cmd")).is_file()
+                || dir.join(format!("{prog}.bat")).is_file()
+            {
+                return true;
+            }
+        }
+        false
+    }
+
+    pub fn join(cmd: &[String]) -> String {
+        cmd.iter()
+            .map(|a| {
+                if a.is_empty() || a.contains([' ', '\t']) {
+                    format!("\"{a}\"")
+                } else {
+                    a.clone()
+                }
+            })
+            .collect::<Vec<_>>()
+            .join(" ")
+    }
 }
 
 /// Colors are stripped anyway, and some tools mangle them when they truncate

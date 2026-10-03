@@ -157,7 +157,11 @@ fn jest_block(b: Block) -> Failure {
         location,
         message: cap(tidy(message), 40),
         frames,
-        code: (!code.is_empty()).then_some(Code { lang, lines: code }),
+        code: (!code.is_empty()).then_some(Code {
+            lang,
+            lines: code,
+            from_disk: false,
+        }),
         extra: Vec::new(),
         dir_hints: b.suite.into_iter().collect(),
     }
@@ -315,7 +319,11 @@ fn vitest_block(b: Block) -> Failure {
         location,
         message: cap(tidy(dedent(&message)), 40),
         frames,
-        code: (!code.is_empty()).then_some(Code { lang, lines: code }),
+        code: (!code.is_empty()).then_some(Code {
+            lang,
+            lines: code,
+            from_disk: false,
+        }),
         extra: Vec::new(),
         dir_hints: b.suite.into_iter().collect(),
     }

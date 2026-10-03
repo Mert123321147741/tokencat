@@ -8,7 +8,7 @@ and records the token counts tokencat reports.
 
     python3 bench/bench.py --tokencat target/release/tokencat --work /tmp/tc-bench
 
-Requires git, python3 (pip), node/npm, go and cargo on PATH.
+Requires git, python3 >= 3.10 (pip), node/npm, go and cargo on PATH.
 """
 
 import argparse
@@ -27,6 +27,7 @@ PROJECTS = {
     "semver": ("https://github.com/dtolnay/semver", "280ebcb6edac3aa4cdc545dbff8a26c5ac4861fe"),
     "ms": ("https://github.com/vercel/ms", "4ff48cec099f0514c3e9bbca18706c9c21122bfb"),
     "ufo": ("https://github.com/unjs/ufo", "f06c800d0c59f2a4a1b9ba65eb6cb61a84419be6"),
+    "django": ("https://github.com/django/django", "e802ada38b3ecf345915163bb6d7f008be411664"),  # 5.2.17
 }
 
 # (label, project, command)
@@ -39,6 +40,8 @@ SCENARIOS = [
     ("semver · cargo test", "semver", "cargo test"),
     ("ms · jest", "ms", "npx jest --env node"),
     ("ufo · vitest run", "ufo", "npx vitest run"),
+    ("django · runtests.py utils_tests", "django", "cd tests && {djvenv}/bin/python runtests.py --parallel 1 utils_tests"),
+    ("django · runtests.py -v 2 utils_tests", "django", "cd tests && {djvenv}/bin/python runtests.py --parallel 1 -v 2 utils_tests"),
 ]
 
 
@@ -60,13 +63,16 @@ def setup(work: Path):
     venv = work / "venv"
     if not venv.exists():
         sh(f"python3 -m venv {venv} && {venv}/bin/pip install -q pytest -e {work / 'click'}")
+    djvenv = work / "djvenv"
+    if not djvenv.exists():
+        sh(f"python3 -m venv {djvenv} && {djvenv}/bin/pip install -q -e {work / 'django'}")
     for js in ("ms", "ufo"):
         if not (work / js / "node_modules").exists():
             sh("npm install --no-audit --no-fund --ignore-scripts --legacy-peer-deps", cwd=work / js)
     # Warm builds so compile progress is not part of the measured output.
     sh("go test ./... >/dev/null 2>&1 || true", cwd=work / "cobra", check=False)
     sh("cargo test --no-run -q", cwd=work / "semver", check=False)
-    return venv
+    return {"venv": venv, "djvenv": djvenv}
 
 
 FOOTER = re.compile(r"\[tokencat: ([\d,]+) -> ([\d,]+) tokens")
@@ -105,11 +111,11 @@ def main():
     args = ap.parse_args()
     tokencat = os.path.abspath(args.tokencat)
     work = Path(args.work)
-    venv = setup(work)
+    envs = setup(work)
 
     rows = []
     for label, project, cmd in SCENARIOS:
-        r = measure(tokencat, label, work / project, cmd.format(venv=venv))
+        r = measure(tokencat, label, work / project, cmd.format(**envs))
         rows.append(r)
         if args.save:
             out = Path(args.save)

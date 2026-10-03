@@ -80,6 +80,7 @@ pub fn parse(lines: &[String]) -> Report {
                         code: (!body.is_empty()).then(|| Code {
                             lang: None,
                             lines: cap(body, 30),
+                            from_disk: false,
                         }),
                         ..Default::default()
                     });

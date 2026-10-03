@@ -338,7 +338,11 @@ pub fn read_snippet(path: &Path, loc: &Loc, total: usize) -> Option<Code> {
     for i in start..end {
         out.push(fmt_line(i));
     }
-    Some(Code { lang, lines: out })
+    Some(Code {
+        lang,
+        lines: out,
+        from_disk: true,
+    })
 }
 
 pub struct ContextOpts {

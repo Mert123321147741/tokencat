@@ -2,6 +2,7 @@ mod capture;
 mod context;
 mod detect;
 mod engines;
+mod hook;
 mod pipeline;
 mod re;
 mod report;
@@ -13,7 +14,7 @@ use std::panic::{self, AssertUnwindSafe};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 
 use crate::report::Engine;
 
@@ -64,6 +65,20 @@ enum Cmd {
         )]
         cmd: Vec<String>,
     },
+
+    /// Act as an agent hook that routes test and build commands through
+    /// `tokencat run` (reads the hook's JSON on stdin).
+    Hook {
+        #[arg(value_enum)]
+        agent: HookAgent,
+    },
+}
+
+#[derive(Clone, Copy, ValueEnum)]
+enum HookAgent {
+    /// Claude Code PreToolUse hook for the Bash tool.
+    #[value(alias = "claude-code")]
+    Claude,
 }
 
 #[derive(Args)]
@@ -193,6 +208,14 @@ fn process_safely(input: &pipeline::Input, opts: &pipeline::Options) -> String {
 fn main() -> ExitCode {
     let cli = Cli::parse();
     match cli.command {
+        Some(Cmd::Hook { agent }) => {
+            if !disabled() {
+                match agent {
+                    HookAgent::Claude => hook::claude(),
+                }
+            }
+            ExitCode::SUCCESS
+        }
         Some(Cmd::Run { no_pty, cmd }) => {
             let captured = match capture::run(&cmd, !no_pty && !disabled()) {
                 Ok(c) => c,

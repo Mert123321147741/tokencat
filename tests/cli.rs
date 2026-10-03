@@ -228,6 +228,7 @@ fn golden_outputs() {
             "go" => "go",
             "cargo" if name.contains("compile_err") => "rs_err",
             "cargo" => "rs",
+            "unittest" => "ut",
             _ => "",
         };
         let cwd = fixtures.join("projects").join(project);
@@ -249,4 +250,27 @@ fn golden_outputs() {
         "golden mismatch (UPDATE_GOLDEN=1 to accept):\n{}",
         failures.join("\n")
     );
+}
+
+#[test]
+fn claude_hook_rewrites_only_test_commands() {
+    let hook = |json: &str| pipe(json.as_bytes(), &["hook", "claude"], &manifest());
+    let o = hook(r#"{"tool_name":"Bash","tool_input":{"command":"pytest -q","timeout":60000}}"#);
+    assert!(o.status.success());
+    let out = stdout(&o);
+    assert!(
+        out.contains(r#""command":"tokencat run -- pytest -q""#),
+        "{out}"
+    );
+    assert!(out.contains(r#""timeout":60000"#), "{out}");
+
+    for json in [
+        r#"{"tool_name":"Bash","tool_input":{"command":"ls -la"}}"#,
+        r#"{"tool_name":"Edit","tool_input":{}}"#,
+        "garbage",
+    ] {
+        let o = hook(json);
+        assert!(o.status.success(), "{json}");
+        assert!(o.stdout.is_empty(), "{json}: {}", stdout(&o));
+    }
 }

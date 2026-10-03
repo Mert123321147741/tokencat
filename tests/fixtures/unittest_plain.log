@@ -1,0 +1,59 @@
+F.Fs...........................................F..E
+======================================================================
+ERROR: test_unknown_sku (tests.test_stock.TakeTests.test_unknown_sku)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 26, in test_unknown_sku
+    self.assertEqual(self.stock.take("screw", 1), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dev/ut/inventory/stock.py", line 22, in take
+    item = self.items[sku]
+           ~~~~~~~~~~^^^^^
+KeyError: 'screw'
+
+======================================================================
+FAIL: test_low_items (tests.test_stock.ReorderTests.test_low_items)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 41, in test_low_items
+    self.assertEqual(stock.needs_reorder(), ["nut", "washer"])
+AssertionError: Lists differ: ['washer'] != ['nut', 'washer']
+
+First differing element 0:
+'washer'
+'nut'
+
+Second list contains 1 additional elements.
+First extra element 1:
+'washer'
+
+- ['washer']
++ ['nut', 'washer']
+
+======================================================================
+FAIL: test_reorder_point_per_item (tests.test_stock.ReorderTests.test_reorder_point_per_item)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 45, in test_reorder_point_per_item
+    self.assertEqual(stock.needs_reorder(), ["a"])
+AssertionError: Lists differ: [] != ['a']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'a'
+
+- []
++ ['a']
+
+======================================================================
+FAIL: test_take_in_steps (tests.test_stock.TakeTests.test_take_in_steps) (qty=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/ut/tests/test_stock.py", line 31, in test_take_in_steps
+    self.assertEqual(self.stock.take("bolt", qty), left)
+AssertionError: 4 != 5
+
+----------------------------------------------------------------------
+Ran 51 tests in 0.003s
+
+FAILED (failures=3, errors=1, skipped=1)

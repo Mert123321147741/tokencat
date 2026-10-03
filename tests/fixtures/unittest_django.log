@@ -1,0 +1,799 @@
+Testing against Django installed in '/home/dev/django/django'
+Importing application utils_tests
+Found 652 test(s).
+Skipping setup of unused database(s): other.
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+Operations to perform:
+  Synchronize unmigrated apps: auth, contenttypes, messages, sessions, staticfiles, utils_tests
+  Apply all migrations: admin, sites
+Synchronizing apps without migrations:
+  Creating tables...
+    Creating table django_content_type
+    Creating table auth_permission
+    Creating table auth_group
+    Creating table auth_user
+    Creating table django_session
+    Creating table utils_tests_category
+    Creating table utils_tests_categoryinfo
+    Running deferred SQL...
+Running migrations:
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying sites.0001_initial... OK
+  Applying sites.0002_alter_domain_unique... OK
+System check identified no issues (0 silenced).
+test_pickle_model (utils_tests.test_lazyobject.SimpleLazyObjectPickleTestCase.test_pickle_model)
+Test on an actual model, based on the report in #25426. ... ok
+test_pickle_with_reduce (utils_tests.test_lazyobject.SimpleLazyObjectPickleTestCase.test_pickle_with_reduce)
+Test in a fairly synthetic setting. ... ok
+test_pickle (utils_tests.test_simplelazyobject.TestUtilsSimpleLazyObjectDjangoTestCase.test_pickle) ... ok
+test_both_date_objects (utils_tests.test_timesince.TZAwareTimesinceTests.test_both_date_objects)
+Timesince should work with both date objects (#9672) ... ok
+test_date_objects (utils_tests.test_timesince.TZAwareTimesinceTests.test_date_objects)
+Both timesince and timeuntil should work on date objects (#17937). ... ok
+test_depth (utils_tests.test_timesince.TZAwareTimesinceTests.test_depth) ... ok
+test_depth_invalid (utils_tests.test_timesince.TZAwareTimesinceTests.test_depth_invalid) ... ok
+test_different_timezones (utils_tests.test_timesince.TZAwareTimesinceTests.test_different_timezones)
+When using two different timezones. ... ok
+test_display_first_unit (utils_tests.test_timesince.TZAwareTimesinceTests.test_display_first_unit)
+If the two differing units aren't adjacent, only the first unit is ... ok
+test_display_second_before_first (utils_tests.test_timesince.TZAwareTimesinceTests.test_display_second_before_first)
+When the second date occurs before the first, we should always ... ok
+test_equal_datetimes (utils_tests.test_timesince.TZAwareTimesinceTests.test_equal_datetimes)
+equal datetimes. ... ok
+test_ignore_microseconds_and_seconds (utils_tests.test_timesince.TZAwareTimesinceTests.test_ignore_microseconds_and_seconds)
+Microseconds and seconds are ignored. ... ok
+test_leap_year (utils_tests.test_timesince.TZAwareTimesinceTests.test_leap_year) ... ok
+test_leap_year_new_years_eve (utils_tests.test_timesince.TZAwareTimesinceTests.test_leap_year_new_years_eve) ... ok
+test_less_than_a_day_cross_day_with_zoneinfo (utils_tests.test_timesince.TZAwareTimesinceTests.test_less_than_a_day_cross_day_with_zoneinfo) ... ok
+test_less_than_a_day_with_zoneinfo (utils_tests.test_timesince.TZAwareTimesinceTests.test_less_than_a_day_with_zoneinfo) ... ok
+test_months_edge (utils_tests.test_timesince.TZAwareTimesinceTests.test_months_edge) ... ok
+test_multiple_units (utils_tests.test_timesince.TZAwareTimesinceTests.test_multiple_units)
+Test multiple units. ... ok
+test_naive_datetime_with_tzinfo_attribute (utils_tests.test_timesince.TZAwareTimesinceTests.test_naive_datetime_with_tzinfo_attribute) ... ok
+test_other_units (utils_tests.test_timesince.TZAwareTimesinceTests.test_other_units)
+Test other units. ... ok
+test_second_before_equal_first_humanize_time_strings (utils_tests.test_timesince.TZAwareTimesinceTests.test_second_before_equal_first_humanize_time_strings) ... ok
+test_thousand_years_ago (utils_tests.test_timesince.TZAwareTimesinceTests.test_thousand_years_ago) ... ok
+test_both_date_objects (utils_tests.test_timesince.TimesinceTests.test_both_date_objects)
+Timesince should work with both date objects (#9672) ... ok
+test_date_objects (utils_tests.test_timesince.TimesinceTests.test_date_objects)
+Both timesince and timeuntil should work on date objects (#17937). ... ok
+test_depth (utils_tests.test_timesince.TimesinceTests.test_depth) ... ok
+test_depth_invalid (utils_tests.test_timesince.TimesinceTests.test_depth_invalid) ... ok
+test_different_timezones (utils_tests.test_timesince.TimesinceTests.test_different_timezones)
+When using two different timezones. ... ok
+test_display_first_unit (utils_tests.test_timesince.TimesinceTests.test_display_first_unit)
+If the two differing units aren't adjacent, only the first unit is ... ok
+test_display_second_before_first (utils_tests.test_timesince.TimesinceTests.test_display_second_before_first)
+When the second date occurs before the first, we should always ... ok
+test_equal_datetimes (utils_tests.test_timesince.TimesinceTests.test_equal_datetimes)
+equal datetimes. ... ok
+test_ignore_microseconds_and_seconds (utils_tests.test_timesince.TimesinceTests.test_ignore_microseconds_and_seconds)
+Microseconds and seconds are ignored. ... ok
+test_leap_year (utils_tests.test_timesince.TimesinceTests.test_leap_year) ... ok
+test_leap_year_new_years_eve (utils_tests.test_timesince.TimesinceTests.test_leap_year_new_years_eve) ... ok
+test_less_than_a_day_cross_day_with_zoneinfo (utils_tests.test_timesince.TimesinceTests.test_less_than_a_day_cross_day_with_zoneinfo) ... ok
+test_less_than_a_day_with_zoneinfo (utils_tests.test_timesince.TimesinceTests.test_less_than_a_day_with_zoneinfo) ... ok
+test_months_edge (utils_tests.test_timesince.TimesinceTests.test_months_edge) ... ok
+test_multiple_units (utils_tests.test_timesince.TimesinceTests.test_multiple_units)
+Test multiple units. ... ok
+test_naive_datetime_with_tzinfo_attribute (utils_tests.test_timesince.TimesinceTests.test_naive_datetime_with_tzinfo_attribute) ... ok
+test_other_units (utils_tests.test_timesince.TimesinceTests.test_other_units)
+Test other units. ... ok
+test_second_before_equal_first_humanize_time_strings (utils_tests.test_timesince.TimesinceTests.test_second_before_equal_first_humanize_time_strings) ... ok
+test_thousand_years_ago (utils_tests.test_timesince.TimesinceTests.test_thousand_years_ago) ... ok
+test_extract_function_traversal (utils_tests.test_archive.TestArchiveInvalid.test_extract_function_traversal) ... ok
+test_extract_function_traversal_startswith (utils_tests.test_archive.TestArchiveInvalid.test_extract_function_traversal_startswith) ... ok
+test_run_loop_catches_stopiteration (utils_tests.test_autoreload.BaseReloaderTests.test_run_loop_catches_stopiteration) ... ok
+test_run_loop_stop_and_return (utils_tests.test_autoreload.BaseReloaderTests.test_run_loop_stop_and_return) ... ok
+test_wait_for_apps_ready_checks_for_exception (utils_tests.test_autoreload.BaseReloaderTests.test_wait_for_apps_ready_checks_for_exception) ... ok
+test_wait_for_apps_ready_without_exception (utils_tests.test_autoreload.BaseReloaderTests.test_wait_for_apps_ready_without_exception) ... ok
+test_watch_dir_with_unresolvable_path (utils_tests.test_autoreload.BaseReloaderTests.test_watch_dir_with_unresolvable_path) ... ok
+test_watch_files_with_recursive_glob (utils_tests.test_autoreload.BaseReloaderTests.test_watch_files_with_recursive_glob) ... ok
+test_watch_with_glob (utils_tests.test_autoreload.BaseReloaderTests.test_watch_with_glob) ... ok
+test_watchman_available (utils_tests.test_autoreload.GetReloaderTests.test_watchman_available) ... ok
+test_watchman_unavailable (utils_tests.test_autoreload.GetReloaderTests.test_watchman_unavailable) ... ok
+test_manage_py (utils_tests.test_autoreload.RestartWithReloaderTests.test_manage_py) ... ok
+test_python_m_django (utils_tests.test_autoreload.RestartWithReloaderTests.test_python_m_django) ... ok
+test_calls_start_django (utils_tests.test_autoreload.RunWithReloaderTests.test_calls_start_django) ... ok
+test_calls_sys_exit (utils_tests.test_autoreload.RunWithReloaderTests.test_calls_sys_exit) ... ok
+test_swallows_keyboard_interrupt (utils_tests.test_autoreload.RunWithReloaderTests.test_swallows_keyboard_interrupt) ... ok
+test_check_errors_called (utils_tests.test_autoreload.StartDjangoTests.test_check_errors_called) ... ok
+test_echo_on_called (utils_tests.test_autoreload.StartDjangoTests.test_echo_on_called) ... ok
+test_starts_thread_with_args (utils_tests.test_autoreload.StartDjangoTests.test_starts_thread_with_args) ... ok
+test_glob (utils_tests.test_autoreload.StatReloaderTests.test_glob) ... ok
+test_glob_recursive (utils_tests.test_autoreload.StatReloaderTests.test_glob_recursive) ... ok
+test_multiple_globs (utils_tests.test_autoreload.StatReloaderTests.test_multiple_globs) ... ok
+test_multiple_recursive_globs (utils_tests.test_autoreload.StatReloaderTests.test_multiple_recursive_globs) ... ok
+test_nested_glob_recursive (utils_tests.test_autoreload.StatReloaderTests.test_nested_glob_recursive) ... ok
+test_overlapping_glob_recursive (utils_tests.test_autoreload.StatReloaderTests.test_overlapping_glob_recursive) ... ok
+test_overlapping_globs (utils_tests.test_autoreload.StatReloaderTests.test_overlapping_globs) ... ok
+test_snapshot_files_ignores_missing_files (utils_tests.test_autoreload.StatReloaderTests.test_snapshot_files_ignores_missing_files) ... ok
+test_snapshot_files_updates (utils_tests.test_autoreload.StatReloaderTests.test_snapshot_files_updates) ... ok
+test_snapshot_files_with_duplicates (utils_tests.test_autoreload.StatReloaderTests.test_snapshot_files_with_duplicates) ... ok
+test_tick_does_not_trigger_twice (utils_tests.test_autoreload.StatReloaderTests.test_tick_does_not_trigger_twice) ... ok
+test_mutates_error_files (utils_tests.test_autoreload.TestCheckErrors.test_mutates_error_files) ... ok
+test_entrypoint_fallback (utils_tests.test_autoreload.TestChildArguments.test_entrypoint_fallback) ... ok
+test_exe_fallback (utils_tests.test_autoreload.TestChildArguments.test_exe_fallback) ... ok
+test_module_no_spec (utils_tests.test_autoreload.TestChildArguments.test_module_no_spec) ... ok
+test_raises_runtimeerror (utils_tests.test_autoreload.TestChildArguments.test_raises_runtimeerror) ... ok
+test_run_as_module (utils_tests.test_autoreload.TestChildArguments.test_run_as_module) ... ok
+test_run_as_non_django_module (utils_tests.test_autoreload.TestChildArguments.test_run_as_non_django_module) ... ok
+test_run_as_non_django_module_non_package (utils_tests.test_autoreload.TestChildArguments.test_run_as_non_django_module_non_package) ... ok
+test_use_exe_when_main_spec (utils_tests.test_autoreload.TestChildArguments.test_use_exe_when_main_spec) ... ok
+test_warnoptions (utils_tests.test_autoreload.TestChildArguments.test_warnoptions) ... ok
+test_xoptions (utils_tests.test_autoreload.TestChildArguments.test_xoptions) ... ok
+test_common_roots (utils_tests.test_autoreload.TestCommonRoots.test_common_roots) ... ok
+test_bytecode_conversion_to_source (utils_tests.test_autoreload.TestIterModulesAndFiles.test_bytecode_conversion_to_source)
+.pyc and .pyo files are included in the files list. ... ok
+test_check_errors (utils_tests.test_autoreload.TestIterModulesAndFiles.test_check_errors)
+When a file containing an error is imported in a function wrapped by ... ok
+test_check_errors_catches_all_exceptions (utils_tests.test_autoreload.TestIterModulesAndFiles.test_check_errors_catches_all_exceptions)
+Since Python may raise arbitrary exceptions when importing code, ... ok
+test_file_added (utils_tests.test_autoreload.TestIterModulesAndFiles.test_file_added)
+When a file is added, it's returned by iter_all_python_module_files(). ... ok
+test_main_module_is_resolved (utils_tests.test_autoreload.TestIterModulesAndFiles.test_main_module_is_resolved) ... ok
+test_main_module_without_file_is_not_resolved (utils_tests.test_autoreload.TestIterModulesAndFiles.test_main_module_without_file_is_not_resolved) ... ok
+test_module_without_spec (utils_tests.test_autoreload.TestIterModulesAndFiles.test_module_without_spec) ... ok
+test_path_with_embedded_null_bytes (utils_tests.test_autoreload.TestIterModulesAndFiles.test_path_with_embedded_null_bytes) ... ok
+test_paths_are_pathlib_instances (utils_tests.test_autoreload.TestIterModulesAndFiles.test_paths_are_pathlib_instances) ... ok
+test_weakref_in_sys_module (utils_tests.test_autoreload.TestIterModulesAndFiles.test_weakref_in_sys_module)
+iter_all_python_module_file() ignores weakref modules. ... ok
+test_zip_reload (utils_tests.test_autoreload.TestIterModulesAndFiles.test_zip_reload)
+Modules imported from zipped files have their archive location included ... ok
+test_no_exception (utils_tests.test_autoreload.TestRaiseLastException.test_no_exception) ... ok
+test_raises_custom_exception (utils_tests.test_autoreload.TestRaiseLastException.test_raises_custom_exception) ... ok
+test_raises_exception (utils_tests.test_autoreload.TestRaiseLastException.test_raises_exception) ... ok
+test_raises_exception_with_context (utils_tests.test_autoreload.TestRaiseLastException.test_raises_exception_with_context) ... ok
+test_sys_paths_absolute (utils_tests.test_autoreload.TestSysPathDirectories.test_sys_paths_absolute) ... ok
+test_sys_paths_directories (utils_tests.test_autoreload.TestSysPathDirectories.test_sys_paths_directories) ... ok
+test_sys_paths_non_existing (utils_tests.test_autoreload.TestSysPathDirectories.test_sys_paths_non_existing) ... ok
+test_sys_paths_with_directories (utils_tests.test_autoreload.TestSysPathDirectories.test_sys_paths_with_directories) ... ok
+test_is_django_module (utils_tests.test_autoreload.TestUtilities.test_is_django_module) ... ok
+test_is_django_path (utils_tests.test_autoreload.TestUtilities.test_is_django_path) ... ok
+test_check_availability (utils_tests.test_autoreload.WatchmanReloaderTests.test_check_availability) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_check_availability_lower_version (utils_tests.test_autoreload.WatchmanReloaderTests.test_check_availability_lower_version) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_check_server_status (utils_tests.test_autoreload.WatchmanReloaderTests.test_check_server_status) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_check_server_status_raises_error (utils_tests.test_autoreload.WatchmanReloaderTests.test_check_server_status_raises_error) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_glob (utils_tests.test_autoreload.WatchmanReloaderTests.test_glob) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_glob_recursive (utils_tests.test_autoreload.WatchmanReloaderTests.test_glob_recursive) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_multiple_globs (utils_tests.test_autoreload.WatchmanReloaderTests.test_multiple_globs) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_multiple_recursive_globs (utils_tests.test_autoreload.WatchmanReloaderTests.test_multiple_recursive_globs) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_nested_glob_recursive (utils_tests.test_autoreload.WatchmanReloaderTests.test_nested_glob_recursive) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_overlapping_glob_recursive (utils_tests.test_autoreload.WatchmanReloaderTests.test_overlapping_glob_recursive) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_overlapping_globs (utils_tests.test_autoreload.WatchmanReloaderTests.test_overlapping_globs) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_pywatchman_not_available (utils_tests.test_autoreload.WatchmanReloaderTests.test_pywatchman_not_available) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_setting_timeout_from_environment_variable (utils_tests.test_autoreload.WatchmanReloaderTests.test_setting_timeout_from_environment_variable) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_update_watches_raises_exceptions (utils_tests.test_autoreload.WatchmanReloaderTests.test_update_watches_raises_exceptions) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_watch_glob_ignores_non_existing_directories_two_levels (utils_tests.test_autoreload.WatchmanReloaderTests.test_watch_glob_ignores_non_existing_directories_two_levels) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_watch_glob_multiple_patterns (utils_tests.test_autoreload.WatchmanReloaderTests.test_watch_glob_multiple_patterns) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_watch_glob_uses_existing_parent_directories (utils_tests.test_autoreload.WatchmanReloaderTests.test_watch_glob_uses_existing_parent_directories) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_watched_roots_contains_directory_globs (utils_tests.test_autoreload.WatchmanReloaderTests.test_watched_roots_contains_directory_globs) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_watched_roots_contains_files (utils_tests.test_autoreload.WatchmanReloaderTests.test_watched_roots_contains_files) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_watched_roots_contains_sys_path (utils_tests.test_autoreload.WatchmanReloaderTests.test_watched_roots_contains_sys_path) ... skipped 'Watchman unavailable: pywatchman not installed.'
+test_eq (utils_tests.test_choices.ChoiceIteratorTests.test_eq) ... ok
+test_eq_instances (utils_tests.test_choices.ChoiceIteratorTests.test_eq_instances) ... ok
+test_getitem (utils_tests.test_choices.ChoiceIteratorTests.test_getitem) ... ok
+test_getitem_indexerror (utils_tests.test_choices.ChoiceIteratorTests.test_getitem_indexerror) ... ok
+test_not_equal_subset (utils_tests.test_choices.ChoiceIteratorTests.test_not_equal_subset) ... ok
+test_not_equal_superset (utils_tests.test_choices.ChoiceIteratorTests.test_not_equal_superset) ... ok
+test_not_implemented_error_on_missing_iter (utils_tests.test_choices.ChoiceIteratorTests.test_not_implemented_error_on_missing_iter) ... ok
+test_empty (utils_tests.test_choices.FlattenChoicesTests.test_empty) ... ok
+test_nested_choices (utils_tests.test_choices.FlattenChoicesTests.test_nested_choices) ... ok
+test_non_empty (utils_tests.test_choices.FlattenChoicesTests.test_non_empty) ... ok
+test_callable (utils_tests.test_choices.NormalizeFieldChoicesTests.test_callable) ... ok
+test_callable_non_canonical (utils_tests.test_choices.NormalizeFieldChoicesTests.test_callable_non_canonical) ... ok
+test_choices (utils_tests.test_choices.NormalizeFieldChoicesTests.test_choices) ... ok
+test_empty (utils_tests.test_choices.NormalizeFieldChoicesTests.test_empty) ... ok
+test_iterable (utils_tests.test_choices.NormalizeFieldChoicesTests.test_iterable) ... ok
+test_iterable_non_canonical (utils_tests.test_choices.NormalizeFieldChoicesTests.test_iterable_non_canonical) ... ok
+test_iterable_set (utils_tests.test_choices.NormalizeFieldChoicesTests.test_iterable_set) ... ok
+test_iterator (utils_tests.test_choices.NormalizeFieldChoicesTests.test_iterator) ... ok
+test_iterator_non_canonical (utils_tests.test_choices.NormalizeFieldChoicesTests.test_iterator_non_canonical) ... ok
+test_mapping (utils_tests.test_choices.NormalizeFieldChoicesTests.test_mapping) ... ok
+test_nested_callable (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_callable) ... ok
+test_nested_callable_non_canonical (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_callable_non_canonical) ... ok
+test_nested_iterable (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_iterable) ... ok
+test_nested_iterable_non_canonical (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_iterable_non_canonical) ... ok
+test_nested_iterator (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_iterator) ... ok
+test_nested_iterator_non_canonical (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_iterator_non_canonical) ... ok
+test_nested_mapping (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_mapping) ... ok
+test_nested_mixed_mapping_and_iterable (utils_tests.test_choices.NormalizeFieldChoicesTests.test_nested_mixed_mapping_and_iterable) ... ok
+test_unsupported_values_from_callable_returned_unmodified (utils_tests.test_choices.NormalizeFieldChoicesTests.test_unsupported_values_from_callable_returned_unmodified) ... ok
+test_unsupported_values_from_iterator_returned_unmodified (utils_tests.test_choices.NormalizeFieldChoicesTests.test_unsupported_values_from_iterator_returned_unmodified) ... ok
+test_unsupported_values_returned_unmodified (utils_tests.test_choices.NormalizeFieldChoicesTests.test_unsupported_values_returned_unmodified) ... ok
+test_all_initialized_only (utils_tests.test_connection.BaseConnectionHandlerTests.test_all_initialized_only) ... ok
+test_create_connection (utils_tests.test_connection.BaseConnectionHandlerTests.test_create_connection) ... ok
+test_constant_time_compare (utils_tests.test_crypto.TestUtilsCryptoMisc.test_constant_time_compare) ... ok
+test_invalid_algorithm (utils_tests.test_crypto.TestUtilsCryptoMisc.test_invalid_algorithm) ... ok
+test_salted_hmac (utils_tests.test_crypto.TestUtilsCryptoMisc.test_salted_hmac) ... ok
+test_copy (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_copy) ... ok
+test_create_with_invalid_key (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_create_with_invalid_key) ... ok
+test_create_with_invalid_values (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_create_with_invalid_values) ... ok
+test_del (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_del) ... ok
+test_dict (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_dict) ... ok
+test_equal (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_equal) ... ok
+test_getitem (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_getitem) ... ok
+test_in (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_in) ... ok
+test_items (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_items) ... ok
+test_list (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_list) ... ok
+test_repr (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_repr) ... ok
+test_set (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_set) ... ok
+test_str (utils_tests.test_datastructures.CaseInsensitiveMappingTests.test_str) ... ok
+test_dictwrapper (utils_tests.test_datastructures.DictWrapperTests.test_dictwrapper) ... ok
+test_custom_warning (utils_tests.test_datastructures.ImmutableListTests.test_custom_warning) ... ok
+test_sort (utils_tests.test_datastructures.ImmutableListTests.test_sort) ... ok
+test_appendlist (utils_tests.test_datastructures.MultiValueDictTests.test_appendlist) ... ok
+test_copy (utils_tests.test_datastructures.MultiValueDictTests.test_copy) ... ok
+test_deepcopy (utils_tests.test_datastructures.MultiValueDictTests.test_deepcopy) ... ok
+test_dict_translation (utils_tests.test_datastructures.MultiValueDictTests.test_dict_translation) ... ok
+test_getlist_default (utils_tests.test_datastructures.MultiValueDictTests.test_getlist_default) ... ok
+test_getlist_doesnt_mutate (utils_tests.test_datastructures.MultiValueDictTests.test_getlist_doesnt_mutate) ... ok
+test_getlist_none_empty_values (utils_tests.test_datastructures.MultiValueDictTests.test_getlist_none_empty_values) ... ok
+test_internal_getlist_does_mutate (utils_tests.test_datastructures.MultiValueDictTests.test_internal_getlist_does_mutate) ... ok
+test_multivaluedict (utils_tests.test_datastructures.MultiValueDictTests.test_multivaluedict) ... ok
+test_pickle (utils_tests.test_datastructures.MultiValueDictTests.test_pickle) ... ok
+test_repr (utils_tests.test_datastructures.MultiValueDictTests.test_repr) ... ok
+test_setdefault (utils_tests.test_datastructures.MultiValueDictTests.test_setdefault) ... ok
+test_setitem (utils_tests.test_datastructures.MultiValueDictTests.test_setitem) ... ok
+test_update_dict_arg (utils_tests.test_datastructures.MultiValueDictTests.test_update_dict_arg) ... ok
+test_update_kwargs (utils_tests.test_datastructures.MultiValueDictTests.test_update_kwargs) ... ok
+test_update_multivaluedict_arg (utils_tests.test_datastructures.MultiValueDictTests.test_update_multivaluedict_arg) ... ok
+test_update_no_args (utils_tests.test_datastructures.MultiValueDictTests.test_update_no_args) ... ok
+test_update_raises_correct_exceptions (utils_tests.test_datastructures.MultiValueDictTests.test_update_raises_correct_exceptions) ... ok
+test_update_too_many_args (utils_tests.test_datastructures.MultiValueDictTests.test_update_too_many_args) ... ok
+test_update_with_empty_iterable (utils_tests.test_datastructures.MultiValueDictTests.test_update_with_empty_iterable) ... ok
+test_update_with_iterable_of_pairs (utils_tests.test_datastructures.MultiValueDictTests.test_update_with_iterable_of_pairs) ... ok
+test_bool (utils_tests.test_datastructures.OrderedSetTests.test_bool) ... ok
+test_contains (utils_tests.test_datastructures.OrderedSetTests.test_contains) ... ok
+test_discard (utils_tests.test_datastructures.OrderedSetTests.test_discard) ... ok
+test_init_with_iterable (utils_tests.test_datastructures.OrderedSetTests.test_init_with_iterable) ... ok
+test_len (utils_tests.test_datastructures.OrderedSetTests.test_len) ... ok
+test_remove (utils_tests.test_datastructures.OrderedSetTests.test_remove) ... ok
+test_repr (utils_tests.test_datastructures.OrderedSetTests.test_repr) ... ok
+test_reversed (utils_tests.test_datastructures.OrderedSetTests.test_reversed) ... ok
+test_P_format (utils_tests.test_dateformat.DateFormatTests.test_P_format) ... ok
+test_S_format (utils_tests.test_dateformat.DateFormatTests.test_S_format) ... ok
+test_Y_format_year_before_1000 (utils_tests.test_dateformat.DateFormatTests.test_Y_format_year_before_1000) ... ok
+test_am_pm (utils_tests.test_dateformat.DateFormatTests.test_am_pm) ... ok
+test_date (utils_tests.test_dateformat.DateFormatTests.test_date) ... ok
+test_date_formats (utils_tests.test_dateformat.DateFormatTests.test_date_formats) ... ok
+test_date_formats_c_format (utils_tests.test_dateformat.DateFormatTests.test_date_formats_c_format) ... ok
+test_dateformat (utils_tests.test_dateformat.DateFormatTests.test_dateformat) ... ok
+test_datetime_with_local_tzinfo (utils_tests.test_dateformat.DateFormatTests.test_datetime_with_local_tzinfo) ... ok
+test_datetime_with_tzinfo (utils_tests.test_dateformat.DateFormatTests.test_datetime_with_tzinfo) ... ok
+test_day_of_year_leap (utils_tests.test_dateformat.DateFormatTests.test_day_of_year_leap) ... ok
+test_e_format_with_named_time_zone (utils_tests.test_dateformat.DateFormatTests.test_e_format_with_named_time_zone) ... ok
+test_e_format_with_time_zone_with_unimplemented_tzname (utils_tests.test_dateformat.DateFormatTests.test_e_format_with_time_zone_with_unimplemented_tzname) ... ok
+test_empty_format (utils_tests.test_dateformat.DateFormatTests.test_empty_format) ... ok
+test_epoch (utils_tests.test_dateformat.DateFormatTests.test_epoch) ... ok
+test_futuredates (utils_tests.test_dateformat.DateFormatTests.test_futuredates) ... ok
+test_invalid_time_format_specifiers (utils_tests.test_dateformat.DateFormatTests.test_invalid_time_format_specifiers) ... ok
+test_microsecond (utils_tests.test_dateformat.DateFormatTests.test_microsecond) ... ok
+test_naive_ambiguous_datetime (utils_tests.test_dateformat.DateFormatTests.test_naive_ambiguous_datetime) ... ok
+test_naive_datetime (utils_tests.test_dateformat.DateFormatTests.test_naive_datetime) ... ok
+test_r_format_with_date (utils_tests.test_dateformat.DateFormatTests.test_r_format_with_date) ... ok
+test_r_format_with_non_en_locale (utils_tests.test_dateformat.DateFormatTests.test_r_format_with_non_en_locale) ... ok
+test_time_formats (utils_tests.test_dateformat.DateFormatTests.test_time_formats) ... ok
+test_timezones (utils_tests.test_dateformat.DateFormatTests.test_timezones) ... ok
+test_twelve_hour_format (utils_tests.test_dateformat.DateFormatTests.test_twelve_hour_format) ... ok
+test_y_format_year_before_1000 (utils_tests.test_dateformat.DateFormatTests.test_y_format_year_before_1000) ... ok
+test_deconstruct (utils_tests.test_deconstruct.DeconstructibleTests.test_deconstruct) ... ok
+test_deconstruct_child (utils_tests.test_deconstruct.DeconstructibleTests.test_deconstruct_child) ... ok
+test_deconstruct_child_with_path (utils_tests.test_deconstruct.DeconstructibleTests.test_deconstruct_child_with_path) ... ok
+test_deconstruct_with_path (utils_tests.test_deconstruct.DeconstructibleTests.test_deconstruct_with_path) ... ok
+test_invalid_path (utils_tests.test_deconstruct.DeconstructibleTests.test_invalid_path) ... ok
+test_parent_invalid_path (utils_tests.test_deconstruct.DeconstructibleTests.test_parent_invalid_path) ... ok
+test_callable_process_view_middleware (utils_tests.test_decorators.DecoratorFromMiddlewareTests.test_callable_process_view_middleware)
+Test a middleware that implements process_view, operating on a callable class. ... ok
+test_full_dec_normal (utils_tests.test_decorators.DecoratorFromMiddlewareTests.test_full_dec_normal)
+All methods of middleware are called for normal HttpResponses ... ok
+test_full_dec_templateresponse (utils_tests.test_decorators.DecoratorFromMiddlewareTests.test_full_dec_templateresponse)
+All methods of middleware are called for TemplateResponses in ... ok
+test_process_view_middleware (utils_tests.test_decorators.DecoratorFromMiddlewareTests.test_process_view_middleware)
+Test a middleware that implements process_view. ... ok
+test_force_bytes_encoding (utils_tests.test_encoding.TestEncodingUtils.test_force_bytes_encoding) ... ok
+test_force_bytes_exception (utils_tests.test_encoding.TestEncodingUtils.test_force_bytes_exception)
+force_bytes knows how to convert to bytes an exception ... ok
+test_force_bytes_memory_view (utils_tests.test_encoding.TestEncodingUtils.test_force_bytes_memory_view) ... ok
+test_force_bytes_strings_only (utils_tests.test_encoding.TestEncodingUtils.test_force_bytes_strings_only) ... ok
+test_force_str_DjangoUnicodeDecodeError (utils_tests.test_encoding.TestEncodingUtils.test_force_str_DjangoUnicodeDecodeError) ... ok
+test_force_str_exception (utils_tests.test_encoding.TestEncodingUtils.test_force_str_exception)
+Broken __str__ actually raises an error. ... ok
+test_force_str_lazy (utils_tests.test_encoding.TestEncodingUtils.test_force_str_lazy) ... ok
+test_get_default_encoding (utils_tests.test_encoding.TestEncodingUtils.test_get_default_encoding) ... ok
+test_repercent_broken_unicode_recursion_error (utils_tests.test_encoding.TestEncodingUtils.test_repercent_broken_unicode_recursion_error) ... ok
+test_repercent_broken_unicode_small_fragments (utils_tests.test_encoding.TestEncodingUtils.test_repercent_broken_unicode_small_fragments) ... ok
+test_smart_bytes (utils_tests.test_encoding.TestEncodingUtils.test_smart_bytes) ... ok
+test_smart_str (utils_tests.test_encoding.TestEncodingUtils.test_smart_str) ... ok
+test_atom1_mime_type (utils_tests.test_feedgenerator.FeedgeneratorTests.test_atom1_mime_type)
+Atom MIME type has UTF8 Charset parameter set ... ok
+test_atom_add_item (utils_tests.test_feedgenerator.FeedgeneratorTests.test_atom_add_item) ... ok
+test_deterministic_attribute_order (utils_tests.test_feedgenerator.FeedgeneratorTests.test_deterministic_attribute_order) ... ok
+test_feed_with_feed_url_gets_rendered_with_atom_link (utils_tests.test_feedgenerator.FeedgeneratorTests.test_feed_with_feed_url_gets_rendered_with_atom_link) ... ok
+test_feed_without_feed_url_gets_rendered_without_atom_link (utils_tests.test_feedgenerator.FeedgeneratorTests.test_feed_without_feed_url_gets_rendered_without_atom_link) ... ok
+test_get_tag_uri (utils_tests.test_feedgenerator.FeedgeneratorTests.test_get_tag_uri)
+get_tag_uri() correctly generates TagURIs. ... ok
+test_get_tag_uri_with_port (utils_tests.test_feedgenerator.FeedgeneratorTests.test_get_tag_uri_with_port)
+get_tag_uri() correctly generates TagURIs from URLs with port numbers. ... ok
+test_latest_post_date_returns_utc_time (utils_tests.test_feedgenerator.FeedgeneratorTests.test_latest_post_date_returns_utc_time) ... ok
+test_rfc2822_date (utils_tests.test_feedgenerator.FeedgeneratorTests.test_rfc2822_date)
+rfc2822_date() correctly formats datetime objects. ... ok
+test_rfc2822_date_with_timezone (utils_tests.test_feedgenerator.FeedgeneratorTests.test_rfc2822_date_with_timezone)
+rfc2822_date() correctly formats datetime objects with tzinfo. ... ok
+test_rfc2822_date_without_time (utils_tests.test_feedgenerator.FeedgeneratorTests.test_rfc2822_date_without_time)
+rfc2822_date() correctly formats date objects. ... ok
+test_rfc3339_date (utils_tests.test_feedgenerator.FeedgeneratorTests.test_rfc3339_date)
+rfc3339_date() correctly formats datetime objects. ... ok
+test_rfc3339_date_with_timezone (utils_tests.test_feedgenerator.FeedgeneratorTests.test_rfc3339_date_with_timezone)
+rfc3339_date() correctly formats datetime objects with tzinfo. ... ok
+test_rfc3339_date_without_time (utils_tests.test_feedgenerator.FeedgeneratorTests.test_rfc3339_date_without_time)
+rfc3339_date() correctly formats date objects. ... ok
+test_rss_mime_type (utils_tests.test_feedgenerator.FeedgeneratorTests.test_rss_mime_type)
+RSS MIME type has UTF8 Charset parameter set ... ok
+test_stylesheet_attribute_escaping (utils_tests.test_feedgenerator.FeedgeneratorTests.test_stylesheet_attribute_escaping) ... ok
+test_stylesheet_keeps_lazy_urls (utils_tests.test_feedgenerator.FeedgeneratorTests.test_stylesheet_keeps_lazy_urls) ... ok
+test_cached_property (utils_tests.test_functional.FunctionalTests.test_cached_property)
+cached_property caches its value and behaves like a property. ... ok
+test_cached_property_auto_name (utils_tests.test_functional.FunctionalTests.test_cached_property_auto_name)
+cached_property caches its value and behaves like a property ... ok
+test_cached_property_reuse_different_names (utils_tests.test_functional.FunctionalTests.test_cached_property_reuse_different_names)
+Disallow this case because the decorated function wouldn't be cached. ... ok
+test_cached_property_reuse_same_name (utils_tests.test_functional.FunctionalTests.test_cached_property_reuse_same_name)
+Reusing a cached_property on different classes under the same name is ... ok
+test_cached_property_set_name_not_called (utils_tests.test_functional.FunctionalTests.test_cached_property_set_name_not_called) ... ok
+test_classproperty_getter (utils_tests.test_functional.FunctionalTests.test_classproperty_getter) ... ok
+test_classproperty_override_getter (utils_tests.test_functional.FunctionalTests.test_classproperty_override_getter) ... ok
+test_lazy (utils_tests.test_functional.FunctionalTests.test_lazy) ... ok
+test_lazy_add_int (utils_tests.test_functional.FunctionalTests.test_lazy_add_int) ... ok
+test_lazy_add_list (utils_tests.test_functional.FunctionalTests.test_lazy_add_list) ... ok
+test_lazy_add_str (utils_tests.test_functional.FunctionalTests.test_lazy_add_str) ... ok
+test_lazy_base_class (utils_tests.test_functional.FunctionalTests.test_lazy_base_class)
+lazy also finds base class methods in the proxy object ... ok
+test_lazy_base_class_override (utils_tests.test_functional.FunctionalTests.test_lazy_base_class_override)
+lazy finds the correct (overridden) method implementation ... ok
+test_lazy_bytes_and_str_result_classes (utils_tests.test_functional.FunctionalTests.test_lazy_bytes_and_str_result_classes) ... ok
+test_lazy_equality (utils_tests.test_functional.FunctionalTests.test_lazy_equality)
+== and != work correctly for Promises. ... ok
+test_lazy_format (utils_tests.test_functional.FunctionalTests.test_lazy_format) ... ok
+test_lazy_mod_int (utils_tests.test_functional.FunctionalTests.test_lazy_mod_int) ... ok
+test_lazy_mod_str (utils_tests.test_functional.FunctionalTests.test_lazy_mod_str) ... ok
+test_lazy_mul_int (utils_tests.test_functional.FunctionalTests.test_lazy_mul_int) ... ok
+test_lazy_mul_list (utils_tests.test_functional.FunctionalTests.test_lazy_mul_list) ... ok
+test_lazy_mul_str (utils_tests.test_functional.FunctionalTests.test_lazy_mul_str) ... ok
+test_lazy_object_to_string (utils_tests.test_functional.FunctionalTests.test_lazy_object_to_string) ... ok
+test_lazy_regular_method (utils_tests.test_functional.FunctionalTests.test_lazy_regular_method) ... ok
+test_lazy_repr_bytes (utils_tests.test_functional.FunctionalTests.test_lazy_repr_bytes) ... ok
+test_lazy_repr_int (utils_tests.test_functional.FunctionalTests.test_lazy_repr_int) ... ok
+test_lazy_repr_text (utils_tests.test_functional.FunctionalTests.test_lazy_repr_text) ... ok
+test_lazy_str_cast_mixed_bytes_result_types (utils_tests.test_functional.FunctionalTests.test_lazy_str_cast_mixed_bytes_result_types) ... ok
+test_lazy_str_cast_mixed_result_types (utils_tests.test_functional.FunctionalTests.test_lazy_str_cast_mixed_result_types) ... ok
+test_count_equal (utils_tests.test_hashable.TestHashable.test_count_equal) ... ok
+test_equal (utils_tests.test_hashable.TestHashable.test_equal) ... ok
+test_unhashable (utils_tests.test_hashable.TestHashable.test_unhashable) ... ok
+test_conditional_escape (utils_tests.test_html.TestUtilsHtml.test_conditional_escape) ... ok
+test_escape (utils_tests.test_html.TestUtilsHtml.test_escape) ... ok
+test_escapejs (utils_tests.test_html.TestUtilsHtml.test_escapejs) ... ok
+test_format_html (utils_tests.test_html.TestUtilsHtml.test_format_html) ... ok
+test_format_html_join_with_keyword_arguments (utils_tests.test_html.TestUtilsHtml.test_format_html_join_with_keyword_arguments) ... ok
+test_format_html_join_with_positional_arguments (utils_tests.test_html.TestUtilsHtml.test_format_html_join_with_positional_arguments) ... ok
+test_format_html_no_params (utils_tests.test_html.TestUtilsHtml.test_format_html_no_params) ... ok
+test_html_safe (utils_tests.test_html.TestUtilsHtml.test_html_safe) ... ok
+test_html_safe_defines_html_error (utils_tests.test_html.TestUtilsHtml.test_html_safe_defines_html_error) ... ok
+test_html_safe_doesnt_define_str (utils_tests.test_html.TestUtilsHtml.test_html_safe_doesnt_define_str) ... ok
+test_html_safe_subclass (utils_tests.test_html.TestUtilsHtml.test_html_safe_subclass) ... ok
+test_json_script (utils_tests.test_html.TestUtilsHtml.test_json_script) ... ok
+test_json_script_custom_encoder (utils_tests.test_html.TestUtilsHtml.test_json_script_custom_encoder) ... ok
+test_json_script_without_id (utils_tests.test_html.TestUtilsHtml.test_json_script_without_id) ... ok
+test_linebreaks (utils_tests.test_html.TestUtilsHtml.test_linebreaks) ... ok
+test_smart_urlquote (utils_tests.test_html.TestUtilsHtml.test_smart_urlquote) ... ok
+test_strip_spaces_between_tags (utils_tests.test_html.TestUtilsHtml.test_strip_spaces_between_tags) ... ok
+test_strip_tags (utils_tests.test_html.TestUtilsHtml.test_strip_tags) ... ok
+test_strip_tags_files (utils_tests.test_html.TestUtilsHtml.test_strip_tags_files) ... ok
+test_strip_tags_suspicious_operation_large_open_tags (utils_tests.test_html.TestUtilsHtml.test_strip_tags_suspicious_operation_large_open_tags) ... ok
+test_strip_tags_suspicious_operation_max_depth (utils_tests.test_html.TestUtilsHtml.test_strip_tags_suspicious_operation_max_depth) ... ok
+test_urlize (utils_tests.test_html.TestUtilsHtml.test_urlize) ... ok
+test_urlize_unchanged_inputs (utils_tests.test_html.TestUtilsHtml.test_urlize_unchanged_inputs) ... ok
+test_input_too_large (utils_tests.test_http.Base36IntTests.test_input_too_large) ... ok
+test_invalid_literal (utils_tests.test_http.Base36IntTests.test_invalid_literal) ... ok
+test_negative_input (utils_tests.test_http.Base36IntTests.test_negative_input) ... ok
+test_roundtrip (utils_tests.test_http.Base36IntTests.test_roundtrip) ... ok
+test_to_base36_errors (utils_tests.test_http.Base36IntTests.test_to_base36_errors) ... ok
+test_to_int_errors (utils_tests.test_http.Base36IntTests.test_to_int_errors) ... ok
+test_values (utils_tests.test_http.Base36IntTests.test_values) ... ok
+test_custom_iterable_not_doseq (utils_tests.test_http.URLEncodeTests.test_custom_iterable_not_doseq) ... ok
+test_dict (utils_tests.test_http.URLEncodeTests.test_dict) ... ok
+test_dict_containing_empty_sequence_doseq (utils_tests.test_http.URLEncodeTests.test_dict_containing_empty_sequence_doseq) ... ok
+test_dict_containing_sequence_doseq (utils_tests.test_http.URLEncodeTests.test_dict_containing_sequence_doseq) ... ok
+test_dict_containing_sequence_not_doseq (utils_tests.test_http.URLEncodeTests.test_dict_containing_sequence_not_doseq) ... ok
+test_dict_containing_tuple_not_doseq (utils_tests.test_http.URLEncodeTests.test_dict_containing_tuple_not_doseq) ... ok
+test_dict_with_bytearray (utils_tests.test_http.URLEncodeTests.test_dict_with_bytearray) ... ok
+test_dict_with_bytes_values (utils_tests.test_http.URLEncodeTests.test_dict_with_bytes_values) ... ok
+test_dict_with_sequence_of_bytes (utils_tests.test_http.URLEncodeTests.test_dict_with_sequence_of_bytes) ... ok
+test_generator (utils_tests.test_http.URLEncodeTests.test_generator) ... ok
+test_multivaluedict (utils_tests.test_http.URLEncodeTests.test_multivaluedict) ... ok
+test_none (utils_tests.test_http.URLEncodeTests.test_none) ... ok
+test_none_in_generator (utils_tests.test_http.URLEncodeTests.test_none_in_generator) ... ok
+test_none_in_sequence (utils_tests.test_http.URLEncodeTests.test_none_in_sequence) ... ok
+test_tuples (utils_tests.test_http.URLEncodeTests.test_tuples) ... ok
+test_address_too_long (utils_tests.test_ipv6.TestUtilsIPv6.test_address_too_long) ... ok
+test_cleans_plain_address (utils_tests.test_ipv6.TestUtilsIPv6.test_cleans_plain_address) ... ok
+test_cleans_with_v4_mapping (utils_tests.test_ipv6.TestUtilsIPv6.test_cleans_with_v4_mapping) ... ok
+test_unpacks_ipv4 (utils_tests.test_ipv6.TestUtilsIPv6.test_unpacks_ipv4) ... ok
+test_validates_correct_plain_address (utils_tests.test_ipv6.TestUtilsIPv6.test_validates_correct_plain_address) ... ok
+test_validates_correct_with_ipv6_instance (utils_tests.test_ipv6.TestUtilsIPv6.test_validates_correct_with_ipv6_instance) ... ok
+test_validates_correct_with_v4mapping (utils_tests.test_ipv6.TestUtilsIPv6.test_validates_correct_with_v4mapping) ... ok
+test_validates_incorrect_plain_address (utils_tests.test_ipv6.TestUtilsIPv6.test_validates_incorrect_plain_address) ... ok
+test_validates_incorrect_with_non_string (utils_tests.test_ipv6.TestUtilsIPv6.test_validates_incorrect_with_non_string) ... ok
+test_validates_incorrect_with_v4mapping (utils_tests.test_ipv6.TestUtilsIPv6.test_validates_incorrect_with_v4mapping) ... ok
+test_is_iterable_deprecation (utils_tests.test_itercompat.TestIterCompat.test_is_iterable_deprecation) ... ok
+test_autodiscover_modules_found (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_autodiscover_modules_found) ... ok
+test_autodiscover_modules_found_but_bad_module (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_autodiscover_modules_found_but_bad_module) ... ok
+test_autodiscover_modules_not_found (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_autodiscover_modules_not_found) ... ok
+test_autodiscover_modules_several_found (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_autodiscover_modules_several_found) ... ok
+test_autodiscover_modules_several_found_with_registry (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_autodiscover_modules_several_found_with_registry) ... ok
+test_autodiscover_modules_several_one_bad_module (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_autodiscover_modules_several_one_bad_module) ... ok
+test_validate_registry_keeps_intact (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_validate_registry_keeps_intact) ... ok
+test_validate_registry_resets_after_erroneous_module (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_validate_registry_resets_after_erroneous_module) ... ok
+test_validate_registry_resets_after_missing_module (utils_tests.test_module_loading.AutodiscoverModulesTestCase.test_validate_registry_resets_after_missing_module) ... ok
+test_import_string (utils_tests.test_module_loading.ModuleImportTests.test_import_string) ... ok
+test_decimal_numbers (utils_tests.test_numberformat.TestNumberFormat.test_decimal_numbers) ... ok
+test_decimal_subclass (utils_tests.test_numberformat.TestNumberFormat.test_decimal_subclass) ... ok
+test_empty (utils_tests.test_numberformat.TestNumberFormat.test_empty) ... ok
+test_float_numbers (utils_tests.test_numberformat.TestNumberFormat.test_float_numbers) ... ok
+test_format_number (utils_tests.test_numberformat.TestNumberFormat.test_format_number) ... ok
+test_format_string (utils_tests.test_numberformat.TestNumberFormat.test_format_string) ... ok
+test_large_number (utils_tests.test_numberformat.TestNumberFormat.test_large_number) ... ok
+test_flags_with_pre_compiled_regex (utils_tests.test_regex_helper.LazyReCompileTests.test_flags_with_pre_compiled_regex) ... ok
+test_add_lazy_safe_text_and_safe_text (utils_tests.test_safestring.SafeStringTest.test_add_lazy_safe_text_and_safe_text) ... ok
+test_add_obj (utils_tests.test_safestring.SafeStringTest.test_add_obj) ... ok
+test_add_str (utils_tests.test_safestring.SafeStringTest.test_add_str) ... ok
+test_default_additional_attrs (utils_tests.test_safestring.SafeStringTest.test_default_additional_attrs) ... ok
+test_default_safe_data_additional_attrs (utils_tests.test_safestring.SafeStringTest.test_default_safe_data_additional_attrs) ... ok
+test_mark_safe (utils_tests.test_safestring.SafeStringTest.test_mark_safe) ... ok
+test_mark_safe_as_decorator (utils_tests.test_safestring.SafeStringTest.test_mark_safe_as_decorator)
+mark_safe used as a decorator leaves the result of a function ... ok
+test_mark_safe_decorator_does_not_affect_dunder_html (utils_tests.test_safestring.SafeStringTest.test_mark_safe_decorator_does_not_affect_dunder_html)
+mark_safe doesn't affect a callable that has an __html__() method. ... ok
+test_mark_safe_decorator_does_not_affect_promises (utils_tests.test_safestring.SafeStringTest.test_mark_safe_decorator_does_not_affect_promises)
+mark_safe doesn't affect lazy strings (Promise objects). ... ok
+test_mark_safe_lazy (utils_tests.test_safestring.SafeStringTest.test_mark_safe_lazy) ... ok
+test_mark_safe_lazy_i18n (utils_tests.test_safestring.SafeStringTest.test_mark_safe_lazy_i18n) ... ok
+test_mark_safe_lazy_result_implements_dunder_html (utils_tests.test_safestring.SafeStringTest.test_mark_safe_lazy_result_implements_dunder_html) ... ok
+test_mark_safe_object_implementing_dunder_html (utils_tests.test_safestring.SafeStringTest.test_mark_safe_object_implementing_dunder_html) ... ok
+test_mark_safe_object_implementing_dunder_str (utils_tests.test_safestring.SafeStringTest.test_mark_safe_object_implementing_dunder_str) ... ok
+test_mark_safe_result_implements_dunder_html (utils_tests.test_safestring.SafeStringTest.test_mark_safe_result_implements_dunder_html) ... ok
+test_mark_safe_str (utils_tests.test_safestring.SafeStringTest.test_mark_safe_str)
+Calling str() on a SafeString instance doesn't lose the safe status. ... ok
+test_compress_sequence (utils_tests.test_text.TestUtilsText.test_compress_sequence) ... ok
+test_format_lazy (utils_tests.test_text.TestUtilsText.test_format_lazy) ... ok
+test_get_text_list (utils_tests.test_text.TestUtilsText.test_get_text_list) ... ok
+test_get_valid_filename (utils_tests.test_text.TestUtilsText.test_get_valid_filename) ... ok
+test_normalize_newlines (utils_tests.test_text.TestUtilsText.test_normalize_newlines) ... ok
+test_phone2numeric (utils_tests.test_text.TestUtilsText.test_phone2numeric) ... ok
+test_slugify (utils_tests.test_text.TestUtilsText.test_slugify) ... 
+  test_slugify (utils_tests.test_text.TestUtilsText.test_slugify) (value='__strip__underscore-value___') ... FAIL
+  test_slugify (utils_tests.test_text.TestUtilsText.test_slugify) (value='__strip-mixed-value---') ... FAIL
+  test_slugify (utils_tests.test_text.TestUtilsText.test_slugify) (value='_ -strip-mixed-value _-') ... FAIL
+test_smart_split (utils_tests.test_text.TestUtilsText.test_smart_split) ... ok
+test_truncate_chars (utils_tests.test_text.TestUtilsText.test_truncate_chars) ... ok
+test_truncate_chars_html (utils_tests.test_text.TestUtilsText.test_truncate_chars_html) ... ok
+test_truncate_chars_html_with_html_entities (utils_tests.test_text.TestUtilsText.test_truncate_chars_html_with_html_entities) ... ok
+test_truncate_chars_html_with_misnested_tags (utils_tests.test_text.TestUtilsText.test_truncate_chars_html_with_misnested_tags) ... ok
+test_truncate_chars_html_with_newline_inside_tag (utils_tests.test_text.TestUtilsText.test_truncate_chars_html_with_newline_inside_tag) ... ok
+test_truncate_chars_html_with_void_elements (utils_tests.test_text.TestUtilsText.test_truncate_chars_html_with_void_elements) ... ok
+test_truncate_html_words (utils_tests.test_text.TestUtilsText.test_truncate_html_words) ... ok
+test_truncate_words (utils_tests.test_text.TestUtilsText.test_truncate_words) ... ok
+test_unescape_string_literal (utils_tests.test_text.TestUtilsText.test_unescape_string_literal) ... ok
+test_unescape_string_literal_invalid_value (utils_tests.test_text.TestUtilsText.test_unescape_string_literal_invalid_value) ... ok
+test_wrap (utils_tests.test_text.TestUtilsText.test_wrap) ... ok
+test_activate_invalid_timezone (utils_tests.test_timezone.TimezoneTests.test_activate_invalid_timezone) ... ok
+test_default_timezone_is_zoneinfo (utils_tests.test_timezone.TimezoneTests.test_default_timezone_is_zoneinfo) ... ok
+test_fixedoffset_negative_timedelta (utils_tests.test_timezone.TimezoneTests.test_fixedoffset_negative_timedelta) ... ok
+test_fixedoffset_timedelta (utils_tests.test_timezone.TimezoneTests.test_fixedoffset_timedelta) ... ok
+test_get_default_timezone (utils_tests.test_timezone.TimezoneTests.test_get_default_timezone) ... ok
+test_get_timezone_name (utils_tests.test_timezone.TimezoneTests.test_get_timezone_name)
+The _get_timezone_name() helper must return the offset for fixed offset ... ok
+test_is_aware (utils_tests.test_timezone.TimezoneTests.test_is_aware) ... ok
+test_is_naive (utils_tests.test_timezone.TimezoneTests.test_is_naive) ... ok
+test_localdate (utils_tests.test_timezone.TimezoneTests.test_localdate) ... ok
+test_make_aware (utils_tests.test_timezone.TimezoneTests.test_make_aware) ... ok
+test_make_aware2 (utils_tests.test_timezone.TimezoneTests.test_make_aware2) ... ok
+test_make_aware_no_tz (utils_tests.test_timezone.TimezoneTests.test_make_aware_no_tz) ... ok
+test_make_aware_zoneinfo_ambiguous (utils_tests.test_timezone.TimezoneTests.test_make_aware_zoneinfo_ambiguous) ... ok
+test_make_aware_zoneinfo_non_existent (utils_tests.test_timezone.TimezoneTests.test_make_aware_zoneinfo_non_existent) ... ok
+test_make_naive (utils_tests.test_timezone.TimezoneTests.test_make_naive) ... ok
+test_make_naive_no_tz (utils_tests.test_timezone.TimezoneTests.test_make_naive_no_tz) ... ok
+test_make_naive_zoneinfo (utils_tests.test_timezone.TimezoneTests.test_make_naive_zoneinfo) ... ok
+test_now (utils_tests.test_timezone.TimezoneTests.test_now) ... ok
+test_override (utils_tests.test_timezone.TimezoneTests.test_override) ... ok
+test_override_decorator (utils_tests.test_timezone.TimezoneTests.test_override_decorator) ... ok
+test_override_fixed_offset (utils_tests.test_timezone.TimezoneTests.test_override_fixed_offset) ... ok
+test_override_string_tz (utils_tests.test_timezone.TimezoneTests.test_override_string_tz) ... ok
+test_extract_file_permissions (utils_tests.test_archive.TestArchive.test_extract_file_permissions)
+archive.extract() preserves file permissions. ... ok
+test_extract_function (utils_tests.test_archive.TestArchive.test_extract_function) ... ok
+test_default_hmac_alg (utils_tests.test_crypto.TestUtilsCryptoPBKDF2.test_default_hmac_alg) ... ok
+test_public_vectors (utils_tests.test_crypto.TestUtilsCryptoPBKDF2.test_public_vectors) ... ok
+test_regression_vectors (utils_tests.test_crypto.TestUtilsCryptoPBKDF2.test_regression_vectors) ... ok
+test_parse_date (utils_tests.test_dateparse.DateParseTests.test_parse_date) ... ok
+test_parse_datetime (utils_tests.test_dateparse.DateParseTests.test_parse_datetime) ... ok
+test_parse_time (utils_tests.test_dateparse.DateParseTests.test_parse_time) ... ok
+test_days (utils_tests.test_dateparse.DurationParseTests.test_days) ... ok
+test_fractions_of_seconds (utils_tests.test_dateparse.DurationParseTests.test_fractions_of_seconds) ... ok
+test_hours_minutes_seconds (utils_tests.test_dateparse.DurationParseTests.test_hours_minutes_seconds) ... ok
+test_iso_8601 (utils_tests.test_dateparse.DurationParseTests.test_iso_8601) ... ok
+test_minutes_seconds (utils_tests.test_dateparse.DurationParseTests.test_minutes_seconds) ... ok
+test_negative (utils_tests.test_dateparse.DurationParseTests.test_negative) ... ok
+test_parse_postgresql_format (utils_tests.test_dateparse.DurationParseTests.test_parse_postgresql_format) ... ok
+test_parse_python_format (utils_tests.test_dateparse.DurationParseTests.test_parse_python_format) ... ok
+test_seconds (utils_tests.test_dateparse.DurationParseTests.test_seconds) ... ok
+test (utils_tests.test_duration.TestDurationMicroseconds.test) ... ok
+test_days (utils_tests.test_duration.TestDurationString.test_days) ... ok
+test_microseconds (utils_tests.test_duration.TestDurationString.test_microseconds) ... ok
+test_negative (utils_tests.test_duration.TestDurationString.test_negative) ... ok
+test_simple (utils_tests.test_duration.TestDurationString.test_simple) ... ok
+test_days (utils_tests.test_duration.TestISODurationString.test_days) ... ok
+test_microseconds (utils_tests.test_duration.TestISODurationString.test_microseconds) ... ok
+test_negative (utils_tests.test_duration.TestISODurationString.test_negative) ... ok
+test_simple (utils_tests.test_duration.TestISODurationString.test_simple) ... ok
+test_days (utils_tests.test_duration.TestParseDurationRoundtrip.test_days) ... ok
+test_microseconds (utils_tests.test_duration.TestParseDurationRoundtrip.test_microseconds) ... ok
+test_negative (utils_tests.test_duration.TestParseDurationRoundtrip.test_negative) ... ok
+test_simple (utils_tests.test_duration.TestParseDurationRoundtrip.test_simple) ... ok
+test_days (utils_tests.test_duration.TestParseISODurationRoundtrip.test_days) ... ok
+test_microseconds (utils_tests.test_duration.TestParseISODurationRoundtrip.test_microseconds) ... ok
+test_negative (utils_tests.test_duration.TestParseISODurationRoundtrip.test_negative) ... ok
+test_simple (utils_tests.test_duration.TestParseISODurationRoundtrip.test_simple) ... ok
+test_complementarity (utils_tests.test_encoding.TestRFC3987IEncodingUtils.test_complementarity) ... ok
+test_escape_uri_path (utils_tests.test_encoding.TestRFC3987IEncodingUtils.test_escape_uri_path) ... ok
+test_filepath_to_uri (utils_tests.test_encoding.TestRFC3987IEncodingUtils.test_filepath_to_uri) ... ok
+test_iri_to_uri (utils_tests.test_encoding.TestRFC3987IEncodingUtils.test_iri_to_uri) ... ok
+test_uri_to_iri (utils_tests.test_encoding.TestRFC3987IEncodingUtils.test_uri_to_iri) ... ok
+test_basic (utils_tests.test_http.ContentDispositionHeaderTests.test_basic) ... ok
+test_parsing (utils_tests.test_http.ETagProcessingTests.test_parsing) ... ok
+test_quoting (utils_tests.test_http.ETagProcessingTests.test_quoting) ... ok
+test (utils_tests.test_http.EscapeLeadingSlashesTests.test) ... ok
+test_http_date (utils_tests.test_http.HttpDateProcessingTests.test_http_date) ... ok
+test_parsing_asctime (utils_tests.test_http.HttpDateProcessingTests.test_parsing_asctime) ... ok
+test_parsing_asctime_nonascii_digits (utils_tests.test_http.HttpDateProcessingTests.test_parsing_asctime_nonascii_digits)
+Non-ASCII unicode decimals raise an error. ... ok
+test_parsing_rfc1123 (utils_tests.test_http.HttpDateProcessingTests.test_parsing_rfc1123) ... ok
+test_parsing_rfc850 (utils_tests.test_http.HttpDateProcessingTests.test_parsing_rfc850) ... ok
+test_parsing_year_less_than_70 (utils_tests.test_http.HttpDateProcessingTests.test_parsing_year_less_than_70) ... ok
+test_bad (utils_tests.test_http.IsSameDomainTests.test_bad) ... ok
+test_good (utils_tests.test_http.IsSameDomainTests.test_good) ... ok
+test_basic (utils_tests.test_http.ParseHeaderParameterTests.test_basic) ... ok
+test_rfc2231_parsing (utils_tests.test_http.ParseHeaderParameterTests.test_rfc2231_parsing) ... ok
+test_rfc2231_wrong_title (utils_tests.test_http.ParseHeaderParameterTests.test_rfc2231_wrong_title)
+Test wrongly formatted RFC 2231 headers (missing double single quotes). ... ok
+test_allowed_hosts_str (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_allowed_hosts_str) ... ok
+test_bad_urls (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_bad_urls) ... ok
+test_basic_auth (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_basic_auth) ... ok
+test_good_urls (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_good_urls) ... ok
+test_max_url_length (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_max_url_length) ... ok
+test_no_allowed_hosts (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_no_allowed_hosts) ... ok
+test_secure_param_https_urls (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_secure_param_https_urls) ... ok
+test_secure_param_non_https_urls (utils_tests.test_http.URLHasAllowedHostAndSchemeTests.test_secure_param_non_https_urls) ... ok
+test_roundtrip (utils_tests.test_http.URLSafeBase64Tests.test_roundtrip) ... ok
+test_func_accepts_kwargs (utils_tests.test_inspect.TestInspectMethods.test_func_accepts_kwargs) ... ok
+test_func_accepts_kwargs_deferred_annotations (utils_tests.test_inspect.TestInspectMethods.test_func_accepts_kwargs_deferred_annotations) ... skipped 'Deferred annotations are Python 3.14+ only'
+test_func_accepts_var_args_has_var_args (utils_tests.test_inspect.TestInspectMethods.test_func_accepts_var_args_has_var_args) ... ok
+test_func_accepts_var_args_no_var_args (utils_tests.test_inspect.TestInspectMethods.test_func_accepts_var_args_no_var_args) ... ok
+test_func_supports_parameter (utils_tests.test_inspect.TestInspectMethods.test_func_supports_parameter) ... ok
+test_get_callable_parameters (utils_tests.test_inspect.TestInspectMethods.test_get_callable_parameters) ... ok
+test_get_func_full_args_all_arguments_classmethod (utils_tests.test_inspect.TestInspectMethods.test_get_func_full_args_all_arguments_classmethod) ... ok
+test_get_func_full_args_all_arguments_method (utils_tests.test_inspect.TestInspectMethods.test_get_func_full_args_all_arguments_method) ... ok
+test_get_func_full_args_no_arguments (utils_tests.test_inspect.TestInspectMethods.test_get_func_full_args_no_arguments) ... ok
+test_get_func_full_args_one_argument (utils_tests.test_inspect.TestInspectMethods.test_get_func_full_args_one_argument) ... ok
+test_method_has_no_args (utils_tests.test_inspect.TestInspectMethods.test_method_has_no_args) ... ok
+test_bool (utils_tests.test_lazyobject.LazyObjectTestCase.test_bool) ... ok
+test_bytes (utils_tests.test_lazyobject.LazyObjectTestCase.test_bytes) ... ok
+test_class (utils_tests.test_lazyobject.LazyObjectTestCase.test_class) ... ok
+test_cmp (utils_tests.test_lazyobject.LazyObjectTestCase.test_cmp) ... ok
+test_contains (utils_tests.test_lazyobject.LazyObjectTestCase.test_contains) ... ok
+test_copy_class (utils_tests.test_lazyobject.LazyObjectTestCase.test_copy_class) ... ok
+test_copy_class_no_evaluation (utils_tests.test_lazyobject.LazyObjectTestCase.test_copy_class_no_evaluation) ... ok
+test_copy_list (utils_tests.test_lazyobject.LazyObjectTestCase.test_copy_list) ... ok
+test_copy_list_no_evaluation (utils_tests.test_lazyobject.LazyObjectTestCase.test_copy_list_no_evaluation) ... ok
+test_deepcopy_class (utils_tests.test_lazyobject.LazyObjectTestCase.test_deepcopy_class) ... ok
+test_deepcopy_class_no_evaluation (utils_tests.test_lazyobject.LazyObjectTestCase.test_deepcopy_class_no_evaluation) ... ok
+test_deepcopy_list (utils_tests.test_lazyobject.LazyObjectTestCase.test_deepcopy_list) ... ok
+test_deepcopy_list_no_evaluation (utils_tests.test_lazyobject.LazyObjectTestCase.test_deepcopy_list_no_evaluation) ... ok
+test_delattr (utils_tests.test_lazyobject.LazyObjectTestCase.test_delattr) ... ok
+test_delitem (utils_tests.test_lazyobject.LazyObjectTestCase.test_delitem) ... ok
+test_dir (utils_tests.test_lazyobject.LazyObjectTestCase.test_dir) ... ok
+test_getattr (utils_tests.test_lazyobject.LazyObjectTestCase.test_getattr) ... ok
+test_getattr_falsey (utils_tests.test_lazyobject.LazyObjectTestCase.test_getattr_falsey) ... ok
+test_getattribute (utils_tests.test_lazyobject.LazyObjectTestCase.test_getattribute)
+Proxy methods don't exist on wrapped objects unless they're set. ... ok
+test_getitem (utils_tests.test_lazyobject.LazyObjectTestCase.test_getitem) ... ok
+test_gt (utils_tests.test_lazyobject.LazyObjectTestCase.test_gt) ... ok
+test_hash (utils_tests.test_lazyobject.LazyObjectTestCase.test_hash) ... ok
+test_iter (utils_tests.test_lazyobject.LazyObjectTestCase.test_iter) ... ok
+test_len (utils_tests.test_lazyobject.LazyObjectTestCase.test_len) ... ok
+test_lt (utils_tests.test_lazyobject.LazyObjectTestCase.test_lt) ... ok
+test_pickle (utils_tests.test_lazyobject.LazyObjectTestCase.test_pickle) ... ok
+test_setattr (utils_tests.test_lazyobject.LazyObjectTestCase.test_setattr) ... ok
+test_setattr2 (utils_tests.test_lazyobject.LazyObjectTestCase.test_setattr2) ... ok
+test_setitem (utils_tests.test_lazyobject.LazyObjectTestCase.test_setitem) ... ok
+test_text (utils_tests.test_lazyobject.LazyObjectTestCase.test_text) ... ok
+test_add (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_add) ... ok
+test_bool (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_bool) ... ok
+test_bytes (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_bytes) ... ok
+test_class (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_class) ... ok
+test_cmp (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_cmp) ... ok
+test_contains (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_contains) ... ok
+test_copy_class (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_copy_class) ... ok
+test_copy_class_no_evaluation (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_copy_class_no_evaluation) ... ok
+test_copy_list (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_copy_list) ... ok
+test_copy_list_no_evaluation (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_copy_list_no_evaluation) ... ok
+test_deepcopy_class (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_deepcopy_class) ... ok
+test_deepcopy_class_no_evaluation (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_deepcopy_class_no_evaluation) ... ok
+test_deepcopy_list (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_deepcopy_list) ... ok
+test_deepcopy_list_no_evaluation (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_deepcopy_list_no_evaluation) ... ok
+test_delattr (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_delattr) ... ok
+test_delitem (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_delitem) ... ok
+test_dict (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_dict) ... ok
+test_dir (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_dir) ... ok
+test_getattr (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_getattr) ... ok
+test_getattr_falsey (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_getattr_falsey) ... ok
+test_getattribute (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_getattribute)
+Proxy methods don't exist on wrapped objects unless they're set. ... ok
+test_getitem (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_getitem) ... ok
+test_gt (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_gt) ... ok
+test_hash (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_hash) ... ok
+test_iter (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_iter) ... ok
+test_len (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_len) ... ok
+test_list_set (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_list_set) ... ok
+test_lt (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_lt) ... ok
+test_none (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_none) ... ok
+test_pickle (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_pickle) ... ok
+test_radd (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_radd) ... ok
+test_repr (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_repr) ... ok
+test_setattr (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_setattr) ... ok
+test_setattr2 (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_setattr2) ... ok
+test_setitem (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_setitem) ... ok
+test_text (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_text) ... ok
+test_trace (utils_tests.test_lazyobject.SimpleLazyObjectTestCase.test_trace) ... ok
+test_common_large_number_of_words (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_common_large_number_of_words)
+words(n) has n words when n is greater than len(WORDS). ... ok
+test_common_words_in_string (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_common_words_in_string)
+words(n) starts with the 19 standard lorem ipsum words for n > 19. ... ok
+test_more_words_than_common (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_more_words_than_common)
+words(n) returns n words for n > 19. ... ok
+test_negative_words (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_negative_words)
+words(n) returns n + 19 words, even if n is negative. ... ok
+test_not_common_words (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_not_common_words)
+words(n, common=False) returns random words. ... ok
+test_paragraph (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_paragraph)
+paragraph() generates a single paragraph. ... ok
+test_paragraphs (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_paragraphs)
+paragraphs(1) uses the COMMON_P paragraph. ... ok
+test_paragraphs_not_common (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_paragraphs_not_common)
+paragraphs(1, common=False) generating one paragraph that's not the ... ok
+test_same_or_less_common_words (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_same_or_less_common_words)
+words(n) for n < 19. ... ok
+test_sentence (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_sentence)
+Sentences are built using some number of phrases and a set of words. ... ok
+test_sentence_ending (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_sentence_ending)
+Sentences end with a question mark or a period. ... ok
+test_sentence_starts_with_capital (utils_tests.test_lorem_ipsum.LoremIpsumTests.test_sentence_starts_with_capital)
+A sentence starts with a capital letter. ... ok
+test_deep_loader (utils_tests.test_module_loading.CustomLoader.test_deep_loader)
+Modules deep inside an egg can still be tested for existence ... ok
+test_shallow_loader (utils_tests.test_module_loading.CustomLoader.test_shallow_loader)
+Module existence can be tested inside eggs ... ok
+test_has_sumbodule_with_dotted_path (utils_tests.test_module_loading.DefaultLoader.test_has_sumbodule_with_dotted_path)
+Nested module existence can be tested. ... ok
+test_loader (utils_tests.test_module_loading.DefaultLoader.test_loader)
+Normal module existence can be tested ... ok
+test_deep_loader (utils_tests.test_module_loading.EggLoader.test_deep_loader)
+Modules deep inside an egg can still be tested for existence ... ok
+test_shallow_loader (utils_tests.test_module_loading.EggLoader.test_shallow_loader)
+Module existence can be tested inside eggs ... ok
+test_base_path_ends_with_sep (utils_tests.test_os_utils.SafeJoinTests.test_base_path_ends_with_sep) ... ok
+test_parent_path (utils_tests.test_os_utils.SafeJoinTests.test_parent_path) ... ok
+test_root_path (utils_tests.test_os_utils.SafeJoinTests.test_root_path) ... ok
+test_creates_directory_hierarchy_with_permissions (utils_tests.test_os_utils.SafeMakeDirsTests.test_creates_directory_hierarchy_with_permissions) ... ok
+test_existing_directory_exist_ok (utils_tests.test_os_utils.SafeMakeDirsTests.test_existing_directory_exist_ok) ... ok
+test_existing_directory_exist_ok_false_raises (utils_tests.test_os_utils.SafeMakeDirsTests.test_existing_directory_exist_ok_false_raises) ... ok
+test_existing_file_at_target_raises (utils_tests.test_os_utils.SafeMakeDirsTests.test_existing_file_at_target_raises) ... ok
+test_existing_parent_preserves_permissions (utils_tests.test_os_utils.SafeMakeDirsTests.test_existing_parent_preserves_permissions) ... ok
+test_file_in_intermediate_path_raises (utils_tests.test_os_utils.SafeMakeDirsTests.test_file_in_intermediate_path_raises) ... ok
+test_path_is_normalized (utils_tests.test_os_utils.SafeMakeDirsTests.test_path_is_normalized) ... ok
+test_permissions_correct_despite_concurrent_umask_change (utils_tests.test_os_utils.SafeMakeDirsTests.test_permissions_correct_despite_concurrent_umask_change) ... ok
+test_permissions_unaffected_by_process_umask (utils_tests.test_os_utils.SafeMakeDirsTests.test_permissions_unaffected_by_process_umask) ... ok
+test_race_condition_exist_ok_false (utils_tests.test_os_utils.SafeMakeDirsTests.test_race_condition_exist_ok_false) ... ok
+test_race_condition_exist_ok_true (utils_tests.test_os_utils.SafeMakeDirsTests.test_race_condition_exist_ok_true) ... ok
+test_to_path (utils_tests.test_os_utils.ToPathTests.test_to_path) ... ok
+test_to_path_invalid_value (utils_tests.test_os_utils.ToPathTests.test_to_path_invalid_value) ... ok
+test_empty (utils_tests.test_regex_helper.NormalizeTests.test_empty) ... ok
+test_escape (utils_tests.test_regex_helper.NormalizeTests.test_escape) ... ok
+test_group_backreference (utils_tests.test_regex_helper.NormalizeTests.test_group_backreference) ... ok
+test_group_named (utils_tests.test_regex_helper.NormalizeTests.test_group_named) ... ok
+test_group_noncapturing (utils_tests.test_regex_helper.NormalizeTests.test_group_noncapturing) ... ok
+test_group_positional (utils_tests.test_regex_helper.NormalizeTests.test_group_positional) ... ok
+test_bad_color (utils_tests.test_termcolors.TermColorTests.test_bad_color) ... ok
+test_bad_option (utils_tests.test_termcolors.TermColorTests.test_bad_option) ... ok
+test_bad_palette (utils_tests.test_termcolors.TermColorTests.test_bad_palette) ... ok
+test_bad_role (utils_tests.test_termcolors.TermColorTests.test_bad_role) ... ok
+test_color_case (utils_tests.test_termcolors.TermColorTests.test_color_case) ... ok
+test_colorize_empty_text (utils_tests.test_termcolors.TermColorTests.test_colorize_empty_text) ... ok
+test_colorize_fg_bg (utils_tests.test_termcolors.TermColorTests.test_colorize_fg_bg) ... ok
+test_colorize_opts (utils_tests.test_termcolors.TermColorTests.test_colorize_opts) ... ok
+test_colorize_reset (utils_tests.test_termcolors.TermColorTests.test_colorize_reset) ... ok
+test_empty_definition (utils_tests.test_termcolors.TermColorTests.test_empty_definition) ... ok
+test_empty_options (utils_tests.test_termcolors.TermColorTests.test_empty_options) ... ok
+test_empty_string (utils_tests.test_termcolors.TermColorTests.test_empty_string) ... ok
+test_fg (utils_tests.test_termcolors.TermColorTests.test_fg) ... ok
+test_fg_bg (utils_tests.test_termcolors.TermColorTests.test_fg_bg) ... ok
+test_fg_bg_opts (utils_tests.test_termcolors.TermColorTests.test_fg_bg_opts) ... ok
+test_fg_opts (utils_tests.test_termcolors.TermColorTests.test_fg_opts) ... ok
+test_multiple_roles (utils_tests.test_termcolors.TermColorTests.test_multiple_roles) ... ok
+test_opts_case (utils_tests.test_termcolors.TermColorTests.test_opts_case) ... ok
+test_override_nocolor (utils_tests.test_termcolors.TermColorTests.test_override_nocolor) ... ok
+test_override_palette (utils_tests.test_termcolors.TermColorTests.test_override_palette) ... ok
+test_override_with_multiple_roles (utils_tests.test_termcolors.TermColorTests.test_override_with_multiple_roles) ... ok
+test_reverse_override (utils_tests.test_termcolors.TermColorTests.test_reverse_override) ... ok
+test_role_case (utils_tests.test_termcolors.TermColorTests.test_role_case) ... ok
+test_simple_palette (utils_tests.test_termcolors.TermColorTests.test_simple_palette) ... ok
+test_add (utils_tests.test_tree.NodeTests.test_add) ... ok
+test_add_eq_child_mixed_connector (utils_tests.test_tree.NodeTests.test_add_eq_child_mixed_connector) ... ok
+test_bool (utils_tests.test_tree.NodeTests.test_bool) ... ok
+test_contains (utils_tests.test_tree.NodeTests.test_contains) ... ok
+test_copy (utils_tests.test_tree.NodeTests.test_copy) ... ok
+test_create (utils_tests.test_tree.NodeTests.test_create) ... ok
+test_deepcopy (utils_tests.test_tree.NodeTests.test_deepcopy) ... ok
+test_eq_children (utils_tests.test_tree.NodeTests.test_eq_children) ... ok
+test_eq_connector (utils_tests.test_tree.NodeTests.test_eq_connector) ... ok
+test_eq_negated (utils_tests.test_tree.NodeTests.test_eq_negated) ... ok
+test_hash (utils_tests.test_tree.NodeTests.test_hash) ... ok
+test_len (utils_tests.test_tree.NodeTests.test_len) ... ok
+test_negate (utils_tests.test_tree.NodeTests.test_negate) ... ok
+test_repr (utils_tests.test_tree.NodeTests.test_repr) ... ok
+test_str (utils_tests.test_tree.NodeTests.test_str) ... ok
+
+======================================================================
+FAIL: test_slugify (utils_tests.test_text.TestUtilsText.test_slugify) (value='__strip__underscore-value___')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/django/tests/utils_tests/test_text.py", line 370, in test_slugify
+    self.assertEqual(text.slugify(value, allow_unicode=is_unicode), output)
+AssertionError: '__strip__underscore-value___' != 'strip__underscore-value'
+- __strip__underscore-value___
+? --                       ---
++ strip__underscore-value
+
+
+======================================================================
+FAIL: test_slugify (utils_tests.test_text.TestUtilsText.test_slugify) (value='__strip-mixed-value---')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/django/tests/utils_tests/test_text.py", line 370, in test_slugify
+    self.assertEqual(text.slugify(value, allow_unicode=is_unicode), output)
+AssertionError: '__strip-mixed-value' != 'strip-mixed-value'
+- __strip-mixed-value
+? --
++ strip-mixed-value
+
+
+======================================================================
+FAIL: test_slugify (utils_tests.test_text.TestUtilsText.test_slugify) (value='_ -strip-mixed-value _-')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/dev/django/tests/utils_tests/test_text.py", line 370, in test_slugify
+    self.assertEqual(text.slugify(value, allow_unicode=is_unicode), output)
+AssertionError: '_-strip-mixed-value-_' != 'strip-mixed-value'
+- _-strip-mixed-value-_
+? --                 --
++ strip-mixed-value
+
+
+----------------------------------------------------------------------
+Ran 652 tests in 0.888s
+
+FAILED (failures=3, skipped=21)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...

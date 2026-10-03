@@ -51,7 +51,7 @@ or with a Rust toolchain:
 cargo install --locked --git https://github.com/OWNER/tokencat
 ```
 
-It is a single ~2.5 MB binary with no runtime dependencies.
+It is a single ~2.7 MB binary with no runtime dependencies.
 
 ## Usage
 
@@ -92,27 +92,60 @@ fewer) through unchanged.
 | `--no-stats` | | | Hide the savings line |
 | `--raw` | | | Only strip escape codes and progress redraws, keep every line |
 | `run --no-pty` | | | Capture with plain pipes instead of a pseudo-terminal |
+| `hook claude` | | | Run as a Claude Code hook (see below) |
 | | `TOKENCAT_DISABLE=1` | | Pass everything through untouched |
 
 ## Using it with coding agents
 
 ### Claude Code
 
-Add one line to your project's `CLAUDE.md`:
+The most reliable setup is a hook: tokencat itself rewrites test and build
+commands before Claude Code runs them, so nothing depends on the model
+remembering an instruction. Add to `.claude/settings.json` (project) or
+`~/.claude/settings.json` (all projects):
 
-```markdown
-Always run tests as `tokencat run -- <test command>`, for example `tokencat run -- pytest`.
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{ "type": "command", "command": "tokencat hook claude" }]
+      }
+    ]
+  }
+}
 ```
 
-and, optionally, let Claude run it without asking each time in
-`.claude/settings.json`:
+With it, `pytest -x 2>&1 | tail -40` becomes `tokencat run -- pytest -x` and
+`cd web && npm test` becomes `tokencat run -- 'cd web && npm test'`. The hook
+only touches commands it recognises (pytest, unittest and Django, jest,
+vitest, npm/yarn/pnpm test, go test/build/vet, cargo test/build/check/clippy,
+tsc, mypy, make test) and leaves anything with pipes to other programs,
+redirections, `;` or `$(…)` alone. It never approves a command on its own:
+Claude Code's normal permission rules apply to the rewritten command.
+
+Because those rules now see `tokencat run -- …`, allow the specific test
+commands you were already allowing, for example:
 
 ```json
 {
   "permissions": {
-    "allow": ["Bash(tokencat run:*)"]
+    "allow": [
+      "Bash(tokencat run -- pytest *)",
+      "Bash(tokencat run -- npm test *)"
+    ]
   }
 }
+```
+
+Do not allow `Bash(tokencat run *)`: tokencat runs whatever command it is
+given, so that rule would approve every command.
+
+Without the hook, add one line to your project's `CLAUDE.md` instead:
+
+```markdown
+Always run tests as `tokencat run -- <test command>`, for example `tokencat run -- pytest`.
 ```
 
 ### Aider
@@ -146,15 +179,24 @@ full log if the summary is not enough:
 [tokencat: 75,867 -> 483 tokens (-99.4%) | saved ~$0.302 | full log: /tmp/tokencat/1791047543-472.log]
 ```
 
-If a parser ever fails on unexpected output, tokencat prints the cleaned-up
-full output instead of a partial report. `TOKENCAT_DISABLE=1` turns it into a
-transparent pass-through without editing any agent instructions.
+tokencat also never makes things worse:
+
+- If its report would be longer than the output it replaces (a run that was
+  already terse), it prints the cleaned-up output as is, plus the source
+  lines for each error.
+- Lines over 1,000 characters (minified bundles, JSON dumps, base64 blobs)
+  keep their first 700 and last 200 characters.
+- If a parser fails on unexpected output, it prints the cleaned-up full
+  output instead of a partial report.
+- `TOKENCAT_DISABLE=1` turns it into a transparent pass-through, hook
+  included, without editing any agent configuration.
 
 ## Supported tools
 
 | Tool | Detected from | What is kept |
 |---|---|---|
 | **pytest** | default, `-v`, `-q`, `--tb=long/short/line/no` | Failures and errors (setup, teardown, collection), `E` lines with assertion diffs, user stack frames, captured output |
+| **unittest** | `python -m unittest`, Django's `manage.py test` and `runtests.py`, any verbosity | `FAIL`/`ERROR` blocks with the re-runnable test id and subtest parameters, assertion diffs, user frames, chained exceptions |
 | **Jest** | default and `--verbose` | `●` failure blocks, expected/received diffs, the code frame, user stack frames |
 | **Vitest** | `vitest run` | Failure sections, diffs, the `❯` location and code frame |
 | **go test** | plain and `-v`, `./...` | Failing tests with their `file:line:` messages, panics with user frames, build errors per package |
@@ -187,15 +229,17 @@ Reproduce with `python3 bench/bench.py`.
 
 | Scenario | Lines | Tokens (est.) | Saved | Wall time |
 |---|---:|---:|---:|---:|
-| [click](https://github.com/pallets/click) · pytest | 145 → 38 | 2,295 → 479 | 79.1% | 3.9 ms |
-| click · pytest -v | 2,343 → 38 | 73,863 → 479 | 99.4% | 6.4 ms |
-| click · pytest -v (all pass) | 117 → 2 | 3,116 → 14 | 99.6% | 2.8 ms |
-| [cobra](https://github.com/spf13/cobra) · go test ./... | 39 → 64 | 980 → 860 | 12.2% | 4.0 ms |
-| cobra · go test -v ./... | 851 → 64 | 14,036 → 864 | 93.8% | 6.8 ms |
-| [semver](https://github.com/dtolnay/semver) · cargo test | 93 → 16 | 1,133 → 160 | 85.9% | 3.8 ms |
-| [ms](https://github.com/vercel/ms) · jest | 1,174 → 155 | 12,801 → 1,572 | 87.7% | 4.9 ms |
-| [ufo](https://github.com/unjs/ufo) · vitest run | 66 → 36 | 750 → 370 | 50.7% | 3.5 ms |
-| **Total** | | **108,974 → 4,798** | **95.6%** | |
+| [click](https://github.com/pallets/click) · pytest | 145 → 38 | 2,295 → 479 | 79.1% | 3.3 ms |
+| click · pytest -v | 2,343 → 38 | 73,863 → 479 | 99.4% | 9.2 ms |
+| click · pytest -v (all pass) | 117 → 2 | 3,116 → 14 | 99.6% | 2.3 ms |
+| [cobra](https://github.com/spf13/cobra) · go test ./... | 39 → 64 | 980 → 860 | 12.2% | 3.4 ms |
+| cobra · go test -v ./... | 851 → 64 | 14,036 → 864 | 93.8% | 5.0 ms |
+| [semver](https://github.com/dtolnay/semver) · cargo test | 93 → 16 | 1,133 → 160 | 85.9% | 3.6 ms |
+| [ms](https://github.com/vercel/ms) · jest | 1,174 → 155 | 12,796 → 1,572 | 87.7% | 3.9 ms |
+| [ufo](https://github.com/unjs/ufo) · vitest run | 66 → 36 | 752 → 370 | 50.8% | 2.6 ms |
+| [django](https://github.com/django/django) · runtests.py utils_tests | 46 → 35 | 863 → 436 | 49.5% | 3.2 ms |
+| django · runtests.py -v 2 utils_tests | 799 → 35 | 20,853 → 436 | 97.9% | 4.2 ms |
+| **Total** | | **130,687 → 5,670** | **95.7%** | |
 
 Notes:
 
@@ -220,7 +264,10 @@ Notes:
 - **Capture.** `tokencat run` starts the command in a pseudo-terminal sized
   200 columns, with `NO_COLOR=1`, `PY_COLORS=0` and `CARGO_TERM_COLOR=never`
   set unless you already set them. Signals are forwarded, and output from
-  background grandchildren cannot hang it.
+  background grandchildren cannot hang it. If tokencat itself is stopped
+  (an agent's command timeout sends SIGTERM), it stops the command and still
+  prints the report for what ran. On Windows the command runs with plain
+  pipes for now, and `.cmd` launchers such as `npm` go through `cmd.exe`.
 - **Sanitizer.** A small line-oriented terminal emulator: it applies `\r`,
   backspace, cursor movement and erase sequences the way a terminal would, so
   a progress bar that redrew itself 500 times becomes its final line, and it

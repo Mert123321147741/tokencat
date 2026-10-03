@@ -5,6 +5,7 @@ pub mod generic;
 mod go;
 mod js;
 mod pytest;
+mod unittest;
 
 use crate::report::{Engine, Report};
 
@@ -25,6 +26,7 @@ pub fn parse(engine: Engine, lines: &[String], ctx: &Ctx) -> Report {
         Engine::Vitest => js::parse_vitest(lines),
         Engine::Go => go::parse(lines),
         Engine::Cargo => cargo::parse(lines),
+        Engine::Unittest => unittest::parse(lines),
         Engine::Generic => return generic::parse(lines, ctx),
     };
     if ctx.exit_code.is_some_and(|c| c != 0) {
