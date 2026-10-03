@@ -2,7 +2,7 @@
 
 ### 1. TestValidateExpired
 at auth/auth_test.go:14
-auth_test.go:14: Validate() status = 401, want 200 (err=token expired)
+Validate() status = 401, want 200 (err=token expired)
 ```go
  11 | func TestValidateExpired(t *testing.T) {
  12 | 	code, err := Validate(Token{"bob", 1000}, 2000)
@@ -14,7 +14,7 @@ auth_test.go:14: Validate() status = 401, want 200 (err=token expired)
 
 ### 2. TestTable/stale
 at auth/auth_test.go:26
-auth_test.go:26: got 401 want 200
+got 401 want 200
 ```go
  18 | func TestTable(t *testing.T) {
     | ⋮
@@ -36,4 +36,4 @@ panic: runtime error: index out of range [0] with length 0
  26 | }
 ```
 
-[tokencat: 1,397 -> 391 tokens (-72.0%) | saved ~$0.0040]
+[tokencat: 1,397 -> 377 tokens (-73.0%) | saved ~$0.0041]

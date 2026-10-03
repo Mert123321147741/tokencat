@@ -10,17 +10,17 @@ use crate::context::is_library_path;
 use crate::report::{cap, dedent, tidy, Engine, Failure, Frame, Loc, Report};
 
 static RUN: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^=== (RUN|PAUSE|CONT|NAME)\s+(\S+)").unwrap());
+    LazyLock::new(|| crate::re::re(r"^=== (RUN|PAUSE|CONT|NAME)\s+(\S+)"));
 static RESULT: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^(\s*)--- (FAIL|PASS|SKIP): (\S+)(?: \([0-9.]+s\))?").unwrap());
+    LazyLock::new(|| crate::re::re(r"^(\s*)--- (FAIL|PASS|SKIP): (\S+)(?: \([0-9.]+s\))?"));
 static PKG: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^(ok|FAIL|\?)\s*\t(\S+)(?:[\t ](.*))?$").unwrap());
-static BUILD_HDR: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^# (\S+)").unwrap());
+    LazyLock::new(|| crate::re::re(r"^(ok|FAIL|\?)\s*\t(\S+)(?:[\t ](.*))?$"));
+static BUILD_HDR: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^# (\S+)"));
 static GO_LOC: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^\s*(?:vet: )?((?:[A-Za-z]:)?[^\s:]+\.go):(\d+)(?::(\d+))?: ").unwrap()
+    crate::re::re(r"^\s*(?:vet: )?((?:[A-Za-z]:)?[^\s:]+\.go):(\d+)(?::(\d+))?: ")
 });
 static TRACE_FILE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s+((?:[A-Za-z]:)?\S+\.go):(\d+)(?: \+0x[0-9a-f]+)?$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^\s+((?:[A-Za-z]:)?\S+\.go):(\d+)(?: \+0x[0-9a-f]+)?$"));
 
 pub fn parse(lines: &[String]) -> Report {
     let mut report = Report::new(Engine::Go);
@@ -208,8 +208,17 @@ fn go_loc(line: &str) -> Option<Loc> {
 }
 
 fn test_failure(name: &str, body: &[String]) -> Failure {
-    let message = cap(tidy(dedent(body)), 30);
+    let mut message = cap(tidy(dedent(body)), 30);
     let location = message.iter().find_map(|l| go_loc(l));
+    // "x_test.go:14: got 1" -> "got 1" when it repeats the location.
+    if let Some(loc) = &location {
+        let prefix = format!("{}:{}: ", loc.file, loc.line);
+        for line in message.iter_mut() {
+            if let Some(rest) = line.strip_prefix(&prefix) {
+                *line = rest.to_string();
+            }
+        }
+    }
     Failure {
         title: name.to_string(),
         location,
@@ -299,7 +308,7 @@ mod tests {
         );
         assert_eq!(
             r.failures[0].message,
-            vec!["auth_test.go:14: Validate() status = 401, want 200 (err=token expired)"]
+            vec!["Validate() status = 401, want 200 (err=token expired)"]
         );
         assert_eq!(
             r.failures[0].location.as_ref().unwrap().to_string(),

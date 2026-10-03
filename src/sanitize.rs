@@ -15,6 +15,7 @@ use std::collections::VecDeque;
 pub const SCREEN_ROWS: usize = 50;
 
 /// Width we advertise to child processes running under a PTY.
+#[cfg_attr(not(unix), allow(dead_code))]
 pub const SCREEN_COLS: usize = 200;
 
 pub fn sanitize(input: &[u8]) -> Vec<String> {

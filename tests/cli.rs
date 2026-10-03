@@ -5,7 +5,6 @@ use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output, Stdio};
-use std::time::{Duration, Instant};
 
 fn bin() -> Command {
     let mut c = Command::new(env!("CARGO_BIN_EXE_tokencat"));
@@ -20,6 +19,7 @@ fn manifest() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
 }
 
+#[cfg(unix)]
 fn run(args: &[&str]) -> Output {
     bin()
         .arg("--no-log")
@@ -49,6 +49,7 @@ fn pipe(input: &[u8], args: &[&str], cwd: &Path) -> Output {
 #[cfg(unix)]
 mod unix {
     use super::*;
+    use std::time::{Duration, Instant};
 
     #[test]
     fn exit_codes_pass_through_exactly() {

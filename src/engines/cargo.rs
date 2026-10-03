@@ -9,24 +9,23 @@ use crate::context::is_library_path;
 use crate::report::{cap, tidy, Code, Engine, Failure, Frame, Loc, Report};
 
 static DIAG: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^(error|warning)(?:\[(\w+)\])?: (.+)$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^(error|warning)(?:\[(\w+)\])?: (.+)$"));
 static ARROW: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*--> ((?:[A-Za-z]:)?[^:]+):(\d+):(\d+)$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^\s*--> ((?:[A-Za-z]:)?[^:]+):(\d+):(\d+)$"));
 static STDOUT_HDR: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^---- (.+?) std(?:out|err) ----$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^---- (.+?) std(?:out|err) ----$"));
 static RESULT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^test result: (?:ok|FAILED)\. (\d+) passed; (\d+) failed; (\d+) ignored").unwrap()
+    crate::re::re(r"^test result: (?:ok|FAILED)\. (\d+) passed; (\d+) failed; (\d+) ignored")
 });
 static PANIC_NEW: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^thread '.*?'(?: \(\d+\))? panicked at ((?:[A-Za-z]:)?[^:\s]+):(\d+):(\d+):$")
-        .unwrap()
+    crate::re::re(r"^thread '.*?'(?: \(\d+\))? panicked at ((?:[A-Za-z]:)?[^:\s]+):(\d+):(\d+):$")
 });
 static PANIC_OLD: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^thread '.*?' panicked at '(.*)', ((?:[A-Za-z]:)?[^:\s]+):(\d+):(\d+)$").unwrap()
+    crate::re::re(r"^thread '.*?' panicked at '(.*)', ((?:[A-Za-z]:)?[^:\s]+):(\d+):(\d+)$")
 });
-static BT_FUNC: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\s*\d+: (.+)$").unwrap());
+static BT_FUNC: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^\s*\d+: (.+)$"));
 static BT_AT: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s+at ((?:[A-Za-z]:)?[^:]+):(\d+):(\d+)$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^\s+at ((?:[A-Za-z]:)?[^:]+):(\d+):(\d+)$"));
 
 /// Diagnostics that only summarise other diagnostics.
 fn is_summary_diag(msg: &str) -> bool {

@@ -8,21 +8,22 @@ use regex::Regex;
 use crate::context::is_library_path;
 use crate::report::{cap, dedent, tidy, Engine, Failure, Frame, Loc, Report};
 
-static SECTION: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^=+ (.+?) =+$").unwrap());
-static BLOCK: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^_{3,} (.+?) _{3,}$").unwrap());
-static FRAME_SEP: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(?:_ ){3,}_?$").unwrap());
-static CAPTURED: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^-{3,} (.+?) -{3,}$").unwrap());
+static SECTION: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^=+ (.+?) =+$"));
+static BLOCK: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^_{3,} (.+?) _{3,}$"));
+static FRAME_SEP: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^(?:_ ){3,}_?$"));
+static CAPTURED: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^-{3,} (.+?) -{3,}$"));
 static LOC: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^((?:[A-Za-z]:)?[^\s:][^:]*?\.\w+):(\d+):(?: in (\S+)$| (.*)$|$)").unwrap()
+    crate::re::re(r"^((?:[A-Za-z]:)?[^\s:][^:]*?\.\w+):(\d+):(?: in (\S+)$| (.*)$|$)")
 });
 static SHORT: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^(FAILED|ERROR|XPASS\S*) (\S+)(?: - (.*))?$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^(FAILED|ERROR|XPASS\S*) (\S+)(?: - (.*))?$"));
 static SUMMARY: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^(?:\d+ (?:passed|failed|errors?|skipped|xfailed|xpassed|deselected|warnings?|rerun)\b.*|no tests ran.*) in [0-9.]+s.*$").unwrap()
+    crate::re::re(
+        r"^(?:\d+ (?:passed|failed|errors?|skipped|xfailed|xpassed|deselected|warnings?|rerun)\b.*|no tests ran.*) in [0-9.]+s.*$",
+    )
 });
-static DEF: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*(?:async\s+)?def\s+(\w+)").unwrap());
-static LOCALS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[A-Za-z_]\w* = ").unwrap());
+static DEF: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^\s*(?:async\s+)?def\s+(\w+)"));
+static LOCALS: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^[A-Za-z_]\w* = "));
 
 #[derive(PartialEq, Clone, Copy)]
 enum Section {

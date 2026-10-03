@@ -1,0 +1,3 @@
+# Fixture logs are captured byte-for-byte (CRs, escape codes); never convert them.
+tests/fixtures/** -text
+tests/golden/** text eol=lf

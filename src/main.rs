@@ -3,6 +3,7 @@ mod context;
 mod detect;
 mod engines;
 mod pipeline;
+mod re;
 mod report;
 mod sanitize;
 mod tokens;

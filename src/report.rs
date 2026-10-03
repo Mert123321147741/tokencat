@@ -114,6 +114,10 @@ pub fn render(report: &Report, opts: &RenderOpts) -> String {
             out.push_str(line);
             out.push('\n');
         }
+        for (loc, code) in &report.snippets {
+            let _ = writeln!(out, "\n{loc}");
+            render_code(&mut out, code);
+        }
         return out;
     }
 
@@ -143,9 +147,20 @@ pub fn render(report: &Report, opts: &RenderOpts) -> String {
     }
 
     let shown = report.failures.len().min(opts.max_failures);
+    // Parametrized tests often fail on the same line: show that code once.
+    let mut seen_code: Vec<(&Code, usize)> = Vec::new();
     for (i, f) in report.failures.iter().take(shown).enumerate() {
         out.push('\n');
-        render_failure(&mut out, i + 1, f);
+        let same_as = f.code.as_ref().and_then(|c| {
+            seen_code
+                .iter()
+                .find(|(d, _)| d.lines == c.lines)
+                .map(|(_, n)| *n)
+        });
+        render_failure(&mut out, i + 1, f, same_as);
+        if let (Some(c), None) = (&f.code, same_as) {
+            seen_code.push((c, i + 1));
+        }
     }
     if report.failures.len() > shown {
         let rest = &report.failures[shown..];
@@ -187,7 +202,7 @@ pub fn render(report: &Report, opts: &RenderOpts) -> String {
     out
 }
 
-fn render_failure(out: &mut String, n: usize, f: &Failure) {
+fn render_failure(out: &mut String, n: usize, f: &Failure, code_same_as: Option<usize>) {
     let _ = writeln!(out, "### {n}. {}", f.title);
     let primary = f.location.as_ref();
     // Without code, the frame line for the primary location says more than a
@@ -223,8 +238,12 @@ fn render_failure(out: &mut String, n: usize, f: &Failure) {
             out.push('\n');
         }
     }
-    if let Some(code) = &f.code {
-        render_code(out, code);
+    match (&f.code, code_same_as) {
+        (Some(_), Some(prev)) => {
+            let _ = writeln!(out, "(code: same as #{prev})");
+        }
+        (Some(code), None) => render_code(out, code),
+        _ => {}
     }
 }
 

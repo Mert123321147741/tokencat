@@ -1,0 +1,13 @@
+diff --git a/src/utils.ts b/src/utils.ts
+index ea98aba..63ea20a 100644
+--- a/src/utils.ts
++++ b/src/utils.ts
+@@ -203,7 +203,7 @@ export function withTrailingSlash(
+   const fragmentIndex = input.indexOf("#");
+   if (fragmentIndex !== -1) {
+     path = input.slice(0, fragmentIndex);
+-    fragment = input.slice(fragmentIndex);
++    fragment = input.slice(fragmentIndex + 1);
+     if (!path) {
+       return fragment;
+     }

@@ -9,24 +9,21 @@ use crate::context::{is_library_path, lang_for};
 use crate::report::{cap, dedent, tidy, Code, Engine, Failure, Frame, Loc, Report};
 
 static JEST_SUITE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*(PASS|FAIL)\s+(\S.*?)\s*(?:\([0-9.]+\s*m?s\))?$").unwrap());
-static BULLET: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(\s*)● (.+)$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^\s*(PASS|FAIL)\s+(\S.*?)\s*(?:\([0-9.]+\s*m?s\))?$"));
+static BULLET: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^(\s*)● (.+)$"));
 static NODE_STACK: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^\s*at (?:(.+?) \()?((?:[A-Za-z]:)?[^():]+?):(\d+):(\d+)\)?$").unwrap()
+    crate::re::re(r"^\s*at (?:(.+?) \()?((?:[A-Za-z]:)?[^():]+?):(\d+):(\d+)\)?$")
 });
 static JEST_CODE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*(?:>\s*)?\d+ \||^\s+\|(?:\s|$)").unwrap());
+    LazyLock::new(|| crate::re::re(r"^\s*(?:>\s*)?\d+ \||^\s+\|(?:\s|$)"));
 static CONSOLE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*console\.(?:log|warn|error|info|debug|trace)$").unwrap());
+    LazyLock::new(|| crate::re::re(r"^\s*console\.(?:log|warn|error|info|debug|trace)$"));
 
-static VITEST_SEP: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\s*⎯{2,}").unwrap());
-static VITEST_FAIL: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*FAIL\s+(.+?)\s*$").unwrap());
-static VITEST_STACK: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^\s*❯ (?:(\S+) )?((?:[A-Za-z]:)?[^\s:]+?):(\d+):(\d+)$").unwrap()
-});
-static VITEST_CODE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*\d+\||^\s+\|(?:\s|$)").unwrap());
+static VITEST_SEP: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^\s*⎯{2,}"));
+static VITEST_FAIL: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^\s*FAIL\s+(.+?)\s*$"));
+static VITEST_STACK: LazyLock<Regex> =
+    LazyLock::new(|| crate::re::re(r"^\s*❯ (?:(\S+) )?((?:[A-Za-z]:)?[^\s:]+?):(\d+):(\d+)$"));
+static VITEST_CODE: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^\s*\d+\||^\s+\|(?:\s|$)"));
 
 struct Block {
     title: String,

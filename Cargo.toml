@@ -2,7 +2,7 @@
 name = "tokencat"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.82"
+rust-version = "1.85"
 description = "Prune test runner and compiler output down to the failure context an AI coding agent actually needs."
 license = "MIT"
 readme = "README.md"

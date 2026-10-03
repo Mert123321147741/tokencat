@@ -68,7 +68,7 @@ pub fn process(input: &Input, opts: &Options) -> String {
         },
     );
     // Absolute paths inside the project are noise: make them relative.
-    if !report.passthrough {
+    if !report.passthrough || !report.snippets.is_empty() {
         let prefix = format!("{}{}", opts.root.display(), std::path::MAIN_SEPARATOR);
         if prefix.len() > 2 {
             text = text.replace(&prefix, "");

@@ -10,41 +10,43 @@ use crate::context::is_library_path;
 use crate::report::{Engine, Loc, Report};
 
 static ERR: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
+    crate::re::re(concat!(
         r"(?i)\b(?:errors?|fatal|exception|panic(?:ked)?|traceback|fail(?:ed|ure|ures|s)?|",
         r"assert(?:ion)?(?:error)?|segmentation fault|core dumped|undefined reference|",
         r"cannot|can't|could not|couldn't|unable to|not found|no such file|",
         r"permission denied|refused|timed out|abort(?:ed)?|critical|uncaught|unhandled)\b",
         r"|ERR!|✗|✘|×"
     ))
-    .unwrap()
 });
 static NEG: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
+    crate::re::re(concat!(
         r"(?i)\b(?:0|no|zero|without) (?:errors?|failures?|failed|problems?|issues?)\b",
         r"|\b(?:errors?|failures?|failed):? 0\b"
     ))
-    .unwrap()
 });
 static WARN: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"(?i)\bwarn(?:ing)?s?\b|\bdeprecat").unwrap());
+    LazyLock::new(|| crate::re::re(r"(?i)\bwarn(?:ing)?s?\b|\bdeprecat"));
 pub(crate) static LOC: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
+    crate::re::re(concat!(
         r#"(?:^|[\s(\[{'"`=<])((?:[A-Za-z]:)?(?:\.{1,2}/|/)?[\w@~.$+-]+(?:[/\\][\w@~.$+-]+)*\.[A-Za-z]\w{0,9})"#,
         r#"(?::(\d+)(?::(\d+))?|\((\d+)(?:,\s?(\d+))?\)|", line (\d+))"#
     ))
-    .unwrap()
 });
 static PY_FRAME: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r#"^\s+File "(.+?)", line (\d+)"#).unwrap());
+    LazyLock::new(|| crate::re::re(r#"^\s+File "(.+?)", line (\d+)"#));
 static NODE_LOC: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"\(?((?:[A-Za-z]:)?[^()\s]+?):(\d+):(\d+)\)?$").unwrap());
-static NODE_FRAME: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^\s+at \S").unwrap());
+    LazyLock::new(|| crate::re::re(r"\(?((?:[A-Za-z]:)?[^()\s]+?):(\d+):(\d+)\)?$"));
+static NODE_FRAME: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^\s+at \S"));
 
 pub fn parse(lines: &[String], ctx: &Ctx) -> Report {
     let mut report = Report::new(Engine::Generic);
     let lines = collapse_duplicates(lines);
     if lines.len() <= ctx.small {
+        // Small enough to keep whole; still point at the code if it failed.
+        if ctx.exit_code != Some(0) {
+            let errors: Vec<String> = lines.iter().filter(|l| is_error_line(l)).cloned().collect();
+            report.hint_locs = extract_locs(&errors);
+        }
         report.passthrough = true;
         report.body = lines;
         return report;

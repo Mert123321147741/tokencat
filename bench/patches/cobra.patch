@@ -1,0 +1,13 @@
+diff --git a/command.go b/command.go
+index c05fed4..c19bce2 100644
+--- a/command.go
++++ b/command.go
+@@ -668,7 +668,7 @@ func shortHasNoOptDefVal(name string, fs *flag.FlagSet) bool {
+ 	if flag == nil {
+ 		return false
+ 	}
+-	return flag.NoOptDefVal != ""
++	return flag.NoOptDefVal == ""
+ }
+ 
+ func stripFlags(args []string, c *Command) []string {

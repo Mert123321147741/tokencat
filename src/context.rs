@@ -91,7 +91,9 @@ impl Resolver {
             return None;
         }
         let path = Path::new(file);
-        let direct = if path.is_absolute() {
+        // `has_root` rather than `is_absolute`: a log from Linux or a container
+        // (`/home/ci/repo/a.py`) must be treated as absolute on Windows too.
+        let direct = if path.has_root() {
             path.to_path_buf()
         } else {
             self.root.join(path)
@@ -136,7 +138,7 @@ impl Resolver {
             let score = hints
                 .iter()
                 .map(|h| {
-                    let hp: Vec<&str> = h.split('/').filter(|s| !s.is_empty()).collect();
+                    let hp: Vec<&str> = h.split(['/', '\\']).filter(|s| !s.is_empty()).collect();
                     common_suffix(dir, &hp)
                 })
                 .max()
@@ -159,12 +161,12 @@ impl Resolver {
     /// Absolute paths that resolve inside the project, made relative to it.
     pub fn relativize(&self, file: &str) -> Option<String> {
         let p = Path::new(file);
-        if !p.is_absolute() || is_library_path(file) {
+        if !p.has_root() || is_library_path(file) {
             return None;
         }
         let resolved = self.resolve(file, &[])?;
         let rel = resolved.strip_prefix(&self.root).ok()?;
-        Some(rel.to_string_lossy().into_owned())
+        Some(rel.to_string_lossy().replace('\\', "/"))
     }
 
     fn index(&self) -> &HashMap<String, Vec<PathBuf>> {
@@ -240,27 +242,26 @@ pub fn lang_for(path: &str) -> Option<&'static str> {
 }
 
 static SIG_PY: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"^\s*(?:async\s+)?def\s+\w+|^\s*class\s+\w+").unwrap());
+    LazyLock::new(|| crate::re::re(r"^\s*(?:async\s+)?def\s+\w+|^\s*class\s+\w+"));
 static SIG_RS: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r#"^\s*(?:pub(?:\([^)]*\))?\s+)?(?:(?:const|async|unsafe|extern\s+"[^"]*")\s+)*fn\s+\w+|^\s*(?:pub(?:\([^)]*\))?\s+)?(?:impl|mod|trait)\b"#)
-        .unwrap()
+    crate::re::re(
+        r#"^\s*(?:pub(?:\([^)]*\))?\s+)?(?:(?:const|async|unsafe|extern\s+"[^"]*")\s+)*fn\s+\w+|^\s*(?:pub(?:\([^)]*\))?\s+)?(?:impl|mod|trait)\b"#,
+    )
 });
-static SIG_GO: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^func\s").unwrap());
+static SIG_GO: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^func\s"));
 static SIG_JS: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
+    crate::re::re(concat!(
         r"^\s*(?:export\s+)?(?:default\s+)?(?:async\s+)?function\b",
         r"|^\s*(?:export\s+)?(?:const|let|var)\s+[\w$]+\s*(?::[^=]+)?=\s*(?:async\s+)?(?:function\b|\([^)]*\)\s*(?::[^=]+)?=>|[\w$]+\s*=>)",
         r"|^\s*(?:describe|it|test)(?:\.\w+)?\(",
         r"|^\s*(?:(?:public|private|protected|static|async|readonly|override|get|set)\s+)*[\w$]+\s*(?:<[^>]*>)?\([^)]*\)\s*(?::\s*[^{]+)?\{\s*$",
     ))
-    .unwrap()
 });
 static SIG_OTHER: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
+    crate::re::re(concat!(
         r"^\s*(?:def|fn|func|function|fun|sub)\s+\w+",
         r"|^\s*(?:(?:public|private|protected|internal|static|final|virtual|override|async|inline|const|extern|unsafe|synchronized|abstract)\s+)*[\w<>\[\],.:*&?]+\s+\**[\w:~]+\s*\([^;]*\)\s*(?:const\s*)?(?:throws\s+[\w.,\s]+)?\{?\s*$",
     ))
-    .unwrap()
 });
 
 const NOT_SIGNATURES: &[&str] = &[
@@ -373,7 +374,7 @@ pub fn attach(report: &mut Report, resolver: &Resolver, opts: &ContextOpts) {
         if let Some((mut loc, path, code)) = best_snippet(f, resolver, opts.snippet_lines) {
             // Point at the file we actually read, relative to the project.
             if let Ok(rel) = path.strip_prefix(&resolver.root) {
-                loc.file = rel.to_string_lossy().into_owned();
+                loc.file = rel.to_string_lossy().replace('\\', "/");
             }
             f.location = Some(loc);
             f.code = Some(code);
@@ -418,7 +419,7 @@ pub fn attach_generic(report: &mut Report, locs: &[Loc], resolver: &Resolver, op
         // Skip locations already covered by an earlier snippet.
         let near = seen
             .iter()
-            .any(|(f, l)| *f == loc.file && l.abs_diff(loc.line) <= opts.snippet_lines);
+            .any(|(f, l)| *f == loc.file && l.abs_diff(loc.line) <= opts.snippet_lines / 2);
         if near {
             continue;
         }

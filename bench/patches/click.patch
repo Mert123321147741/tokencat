@@ -1,0 +1,26 @@
+diff --git a/src/click/types.py b/src/click/types.py
+index b6e98a9..863de6e 100644
+--- a/src/click/types.py
++++ b/src/click/types.py
+@@ -762,7 +762,7 @@ class IntRange(_NumberRangeBase[int, int], IntParamType):
+         if not open:
+             return bound
+ 
+-        return bound + dir
++        return bound - dir
+ 
+ 
+ class FloatParamType(_NumberParamTypeBase[t.SupportsFloat | t.SupportsIndex, float]):
+diff --git a/src/click/utils.py b/src/click/utils.py
+index 617ff5e..3a601dc 100644
+--- a/src/click/utils.py
++++ b/src/click/utils.py
+@@ -455,7 +455,7 @@ def format_filename(
+                     path that leads up to it.
+     """
+     if shorten:
+-        filename = os.path.basename(filename)
++        filename = os.path.dirname(filename)
+     else:
+         filename = os.fspath(filename)
+ 
