@@ -84,9 +84,12 @@ pub fn rewrite(command: &str) -> Option<String> {
         '\'', '"', '\\', '$', '*', '?', '[', ']', '{', '}', '~', '#', '(', ')', '%', '^', '!',
     ]);
     // On Windows the agent's shell is Git Bash but `tokencat run` hands a
-    // command string to cmd.exe, which quotes and expands differently. Only
-    // rewrite commands both read the same way.
-    if cfg!(windows) && (env_prefix || special) {
+    // command string to cmd.exe, which quotes and expands differently and
+    // knows neither `cd /c/src` paths nor `./script` shebangs. Only rewrite
+    // commands both read the same way.
+    if cfg!(windows)
+        && (env_prefix || special || !segments.is_empty() || first_word(last).contains('/'))
+    {
         return None;
     }
     let simple = segments.is_empty() && !env_prefix && !special;
@@ -139,7 +142,7 @@ fn is_test_command(segment: &str) -> bool {
             ["pnpm" | "yarn", "exec" | "dlx", ..] => {
                 words.drain(..2);
             }
-            ["npx" | "bunx" | "time", ..] => {
+            ["npx" | "bunx", ..] => {
                 words.drain(..1);
             }
             _ => break,
@@ -199,7 +202,6 @@ mod tests {
                 "go test ./... | head -n 100",
                 "tokencat run -- go test ./...",
             ),
-            ("cd web && npm test", "tokencat run -- 'cd web && npm test'"),
         ];
         for (input, want) in cases {
             assert_eq!(rewrite(input).as_deref(), Some(want), "{input}");
@@ -209,6 +211,15 @@ mod tests {
     #[test]
     fn shell_syntax_is_quoted_on_unix_and_skipped_on_windows() {
         let cases = [
+            ("cd web && npm test", "tokencat run -- 'cd web && npm test'"),
+            (
+                "./manage.py test shop",
+                "tokencat run -- ./manage.py test shop",
+            ),
+            (
+                "./node_modules/.bin/jest",
+                "tokencat run -- ./node_modules/.bin/jest",
+            ),
             ("CI=1 npx jest", "tokencat run -- 'CI=1 npx jest'"),
             (
                 "pytest -k 'cart and not slow'",
@@ -235,6 +246,7 @@ mod tests {
             "npm test && git push",
             "rm -rf build && pytest",
             "cd a b && pytest",
+            "time pytest",
             "tokencat run -- pytest",
             "echo $(go test ./...)",
             "pytest\nrm -rf build",

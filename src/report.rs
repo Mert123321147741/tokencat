@@ -254,10 +254,15 @@ fn render_failure(out: &mut String, n: usize, f: &Failure, code_same_as: Option<
 /// Same line of the same file, even if one path is absolute and the other
 /// relative.
 fn same_place(a: &Loc, b: &Loc) -> bool {
+    fn norm(f: &str) -> String {
+        let f = f.replace('\\', "/");
+        f.trim_start_matches("./").to_string()
+    }
+    let (a_file, b_file) = (norm(&a.file), norm(&b.file));
     a.line == b.line
-        && (a.file == b.file
-            || a.file.ends_with(&format!("/{}", b.file))
-            || b.file.ends_with(&format!("/{}", a.file)))
+        && (a_file == b_file
+            || a_file.ends_with(&format!("/{b_file}"))
+            || b_file.ends_with(&format!("/{a_file}")))
 }
 
 fn render_code(out: &mut String, code: &Code) {
@@ -342,6 +347,42 @@ mod tests {
     fn tidy_squeezes_blank_lines() {
         let lines = ["", "a", "", "", "b", ""].map(String::from).to_vec();
         assert_eq!(tidy(lines), vec!["a", "", "b"]);
+    }
+
+    #[test]
+    fn windows_frame_paths_match_the_primary_location() {
+        let at = |file: &str, line| Loc {
+            file: file.into(),
+            line,
+            col: None,
+        };
+        assert!(same_place(&at("src/lib.rs", 2), &at(r".\src\lib.rs", 2)));
+        assert!(same_place(
+            &at(r"C:\proj\src\lib.rs", 2),
+            &at("src/lib.rs", 2)
+        ));
+        assert!(!same_place(&at("src/lib.rs", 2), &at(r"src\lib.rs", 3)));
+        assert!(!same_place(&at("lib.rs", 2), &at(r"src\mylib.rs", 2)));
+
+        let f = Failure {
+            title: "tests::parses_port".into(),
+            location: Some(at("src/lib.rs", 2)),
+            message: vec!["boom".into()],
+            frames: vec![Frame {
+                loc: at(r".\src\lib.rs", 2),
+                func: Some("rs::parse_port".into()),
+                src: None,
+            }],
+            code: Some(Code {
+                lang: Some("rust"),
+                lines: vec!["> 2 | x.unwrap()".into()],
+                from_disk: true,
+            }),
+            ..Default::default()
+        };
+        let mut out = String::new();
+        render_failure(&mut out, 1, &f, None);
+        assert_eq!(out.matches("lib.rs").count(), 1, "{out}");
     }
 
     #[test]

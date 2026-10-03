@@ -25,7 +25,7 @@ static PANIC_OLD: LazyLock<Regex> = LazyLock::new(|| {
 });
 static BT_FUNC: LazyLock<Regex> = LazyLock::new(|| crate::re::re(r"^\s*\d+: (.+)$"));
 static BT_AT: LazyLock<Regex> =
-    LazyLock::new(|| crate::re::re(r"^\s+at ((?:[A-Za-z]:)?[^:]+):(\d+):(\d+)$"));
+    LazyLock::new(|| crate::re::re(r"^\s+at ((?:[A-Za-z]:)?[^:]+):(\d+)(?::(\d+))?$"));
 
 /// Diagnostics that only summarise other diagnostics.
 fn is_summary_diag(msg: &str) -> bool {
@@ -189,7 +189,7 @@ fn test_failure(name: &str, block: &[String]) -> Failure {
         if in_bt {
             if let Some(c) = BT_AT.captures(line) {
                 if let Some(f) = func.take() {
-                    let file = c[1].trim_start_matches("./").to_string();
+                    let file = strip_dot(&c[1]).to_string();
                     let noise = f.contains("{{closure}}")
                         || f.contains("{closure#")
                         || f.contains("FnOnce")
@@ -198,7 +198,8 @@ fn test_failure(name: &str, block: &[String]) -> Failure {
                         || f.starts_with("__rust");
                     if !noise && !is_library_path(&file) {
                         frames.push(Frame {
-                            loc: loc(&file, &c[2], &c[3]),
+                            // MSVC backtraces carry no column.
+                            loc: loc(&file, &c[2], c.get(3).map_or("", |m| m.as_str())),
                             func: Some(f),
                             src: None,
                         });
@@ -227,9 +228,16 @@ fn test_failure(name: &str, block: &[String]) -> Failure {
     }
 }
 
+/// `./src/lib.rs` and, on Windows, `.\src\lib.rs` -> `src/lib.rs`-style.
+fn strip_dot(file: &str) -> &str {
+    file.strip_prefix("./")
+        .or_else(|| file.strip_prefix(".\\"))
+        .unwrap_or(file)
+}
+
 fn loc(file: &str, line: &str, col: &str) -> Loc {
     Loc {
-        file: file.trim_start_matches("./").to_string(),
+        file: strip_dot(file).to_string(),
         line: line.parse().unwrap_or(0),
         col: col.parse().ok(),
     }
@@ -273,6 +281,47 @@ mod tests {
             assert_eq!(x.location, y.location);
             assert_eq!(x.message, y.message);
         }
+    }
+
+    #[test]
+    fn msvc_backtrace_without_columns() {
+        let log: Vec<String> = [
+            "running 1 test",
+            "test tests::parses_port ... FAILED",
+            "",
+            "failures:",
+            "",
+            "---- tests::parses_port stdout ----",
+            "",
+            r"thread 'tests::parses_port' panicked at src\lib.rs:2:22:",
+            "called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }",
+            "stack backtrace:",
+            "   0: std::panicking::begin_panic_handler",
+            r"             at /rustc/abc/library\std\src\panicking.rs:665",
+            "   1: rs::parse_port",
+            r"             at .\src\lib.rs:2",
+            "   2: rs::tests::parses_port",
+            r"             at .\src\lib.rs:9",
+            "",
+            "",
+            "failures:",
+            "    tests::parses_port",
+            "",
+            "test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ]
+        .map(String::from)
+        .to_vec();
+        let r = parse(&log);
+        assert_eq!(r.failures.len(), 1);
+        let f = &r.failures[0];
+        assert_eq!(
+            f.message,
+            vec![
+                "called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }"
+            ]
+        );
+        let frames: Vec<String> = f.frames.iter().map(|f| f.loc.to_string()).collect();
+        assert_eq!(frames, vec![r"src\lib.rs:9", r"src\lib.rs:2"]);
     }
 
     #[test]

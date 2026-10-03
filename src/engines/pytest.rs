@@ -149,9 +149,11 @@ fn short_title(s: &ShortEntry) -> String {
 }
 
 fn take_short_by_file(shorts: &mut [ShortEntry], file: &str) -> Option<String> {
-    let s = shorts
-        .iter_mut()
-        .find(|s| !s.used && file.ends_with(s.id.split("::").next().unwrap_or("")))?;
+    // pytest writes test ids with '/', but --tb=line paths use the OS separator.
+    let file = file.replace('\\', "/");
+    let s = shorts.iter_mut().find(|s| {
+        !s.used && file.ends_with(&s.id.split("::").next().unwrap_or("").replace('\\', "/"))
+    })?;
     s.used = true;
     Some(short_title(s))
 }
@@ -359,6 +361,34 @@ mod tests {
         assert_eq!(
             short.failures[2].frames[1].src.as_deref(),
             Some("rate = rates[code]")
+        );
+    }
+
+    #[test]
+    fn windows_line_tracebacks_pair_with_the_short_summary() {
+        let log: Vec<String> = [
+            "============================= FAILURES =============================",
+            r"C:\proj\tests\test_auth.py:12: AssertionError: assert 401 == 200",
+            r"C:\proj\tests\test_cart.py:30: KeyError: 'EUR'",
+            "===================== short test summary info ======================",
+            "FAILED tests/test_auth.py::test_login - AssertionError: assert 401 == 200",
+            "FAILED tests/test_cart.py::test_total - KeyError: 'EUR'",
+            "======================== 2 failed in 0.05s =========================",
+        ]
+        .map(String::from)
+        .to_vec();
+        let r = parse(&log);
+        let titles: Vec<&str> = r.failures.iter().map(|f| f.title.as_str()).collect();
+        assert_eq!(
+            titles,
+            vec![
+                "tests/test_auth.py::test_login",
+                "tests/test_cart.py::test_total"
+            ]
+        );
+        assert_eq!(
+            r.failures[1].location.as_ref().unwrap().to_string(),
+            r"C:\proj\tests\test_cart.py:30"
         );
     }
 

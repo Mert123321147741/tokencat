@@ -28,7 +28,7 @@ static WARN: LazyLock<Regex> =
     LazyLock::new(|| crate::re::re(r"(?i)\bwarn(?:ing)?s?\b|\bdeprecat"));
 pub(crate) static LOC: LazyLock<Regex> = LazyLock::new(|| {
     crate::re::re(concat!(
-        r#"(?:^|[\s(\[{'"`=<])((?:[A-Za-z]:)?(?:\.{1,2}/|/)?[\w@~.$+-]+(?:[/\\][\w@~.$+-]+)*\.[A-Za-z]\w{0,9})"#,
+        r#"(?:^|[\s(\[{'"`=<])((?:[A-Za-z]:)?(?:\.{1,2}[/\\]|[/\\])?[\w@~.$+-]+(?:[/\\][\w@~.$+-]+)*\.[A-Za-z]\w{0,9})"#,
         r#"(?::(\d+)(?::(\d+))?|\((\d+)(?:,\s?(\d+))?\)|", line (\d+))"#
     ))
 });
@@ -450,6 +450,26 @@ mod tests {
         assert_eq!(
             s,
             vec!["src/a.ts:12:5", "app/models.py:40", "./pkg/x.go:7:2"]
+        );
+    }
+
+    #[test]
+    fn extracts_windows_locations() {
+        let locs = extract_locs(&lines(concat!(
+            "C:\\proj\\src\\a.py:12: in check\n",
+            "C:\\proj\\src\\main.cpp(12,5): error C2065: 'x': undeclared identifier\n",
+            ".\\src\\util.ts(3,1): error TS1005\n",
+            "\\src\\x.c:4:2: error: nope\n",
+        )));
+        let s: Vec<String> = locs.iter().map(|l| l.to_string()).collect();
+        assert_eq!(
+            s,
+            vec![
+                r"C:\proj\src\a.py:12",
+                r"C:\proj\src\main.cpp:12:5",
+                r".\src\util.ts:3:1",
+                r"\src\x.c:4:2",
+            ]
         );
     }
 }

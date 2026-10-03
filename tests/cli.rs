@@ -31,7 +31,6 @@ fn manifest() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
 }
 
-#[cfg(unix)]
 fn run(args: &[&str]) -> Output {
     bin()
         .arg("--no-log")
@@ -193,6 +192,92 @@ mod unix {
             .output()
             .unwrap();
         assert_eq!(stdout(&o), "unset/always\n");
+    }
+}
+
+#[cfg(windows)]
+mod windows {
+    use super::*;
+
+    fn temp_dir(name: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!("tokencat-{name}-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    /// A batch script that echoes its arguments and exits with 7.
+    fn write_script(dir: &Path, name: &str) {
+        fs::write(dir.join(name), "@echo off\r\necho args=%*\r\nexit /b 7\r\n").unwrap();
+    }
+
+    #[test]
+    fn exit_codes_pass_through_exactly() {
+        // 0xC0000005 (access violation) must not wrap around to success.
+        for code in [0, 1, 3, 42, 255, 256, -1073741819] {
+            let arg = code.to_string();
+            let o = run(&["run", "--", "cmd", "/C", "exit", &arg]);
+            assert_eq!(o.status.code(), Some(code), "code {code}");
+        }
+    }
+
+    #[test]
+    fn missing_command_is_127() {
+        let o = run(&["run", "--", "definitely-not-a-command-xyz"]);
+        assert_eq!(o.status.code(), Some(127));
+        assert!(String::from_utf8_lossy(&o.stderr).contains("command not found"));
+    }
+
+    #[test]
+    fn single_string_runs_through_cmd() {
+        let o = run(&["run", "--", "echo hello && exit 4"]);
+        assert_eq!(o.status.code(), Some(4));
+        assert!(stdout(&o).contains("hello"));
+    }
+
+    #[test]
+    fn cmd_scripts_on_path_get_their_arguments_intact() {
+        let dir = temp_dir("path");
+        write_script(&dir, "tcfake.cmd");
+        let mut paths = vec![dir.clone()];
+        paths.extend(std::env::split_paths(&std::env::var_os("PATH").unwrap()));
+        let path = std::env::join_paths(paths).unwrap();
+        for (args, want) in [
+            (["a b", "c"], r#"args="a b" c"#),
+            (["a b", "c|d"], r#"args="a b" "c|d""#),
+        ] {
+            let o = bin()
+                .env("PATH", &path)
+                .args(["--no-log", "run", "--", "tcfake"])
+                .args(args)
+                .stdin(Stdio::null())
+                .output()
+                .unwrap();
+            assert_eq!(o.status.code(), Some(7), "{args:?}");
+            assert!(stdout(&o).contains(want), "{args:?}: {}", stdout(&o));
+        }
+    }
+
+    #[test]
+    fn scripts_in_the_current_directory_run_like_in_cmd() {
+        let dir = temp_dir("cwd");
+        write_script(&dir, "tc.cmd");
+        for prog in ["tc", "tc.cmd", "./tc.cmd", r".\tc.cmd"] {
+            let o = bin()
+                .current_dir(&dir)
+                .args(["--no-log", "run", "--", prog, "x"])
+                .stdin(Stdio::null())
+                .output()
+                .unwrap();
+            assert_eq!(o.status.code(), Some(7), "{prog}");
+            assert!(stdout(&o).contains("args=x"), "{prog}: {}", stdout(&o));
+        }
+    }
+
+    #[test]
+    fn children_get_no_color_hint() {
+        let o = run(&["run", "--", "echo %NO_COLOR%/%CARGO_TERM_COLOR%"]);
+        assert!(stdout(&o).contains("1/never"), "{}", stdout(&o));
     }
 }
 

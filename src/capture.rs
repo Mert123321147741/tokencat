@@ -30,20 +30,26 @@ const SHELL_CHARS: &[char] = &[
 fn build_command(cmd: &[String]) -> Command {
     let shell_string = cmd.len() == 1 && cmd[0].contains(SHELL_CHARS);
     #[cfg(windows)]
-    if shell_string || windows::is_script(&cmd[0]) {
-        // npm, npx, yarn and friends are .cmd scripts on Windows, which
-        // only cmd.exe can start. cmd has its own quoting rules, so hand it
-        // the command line verbatim instead of letting Rust escape it.
+    {
         use std::os::windows::process::CommandExt;
-        let line = if shell_string {
-            cmd[0].clone()
-        } else {
-            windows::join(cmd)
-        };
-        let mut c = Command::new("cmd");
-        c.arg("/C").raw_arg(line);
-        quiet_colors(&mut c);
-        return c;
+        if shell_string {
+            // With /S, cmd.exe drops the outer quotes and runs the rest as
+            // typed; /D skips AutoRun commands from the registry.
+            let mut c = Command::new("cmd");
+            c.args(["/D", "/S", "/C"])
+                .raw_arg(format!("\"{}\"", cmd[0]));
+            quiet_colors(&mut c);
+            return c;
+        }
+        if let Some(script) = windows::script(&cmd[0]) {
+            // npm, npx, yarn and friends are .cmd scripts, which only
+            // cmd.exe can start. Given the script's path, std runs it
+            // through cmd.exe and escapes the arguments for it.
+            let mut c = Command::new(script);
+            c.args(&cmd[1..]);
+            quiet_colors(&mut c);
+            return c;
+        }
     }
     #[cfg(not(windows))]
     if shell_string {
@@ -60,46 +66,43 @@ fn build_command(cmd: &[String]) -> Command {
 
 #[cfg(windows)]
 mod windows {
-    use std::path::Path;
+    use std::path::{Path, PathBuf};
 
-    /// True when `prog` resolves to a .cmd/.bat script rather than an .exe.
-    pub fn is_script(prog: &str) -> bool {
+    /// The .cmd/.bat script `prog` names, searched the way cmd.exe does
+    /// (current directory, then PATH, an .exe winning over a script):
+    /// `npm` -> `C:\Program Files\nodejs\npm.cmd`, `gradlew` -> `.\gradlew.bat`.
+    /// None when `prog` is not a script.
+    pub fn script(prog: &str) -> Option<PathBuf> {
         let lower = prog.to_ascii_lowercase();
+        let has_dir = prog.contains(['/', '\\']);
         if lower.ends_with(".cmd") || lower.ends_with(".bat") {
-            return true;
-        }
-        if Path::new(prog).extension().is_some() || prog.contains(['/', '\\']) {
-            return false;
-        }
-        let Some(paths) = std::env::var_os("PATH") else {
-            return false;
-        };
-        for dir in std::env::split_paths(&paths) {
-            if dir.join(format!("{prog}.exe")).is_file()
-                || dir.join(format!("{prog}.com")).is_file()
-            {
-                return false;
+            // cmd.exe reads `./x.cmd` as the command `.` with a switch.
+            let path = PathBuf::from(prog.replace('/', "\\"));
+            if !has_dir && path.is_file() {
+                return Some(Path::new(".").join(path));
             }
-            if dir.join(format!("{prog}.cmd")).is_file()
-                || dir.join(format!("{prog}.bat")).is_file()
-            {
-                return true;
-            }
+            return Some(path);
         }
-        false
-    }
-
-    pub fn join(cmd: &[String]) -> String {
-        cmd.iter()
-            .map(|a| {
-                if a.is_empty() || a.contains([' ', '\t']) {
-                    format!("\"{a}\"")
-                } else {
-                    a.clone()
+        if has_dir || Path::new(prog).extension().is_some() {
+            return None;
+        }
+        let paths = std::env::var_os("PATH").unwrap_or_default();
+        let dirs = std::iter::once(PathBuf::from(".")).chain(std::env::split_paths(&paths));
+        for dir in dirs {
+            if ["exe", "com"]
+                .iter()
+                .any(|ext| dir.join(format!("{prog}.{ext}")).is_file())
+            {
+                return None;
+            }
+            for ext in ["bat", "cmd"] {
+                let path = dir.join(format!("{prog}.{ext}"));
+                if path.is_file() {
+                    return Some(path);
                 }
-            })
-            .collect::<Vec<_>>()
-            .join(" ")
+            }
+        }
+        None
     }
 }
 
@@ -213,6 +216,9 @@ fn collect(mut child: Child, rx: Receiver<Vec<u8>>) -> Captured {
             Err(e) => break Err(e),
         }
     };
+    // The child is reaped; its pid may be reused, so stop forwarding.
+    #[cfg(unix)]
+    unix::track_child(0);
     let deadline = Instant::now() + Duration::from_secs(2);
     while let Ok(chunk) = rx.recv_timeout(Duration::from_millis(250)) {
         output.extend_from_slice(&chunk);
@@ -220,8 +226,6 @@ fn collect(mut child: Child, rx: Receiver<Vec<u8>>) -> Captured {
             break;
         }
     }
-    #[cfg(unix)]
-    unix::track_child(0);
     let code = match status {
         Ok(st) => exit_code(st),
         Err(_) => 1,
@@ -304,19 +308,42 @@ mod unix {
     extern "C" fn forward(sig: libc::c_int, info: *mut libc::siginfo_t, _: *mut libc::c_void) {
         let pid = CHILD.load(Ordering::SeqCst);
         if pid <= 0 {
+            // No child to hand it to (not started yet, or already gone):
+            // act on the signal ourselves instead of swallowing it.
+            // SAFETY: signal and raise are async-signal-safe.
+            unsafe {
+                libc::signal(sig, libc::SIG_DFL);
+                libc::raise(sig);
+            }
             return;
         }
         // Ctrl-C from a terminal already reaches the child through the
         // process group; only relay signals that were sent to us directly.
-        if sig == libc::SIGINT || sig == libc::SIGQUIT {
-            // SAFETY: the kernel passes a valid siginfo with SA_SIGINFO.
-            let code = unsafe { (*info).si_code };
-            if code > 0 {
-                return;
-            }
+        if (sig == libc::SIGINT || sig == libc::SIGQUIT) && from_terminal(info) {
+            return;
         }
         // SAFETY: kill is async-signal-safe.
         unsafe { libc::kill(pid, sig) };
+    }
+
+    /// Linux marks signals the terminal generated with SI_KERNEL (> 0),
+    /// while kill() leaves si_code at SI_USER (0).
+    #[cfg(any(target_os = "linux", target_os = "android"))]
+    fn from_terminal(info: *mut libc::siginfo_t) -> bool {
+        // SAFETY: the kernel passes a valid siginfo with SA_SIGINFO.
+        unsafe { (*info).si_code > 0 }
+    }
+
+    /// macOS leaves si_code at 0 for terminal signals, so ask the terminal:
+    /// if our process group is in its foreground, the child (which shares
+    /// the group) got the same signal.
+    #[cfg(not(any(target_os = "linux", target_os = "android")))]
+    fn from_terminal(_: *mut libc::siginfo_t) -> bool {
+        // SAFETY: getpgrp and tcgetpgrp are async-signal-safe.
+        unsafe {
+            let group = libc::getpgrp();
+            [0, 1, 2].iter().any(|&fd| libc::tcgetpgrp(fd) == group)
+        }
     }
 
     fn install_forwarders() {

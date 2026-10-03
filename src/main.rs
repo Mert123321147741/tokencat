@@ -235,6 +235,11 @@ fn main() -> ExitCode {
                 let text = process_safely(&input, &cli.opts.pipeline());
                 write_out(text.as_bytes());
             }
+            // Windows exit codes are 32 bits wide (a crash is 0xC0000005);
+            // truncating them would turn some failures into success.
+            if cfg!(windows) && !(0..=255).contains(&captured.code) {
+                std::process::exit(captured.code);
+            }
             ExitCode::from((captured.code & 0xff) as u8)
         }
         None => {

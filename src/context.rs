@@ -45,6 +45,11 @@ const MAX_CODE_LINE: usize = 240;
 /// Third-party and toolchain paths: frames there are rarely what the agent
 /// should edit, so they are dropped from stacks and never get snippets.
 pub fn is_library_path(p: &str) -> bool {
+    let p = &p.replace('\\', "/");
+    // CPython's standard library on Windows: C:\Python312\Lib\unittest\case.py
+    if p.ends_with(".py") && p.contains("/Lib/") {
+        return true;
+    }
     const MARKERS: &[&str] = &[
         "node_modules",
         "site-packages",
@@ -445,6 +450,22 @@ mod tests {
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).unwrap();
         dir
+    }
+
+    #[test]
+    fn windows_library_paths() {
+        for p in [
+            r"C:\Python312\Lib\unittest\case.py",
+            r"C:\proj\.venv\Lib\site-packages\django\test\runner.py",
+            r"C:\proj\node_modules\jest-circus\build\run.js",
+            r"C:\Users\dev\.cargo\registry\src\index\serde-1.0.0\src\de.rs",
+            r"C:\Program Files\Go\src\testing\testing.go",
+        ] {
+            assert!(is_library_path(p), "{p}");
+        }
+        for p in [r"C:\proj\src\shop\auth.py", r"src\lib.rs", "src/lib.rs"] {
+            assert!(!is_library_path(p), "{p}");
+        }
     }
 
     #[test]

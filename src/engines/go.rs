@@ -20,7 +20,7 @@ static GO_LOC: LazyLock<Regex> = LazyLock::new(|| {
     crate::re::re(r"^\s*(?:vet: )?((?:[A-Za-z]:)?[^\s:]+\.go):(\d+)(?::(\d+))?: ")
 });
 static TRACE_FILE: LazyLock<Regex> =
-    LazyLock::new(|| crate::re::re(r"^\s+((?:[A-Za-z]:)?\S+\.go):(\d+)(?: \+0x[0-9a-f]+)?$"));
+    LazyLock::new(|| crate::re::re(r"^\s+((?:[A-Za-z]:)?\S.*?\.go):(\d+)(?: \+0x[0-9a-f]+)?$"));
 
 pub fn parse(lines: &[String]) -> Report {
     let mut report = Report::new(Engine::Go);
@@ -340,6 +340,39 @@ mod tests {
         let r = parse(&fixture("go_verbose.log"));
         check(&r);
         assert!(r.summary.as_deref().unwrap().contains("passed"));
+    }
+
+    #[test]
+    fn panic_trace_paths_with_spaces() {
+        let log: Vec<String> = [
+            "--- FAIL: TestPrimaryRole (0.00s)",
+            "panic: runtime error: index out of range [0] with length 0 [recovered]",
+            "",
+            "goroutine 23 [running]:",
+            "testing.tRunner.func1.2({0x568280, 0xc0000be090})",
+            "\tC:/Program Files/Go/src/testing/testing.go:1734 +0x21c",
+            "example.com/shop/auth.PrimaryRole(...)",
+            "\tC:/Users/John Smith/shop/auth/auth.go:25",
+            "example.com/shop/auth.TestPrimaryRole(0xc00008b340)",
+            "\tC:/Users/John Smith/shop/auth/auth_test.go:33 +0x178",
+            "FAIL\texample.com/shop/auth\t0.004s",
+        ]
+        .map(String::from)
+        .to_vec();
+        let r = parse(&log);
+        assert_eq!(r.failures.len(), 1);
+        let files: Vec<String> = r.failures[0]
+            .frames
+            .iter()
+            .map(|f| f.loc.to_string())
+            .collect();
+        assert_eq!(
+            files,
+            vec![
+                "C:/Users/John Smith/shop/auth/auth_test.go:33",
+                "C:/Users/John Smith/shop/auth/auth.go:25",
+            ]
+        );
     }
 
     #[test]
