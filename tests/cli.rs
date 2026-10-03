@@ -8,10 +8,22 @@ use std::process::{Command, Output, Stdio};
 
 fn bin() -> Command {
     let mut c = Command::new(env!("CARGO_BIN_EXE_tokencat"));
-    c.env_remove("TOKENCAT_DISABLE")
-        .env_remove("TOKENCAT_ENGINE")
-        .env_remove("TOKENCAT_LOG_DIR")
-        .env_remove("TOKENCAT_PRICE");
+    // Keep tests independent of the caller's environment (CI sets
+    // CARGO_TERM_COLOR=always, which tokencat rightly leaves alone).
+    for var in [
+        "TOKENCAT_DISABLE",
+        "TOKENCAT_ENGINE",
+        "TOKENCAT_LOG_DIR",
+        "TOKENCAT_PRICE",
+        "TOKENCAT_SNIPPET_LINES",
+        "TOKENCAT_MAX_FAILURES",
+        "NO_COLOR",
+        "FORCE_COLOR",
+        "PY_COLORS",
+        "CARGO_TERM_COLOR",
+    ] {
+        c.env_remove(var);
+    }
     c
 }
 
@@ -162,6 +174,25 @@ mod unix {
             "echo \"$NO_COLOR/$CARGO_TERM_COLOR\"",
         ]);
         assert_eq!(stdout(&o), "1/never\n");
+    }
+
+    #[test]
+    fn color_settings_the_user_chose_are_kept() {
+        let o = bin()
+            .env("CARGO_TERM_COLOR", "always")
+            .env("FORCE_COLOR", "1")
+            .args([
+                "--no-log",
+                "run",
+                "--",
+                "sh",
+                "-c",
+                "echo \"${NO_COLOR:-unset}/$CARGO_TERM_COLOR\"",
+            ])
+            .stdin(Stdio::null())
+            .output()
+            .unwrap();
+        assert_eq!(stdout(&o), "unset/always\n");
     }
 }
 
