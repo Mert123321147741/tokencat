@@ -1,0 +1,33 @@
+   Compiling rs v0.1.0 (/home/dev/rs_err)
+error[E0308]: mismatched types
+  --> src/lib.rs:38:5
+   |
+36 | pub fn total(xs: &[u32]) -> u32 {
+   |                             --- expected `u32` because of return type
+37 |     let unused = 5;
+38 |     xs.iter().map(|x| x * 2).collect::<Vec<u32>>()
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u32`, found `Vec<u32>`
+   |
+   = note: expected type `u32`
+            found struct `Vec<u32>`
+
+error[E0382]: borrow of moved value: `n`
+  --> src/lib.rs:43:20
+   |
+41 | pub fn name_len(n: String) -> usize {
+   |                 - move occurs because `n` has type `String`, which does not implement the `Copy` trait
+42 |     let s = n;
+   |             - value moved here
+43 |     println!("{}", n);
+   |                    ^ value borrowed here after move
+   |
+help: consider cloning the value if the performance cost is acceptable
+   |
+42 |     let s = n.clone();
+   |              ++++++++
+
+Some errors have detailed explanations: E0308, E0382.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `rs` (lib test) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `rs` (lib) due to 2 previous errors

@@ -1,0 +1,28 @@
+--- FAIL: TestValidateExpired (0.00s)
+    auth_test.go:14: Validate() status = 401, want 200 (err=token expired)
+--- FAIL: TestTable (0.00s)
+    --- FAIL: TestTable/stale (0.00s)
+        auth_test.go:26: got 401 want 200
+--- FAIL: TestPrimaryRole (0.00s)
+panic: runtime error: index out of range [0] with length 0 [recovered]
+	panic: runtime error: index out of range [0] with length 0
+
+goroutine 23 [running]:
+testing.tRunner.func1.2({0x568280, 0xc0000be090})
+	/usr/local/go1.24.7/src/testing/testing.go:1734 +0x21c
+testing.tRunner.func1()
+	/usr/local/go1.24.7/src/testing/testing.go:1737 +0x35e
+panic({0x568280?, 0xc0000be090?})
+	/usr/local/go1.24.7/src/runtime/panic.go:792 +0x132
+example.com/shop/auth.PrimaryRole(...)
+	/home/dev/go/auth/auth.go:25
+example.com/shop/auth.TestPrimaryRole(0xc00008b340)
+	/home/dev/go/auth/auth_test.go:33 +0x178
+testing.tRunner(0xc00008b340, 0x5848b8)
+	/usr/local/go1.24.7/src/testing/testing.go:1792 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go1.24.7/src/testing/testing.go:1851 +0x413
+FAIL	example.com/shop/auth	0.004s
+ok  	example.com/shop/cart	0.003s
+?   	example.com/shop/util	[no test files]
+FAIL

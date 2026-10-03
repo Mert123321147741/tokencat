@@ -1,0 +1,73 @@
+[1G[0K[1m[2mDetermining test suites to run...[22m[22m[999D[K[999D[K[0m[7m[1m[31m FAIL [39m[22m[27m[0m [2msrc/[22m[1mauth.test.js[22m
+  [1m● [22mConsole
+
+    [2mconsole.log[22m
+      debug: validating
+[2m[22m
+[2m      [2mat Object.log ([22m[2m[0m[36msrc/auth.test.js[39m[0m[2m:21:13)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mAuthService › rejects wrong password with 200[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m401[39m
+
+[2m    [0m [90m 10 |[39m   it([32m'rejects wrong password with 200'[39m[33m,[39m () [33m=>[39m {[22m
+[2m     [90m 11 |[39m     [36mconst[39m res [33m=[39m login([32m'bob'[39m[33m,[39m [32m'nope'[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 12 |[39m     expect(res[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m[22m
+[2m     [90m    |[39m                        [31m[1m^[22m[2m[39m[22m
+[2m     [90m 13 |[39m   })[33m;[39m[22m
+[2m     [90m 14 |[39m[22m
+[2m     [90m 15 |[39m   it([32m'accepts expired token'[39m[33m,[39m () [33m=>[39m {[0m[22m
+
+[2m      [2mat Object.toBe ([22m[2m[0m[36msrc/auth.test.js[39m[0m[2m:12:24)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mAuthService › accepts expired token[39m[22m
+
+    token expired at 1000
+
+[2m    [0m [90m  8 |[39m   [36mconst[39m payload [33m=[39m decode(token)[33m;[39m[22m
+[2m     [90m  9 |[39m   [36mif[39m (payload[33m.[39mexp [33m<[39m now) {[22m
+[2m    [31m[1m>[22m[2m[39m[90m 10 |[39m     [36mthrow[39m [36mnew[39m [33mUnauthorizedError[39m([32m`token expired at ${payload.exp}`[39m)[33m;[39m[22m
+[2m     [90m    |[39m           [31m[1m^[22m[2m[39m[22m
+[2m     [90m 11 |[39m   }[22m
+[2m     [90m 12 |[39m   [36mreturn[39m { status[33m:[39m [35m200[39m[33m,[39m user[33m:[39m payload[33m.[39msub }[33m;[39m[22m
+[2m     [90m 13 |[39m }[0m[22m
+
+[2m      [2mat validateToken ([22m[2msrc/auth.js[2m:10:11)[22m[2m[22m
+[2m      [2mat Object.validateToken ([22m[2m[0m[36msrc/auth.test.js[39m[0m[2m:16:17)[22m[2m[22m
+
+[1m[31m  [1m● [22m[1mAuthService › returns user object[39m[22m
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 4[39m
+    [31m+ Received  + 1[39m
+
+    [2m  Object {[22m
+    [32m-   "roles": Array [[39m
+    [32m-     "admin",[39m
+    [32m-   ],[39m
+    [2m    "status": 200,[22m
+    [32m-   "user": "alice",[39m
+    [31m+   "user": "bob",[39m
+    [2m  }[22m
+
+[2m    [0m [90m 21 |[39m     console[33m.[39mlog([32m'debug: validating'[39m)[33m;[39m[22m
+[2m     [90m 22 |[39m     [36mconst[39m res [33m=[39m validateToken(enc({ sub[33m:[39m [32m'bob'[39m[33m,[39m exp[33m:[39m [35m5000[39m })[33m,[39m [35m2000[39m)[33m;[39m[22m
+[2m    [31m[1m>[22m[2m[39m[90m 23 |[39m     expect(res)[33m.[39mtoEqual({ status[33m:[39m [35m200[39m[33m,[39m user[33m:[39m [32m'alice'[39m[33m,[39m roles[33m:[39m [[32m'admin'[39m] })[33m;[39m[22m
+[2m     [90m    |[39m                 [31m[1m^[22m[2m[39m[22m
+[2m     [90m 24 |[39m   })[33m;[39m[22m
+[2m     [90m 25 |[39m })[33m;[39m[22m
+[2m     [90m 26 |[39m[0m[22m
+
+[2m      [2mat Object.toEqual ([22m[2m[0m[36msrc/auth.test.js[39m[0m[2m:23:17)[22m[2m[22m
+
+[?2026h[?2026l[?2026h[?2026l[999D[K
+[1mTest Suites: [22m[1m[31m1 failed[39m[22m, [1m[32m6 passed[39m[22m, 7 total
+[1mTests:       [22m[1m[31m3 failed[39m[22m, [1m[32m121 passed[39m[22m, 124 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0.488 s, estimated 1 s
+[2mRan all test suites[22m[2m matching [22msrc[2m.[22m
+[?2026h[?2026l[1G[0K\[1G[0K

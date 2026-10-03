@@ -1,0 +1,23 @@
+[package]
+name = "tokencat"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+description = "Prune test runner and compiler output down to the failure context an AI coding agent actually needs."
+license = "MIT"
+readme = "README.md"
+keywords = ["cli", "llm", "agents", "testing", "tokens"]
+categories = ["command-line-utilities", "development-tools"]
+
+[dependencies]
+clap = { version = "4.5", features = ["derive", "env"] }
+regex = "1.10"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

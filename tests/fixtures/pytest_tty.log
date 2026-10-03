@@ -1,0 +1,119 @@
+[1m============================= test session starts ==============================[0m
+platform linux -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /home/dev/py
+[1mcollecting ... [0m[1mcollected 97 items                                                             [0m
+
+tests/test_auth.py [32m.[0m[31mF[0m[31mF[0m[31m                                                   [  3%][0m
+tests/test_cart.py [31mF[0m[31mF[0m[31mF[0m[31mF[0m[31m                                                  [  7%][0m
+tests/test_cart_bulk.py [32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m [ 56%]
+[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[31m                               [100%][0m
+
+=================================== FAILURES ===================================
+[31m[1m______________________ TestAuth.test_login_wrong_password ______________________[0m
+
+self = <test_auth.TestAuth object at 0x7f2e8593c1d0>
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mtest_login_wrong_password[39;49;00m([96mself[39;49;00m):[90m[39;49;00m
+        res = login([33m"[39;49;00m[33mbob[39;49;00m[33m"[39;49;00m, [33m"[39;49;00m[33mnope[39;49;00m[33m"[39;49;00m)[90m[39;49;00m
+>       [94massert[39;49;00m res[[33m"[39;49;00m[33mstatus[39;49;00m[33m"[39;49;00m] == [94m200[39;49;00m[90m[39;49;00m
+[1m[31mE       assert 401 == 200[0m
+
+[1m[31mtests/test_auth.py[0m:10: AssertionError
+[31m[1m_________________________ TestAuth.test_expired_token __________________________[0m
+
+self = <test_auth.TestAuth object at 0x7f2e8593c890>
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mtest_expired_token[39;49;00m([96mself[39;49;00m):[90m[39;49;00m
+        token = {[33m"[39;49;00m[33msub[39;49;00m[33m"[39;49;00m: [33m"[39;49;00m[33mbob[39;49;00m[33m"[39;49;00m, [33m"[39;49;00m[33mexp[39;49;00m[33m"[39;49;00m: [94m1000[39;49;00m}[90m[39;49;00m
+>       [94massert[39;49;00m validate_token(token, now=[94m2000[39;49;00m)[[33m"[39;49;00m[33mstatus[39;49;00m[33m"[39;49;00m] == [94m200[39;49;00m[90m[39;49;00m
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+
+[1m[31mtests/test_auth.py[0m:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+token = {'sub': 'bob', 'exp': 1000}, now = 2000
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mvalidate_token[39;49;00m(token, now=[94mNone[39;49;00m):[90m[39;49;00m
+        now = now [95mor[39;49;00m time.time()[90m[39;49;00m
+        [94mif[39;49;00m token[[33m"[39;49;00m[33mexp[39;49;00m[33m"[39;49;00m] < now:[90m[39;49;00m
+>           [94mraise[39;49;00m TokenExpired([33mf[39;49;00m[33m"[39;49;00m[33mtoken expired at [39;49;00m[33m{[39;49;00mtoken[[33m'[39;49;00m[33mexp[39;49;00m[33m'[39;49;00m][33m}[39;49;00m[33m"[39;49;00m)[90m[39;49;00m
+[1m[31mE           shop.auth.TokenExpired: token expired at 1000[0m
+
+[1m[31msrc/shop/auth.py[0m:11: TokenExpired
+[31m[1m__________________________ test_discount_unknown_code __________________________[0m
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mtest_discount_unknown_code[39;49;00m():[90m[39;49;00m
+        cart = Cart()[90m[39;49;00m
+        cart.add(Item([33m"[39;49;00m[33mbook[39;49;00m[33m"[39;49;00m, [94m12.5[39;49;00m, [94m2[39;49;00m))[90m[39;49;00m
+>       [94massert[39;49;00m cart.apply_discount([33m"[39;49;00m[33mSAVE20[39;49;00m[33m"[39;49;00m) == [94m22.5[39;49;00m[90m[39;49;00m
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+
+[1m[31mtests/test_cart.py[0m:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Cart(items=[Item(sku='book', price=12.5, qty=2)]), code = 'SAVE20'
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mapply_discount[39;49;00m([96mself[39;49;00m, code):[90m[39;49;00m
+        rates = {[33m"[39;49;00m[33mSAVE10[39;49;00m[33m"[39;49;00m: [94m0.10[39;49;00m, [33m"[39;49;00m[33mHALF[39;49;00m[33m"[39;49;00m: [94m0.5[39;49;00m}[90m[39;49;00m
+>       rate = rates[code][90m[39;49;00m
+               ^^^^^^^^^^^[90m[39;49;00m
+[1m[31mE       KeyError: 'SAVE20'[0m
+
+[1m[31msrc/shop/cart.py[0m:23: KeyError
+[31m[1m___________________________ test_average_empty_cart ____________________________[0m
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mtest_average_empty_cart[39;49;00m():[90m[39;49;00m
+        cart = Cart()[90m[39;49;00m
+>       [94massert[39;49;00m cart.average_price() == [94m0[39;49;00m[90m[39;49;00m
+               ^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+
+[1m[31mtests/test_cart.py[0m:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Cart(items=[])
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92maverage_price[39;49;00m([96mself[39;49;00m):[90m[39;49;00m
+>       [94mreturn[39;49;00m [96mself[39;49;00m.total() / [96mlen[39;49;00m([96mself[39;49;00m.items)[90m[39;49;00m
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[90m[39;49;00m
+[1m[31mE       ZeroDivisionError: division by zero[0m
+
+[1m[31msrc/shop/cart.py[0m:27: ZeroDivisionError
+[31m[1m____________________________ test_total_with_items _____________________________[0m
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mtest_total_with_items[39;49;00m():[90m[39;49;00m
+        cart = Cart()[90m[39;49;00m
+        cart.add(Item([33m"[39;49;00m[33mpen[39;49;00m[33m"[39;49;00m, [94m1.5[39;49;00m, [94m4[39;49;00m))[90m[39;49;00m
+        cart.add(Item([33m"[39;49;00m[33mink[39;49;00m[33m"[39;49;00m, [94m3.0[39;49;00m))[90m[39;49;00m
+        [96mprint[39;49;00m([33m"[39;49;00m[33mcart items:[39;49;00m[33m"[39;49;00m, cart.items)[90m[39;49;00m
+>       [94massert[39;49;00m cart.total() == [94m9.5[39;49;00m[90m[39;49;00m
+[1m[31mE       AssertionError: assert 9.0 == 9.5[0m
+[1m[31mE        +  where 9.0 = total()[0m
+[1m[31mE        +    where total = Cart(items=[Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]).total[0m
+
+[1m[31mtests/test_cart.py[0m:21: AssertionError
+----------------------------- Captured stdout call -----------------------------
+cart items: [Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]
+[31m[1m______________________________ test_dict_compare _______________________________[0m
+
+    [0m[94mdef[39;49;00m[90m [39;49;00m[92mtest_dict_compare[39;49;00m():[90m[39;49;00m
+        expected = {[33m"[39;49;00m[33msku[39;49;00m[33m"[39;49;00m: [33m"[39;49;00m[33mpen[39;49;00m[33m"[39;49;00m, [33m"[39;49;00m[33mprice[39;49;00m[33m"[39;49;00m: [94m1.5[39;49;00m, [33m"[39;49;00m[33mqty[39;49;00m[33m"[39;49;00m: [94m4[39;49;00m, [33m"[39;49;00m[33mtags[39;49;00m[33m"[39;49;00m: [[33m"[39;49;00m[33moffice[39;49;00m[33m"[39;49;00m, [33m"[39;49;00m[33mwrite[39;49;00m[33m"[39;49;00m]}[90m[39;49;00m
+        actual = {[33m"[39;49;00m[33msku[39;49;00m[33m"[39;49;00m: [33m"[39;49;00m[33mpen[39;49;00m[33m"[39;49;00m, [33m"[39;49;00m[33mprice[39;49;00m[33m"[39;49;00m: [94m1.25[39;49;00m, [33m"[39;49;00m[33mqty[39;49;00m[33m"[39;49;00m: [94m4[39;49;00m, [33m"[39;49;00m[33mtags[39;49;00m[33m"[39;49;00m: [[33m"[39;49;00m[33moffice[39;49;00m[33m"[39;49;00m, [33m"[39;49;00m[33mwriting[39;49;00m[33m"[39;49;00m]}[90m[39;49;00m
+>       [94massert[39;49;00m actual == expected[90m[39;49;00m
+[1m[31mE       AssertionError: assert {'sku': 'pen'...', 'writing']} == {'sku': 'pen'...ce', 'write']}[0m
+[1m[31mE         [0m
+[1m[31mE         Omitting 2 identical items, use -vv to show[0m
+[1m[31mE         Differing items:[0m
+[1m[31mE         [0m{[33m'[39;49;00m[33mprice[39;49;00m[33m'[39;49;00m: [94m1.25[39;49;00m}[90m[39;49;00m != [0m{[33m'[39;49;00m[33mprice[39;49;00m[33m'[39;49;00m: [94m1.5[39;49;00m}[90m[39;49;00m[0m
+[1m[31mE         [0m{[33m'[39;49;00m[33mtags[39;49;00m[33m'[39;49;00m: [[33m'[39;49;00m[33moffice[39;49;00m[33m'[39;49;00m, [33m'[39;49;00m[33mwriting[39;49;00m[33m'[39;49;00m]}[90m[39;49;00m != [0m{[33m'[39;49;00m[33mtags[39;49;00m[33m'[39;49;00m: [[33m'[39;49;00m[33moffice[39;49;00m[33m'[39;49;00...[0m
+[1m[31mE         [0m
+[1m[31mE         ...Full output truncated (2 lines hidden), use '-vv' to show[0m
+
+[1m[31mtests/test_cart.py[0m:27: AssertionError
+[36m[1m=========================== short test summary info ============================[0m
+[31mFAILED[0m tests/test_auth.py::[1mTestAuth::test_login_wrong_password[0m - assert 401 == 200
+[31mFAILED[0m tests/test_auth.py::[1mTestAuth::test_expired_token[0m - shop.auth.TokenExpired: token expired at 1000
+[31mFAILED[0m tests/test_cart.py::[1mtest_discount_unknown_code[0m - KeyError: 'SAVE20'
+[31mFAILED[0m tests/test_cart.py::[1mtest_average_empty_cart[0m - ZeroDivisionError: division by zero
+[31mFAILED[0m tests/test_cart.py::[1mtest_total_with_items[0m - AssertionError: assert 9.0 == 9.5
+[31mFAILED[0m tests/test_cart.py::[1mtest_dict_compare[0m - AssertionError: assert {'sku': 'pen'...', 'writing']} == {'sku': 'pen'...ce...
+[31m========================= [31m[1m6 failed[0m, [32m91 passed[0m[31m in 0.11s[0m[31m =========================[0m

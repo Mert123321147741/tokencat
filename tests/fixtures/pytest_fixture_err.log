@@ -1,0 +1,25 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /home/dev/py_err
+collected 2 items
+
+tests/test_fixture.py E.                                                 [100%]
+
+==================================== ERRORS ====================================
+________________________ ERROR at setup of test_uses_db ________________________
+
+    @pytest.fixture
+    def db():
+>       raise RuntimeError("cannot connect to postgres at localhost:5432")
+E       RuntimeError: cannot connect to postgres at localhost:5432
+
+tests/test_fixture.py:5: RuntimeError
+=============================== warnings summary ===============================
+tests/test_fixture.py::test_warn
+  /home/dev/py_err/tests/test_fixture.py:12: DeprecationWarning: deprecated thing
+    warnings.warn("deprecated thing", DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+ERROR tests/test_fixture.py::test_uses_db - RuntimeError: cannot connect to p...
+==================== 1 passed, 1 warning, 1 error in 0.01s =====================

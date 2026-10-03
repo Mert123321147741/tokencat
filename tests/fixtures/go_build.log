@@ -1,0 +1,7 @@
+# example.com/shop/util
+util/util.go:4:25: undefined: undefinedThing
+# example.com/shop/auth [example.com/shop/auth.test]
+auth/auth.go:16:9: cannot use "200" (untyped string constant) as int value in return statement
+FAIL	example.com/shop/auth [build failed]
+FAIL	example.com/shop/util [build failed]
+FAIL

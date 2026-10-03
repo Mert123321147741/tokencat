@@ -1,0 +1,118 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /home/dev/py
+collected 97 items
+
+tests/test_auth.py .FF                                                   [  3%]
+tests/test_cart.py FFFF                                                  [  7%]
+tests/test_cart_bulk.py ................................................ [ 56%]
+..........................................                               [100%]
+
+=================================== FAILURES ===================================
+______________________ TestAuth.test_login_wrong_password ______________________
+
+self = <test_auth.TestAuth object at 0x7fb1cde4afd0>
+
+    def test_login_wrong_password(self):
+        res = login("bob", "nope")
+>       assert res["status"] == 200
+E       assert 401 == 200
+
+tests/test_auth.py:10: AssertionError
+_________________________ TestAuth.test_expired_token __________________________
+
+self = <test_auth.TestAuth object at 0x7fb1cde54e50>
+
+    def test_expired_token(self):
+        token = {"sub": "bob", "exp": 1000}
+>       assert validate_token(token, now=2000)["status"] == 200
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_auth.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+token = {'sub': 'bob', 'exp': 1000}, now = 2000
+
+    def validate_token(token, now=None):
+        now = now or time.time()
+        if token["exp"] < now:
+>           raise TokenExpired(f"token expired at {token['exp']}")
+E           shop.auth.TokenExpired: token expired at 1000
+
+src/shop/auth.py:11: TokenExpired
+__________________________ test_discount_unknown_code __________________________
+
+    def test_discount_unknown_code():
+        cart = Cart()
+        cart.add(Item("book", 12.5, 2))
+>       assert cart.apply_discount("SAVE20") == 22.5
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_cart.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Cart(items=[Item(sku='book', price=12.5, qty=2)]), code = 'SAVE20'
+
+    def apply_discount(self, code):
+        rates = {"SAVE10": 0.10, "HALF": 0.5}
+>       rate = rates[code]
+               ^^^^^^^^^^^
+E       KeyError: 'SAVE20'
+
+src/shop/cart.py:23: KeyError
+___________________________ test_average_empty_cart ____________________________
+
+    def test_average_empty_cart():
+        cart = Cart()
+>       assert cart.average_price() == 0
+               ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_cart.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Cart(items=[])
+
+    def average_price(self):
+>       return self.total() / len(self.items)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ZeroDivisionError: division by zero
+
+src/shop/cart.py:27: ZeroDivisionError
+____________________________ test_total_with_items _____________________________
+
+    def test_total_with_items():
+        cart = Cart()
+        cart.add(Item("pen", 1.5, 4))
+        cart.add(Item("ink", 3.0))
+        print("cart items:", cart.items)
+>       assert cart.total() == 9.5
+E       AssertionError: assert 9.0 == 9.5
+E        +  where 9.0 = total()
+E        +    where total = Cart(items=[Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]).total
+
+tests/test_cart.py:21: AssertionError
+----------------------------- Captured stdout call -----------------------------
+cart items: [Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]
+______________________________ test_dict_compare _______________________________
+
+    def test_dict_compare():
+        expected = {"sku": "pen", "price": 1.5, "qty": 4, "tags": ["office", "write"]}
+        actual = {"sku": "pen", "price": 1.25, "qty": 4, "tags": ["office", "writing"]}
+>       assert actual == expected
+E       AssertionError: assert {'sku': 'pen'...', 'writing']} == {'sku': 'pen'...ce', 'write']}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'price': 1.25} != {'price': 1.5}
+E         {'tags': ['office', 'writing']} != {'tags': ['office', 'write']}
+E         Use -v to get more diff
+
+tests/test_cart.py:27: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_auth.py::TestAuth::test_login_wrong_password - assert 401 =...
+FAILED tests/test_auth.py::TestAuth::test_expired_token - shop.auth.TokenExpi...
+FAILED tests/test_cart.py::test_discount_unknown_code - KeyError: 'SAVE20'
+FAILED tests/test_cart.py::test_average_empty_cart - ZeroDivisionError: divis...
+FAILED tests/test_cart.py::test_total_with_items - AssertionError: assert 9.0...
+FAILED tests/test_cart.py::test_dict_compare - AssertionError: assert {'sku':...
+========================= 6 failed, 91 passed in 0.11s =========================

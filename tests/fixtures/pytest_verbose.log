@@ -1,0 +1,214 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- /root/.local/share/uv/tools/pytest/bin/python
+rootdir: /home/dev/py
+collecting ... collected 97 items
+
+tests/test_auth.py::TestAuth::test_login_ok PASSED                       [  1%]
+tests/test_auth.py::TestAuth::test_login_wrong_password FAILED           [  2%]
+tests/test_auth.py::TestAuth::test_expired_token FAILED                  [  3%]
+tests/test_cart.py::test_discount_unknown_code FAILED                    [  4%]
+tests/test_cart.py::test_average_empty_cart FAILED                       [  5%]
+tests/test_cart.py::test_total_with_items FAILED                         [  6%]
+tests/test_cart.py::test_dict_compare FAILED                             [  7%]
+tests/test_cart_bulk.py::test_cart_total_0 PASSED                        [  8%]
+tests/test_cart_bulk.py::test_cart_total_1 PASSED                        [  9%]
+tests/test_cart_bulk.py::test_cart_total_2 PASSED                        [ 10%]
+tests/test_cart_bulk.py::test_cart_total_3 PASSED                        [ 11%]
+tests/test_cart_bulk.py::test_cart_total_4 PASSED                        [ 12%]
+tests/test_cart_bulk.py::test_cart_total_5 PASSED                        [ 13%]
+tests/test_cart_bulk.py::test_cart_total_6 PASSED                        [ 14%]
+tests/test_cart_bulk.py::test_cart_total_7 PASSED                        [ 15%]
+tests/test_cart_bulk.py::test_cart_total_8 PASSED                        [ 16%]
+tests/test_cart_bulk.py::test_cart_total_9 PASSED                        [ 17%]
+tests/test_cart_bulk.py::test_cart_total_10 PASSED                       [ 18%]
+tests/test_cart_bulk.py::test_cart_total_11 PASSED                       [ 19%]
+tests/test_cart_bulk.py::test_cart_total_12 PASSED                       [ 20%]
+tests/test_cart_bulk.py::test_cart_total_13 PASSED                       [ 21%]
+tests/test_cart_bulk.py::test_cart_total_14 PASSED                       [ 22%]
+tests/test_cart_bulk.py::test_cart_total_15 PASSED                       [ 23%]
+tests/test_cart_bulk.py::test_cart_total_16 PASSED                       [ 24%]
+tests/test_cart_bulk.py::test_cart_total_17 PASSED                       [ 25%]
+tests/test_cart_bulk.py::test_cart_total_18 PASSED                       [ 26%]
+tests/test_cart_bulk.py::test_cart_total_19 PASSED                       [ 27%]
+tests/test_cart_bulk.py::test_cart_total_20 PASSED                       [ 28%]
+tests/test_cart_bulk.py::test_cart_total_21 PASSED                       [ 29%]
+tests/test_cart_bulk.py::test_cart_total_22 PASSED                       [ 30%]
+tests/test_cart_bulk.py::test_cart_total_23 PASSED                       [ 31%]
+tests/test_cart_bulk.py::test_cart_total_24 PASSED                       [ 32%]
+tests/test_cart_bulk.py::test_cart_total_25 PASSED                       [ 34%]
+tests/test_cart_bulk.py::test_cart_total_26 PASSED                       [ 35%]
+tests/test_cart_bulk.py::test_cart_total_27 PASSED                       [ 36%]
+tests/test_cart_bulk.py::test_cart_total_28 PASSED                       [ 37%]
+tests/test_cart_bulk.py::test_cart_total_29 PASSED                       [ 38%]
+tests/test_cart_bulk.py::test_cart_total_30 PASSED                       [ 39%]
+tests/test_cart_bulk.py::test_cart_total_31 PASSED                       [ 40%]
+tests/test_cart_bulk.py::test_cart_total_32 PASSED                       [ 41%]
+tests/test_cart_bulk.py::test_cart_total_33 PASSED                       [ 42%]
+tests/test_cart_bulk.py::test_cart_total_34 PASSED                       [ 43%]
+tests/test_cart_bulk.py::test_cart_total_35 PASSED                       [ 44%]
+tests/test_cart_bulk.py::test_cart_total_36 PASSED                       [ 45%]
+tests/test_cart_bulk.py::test_cart_total_37 PASSED                       [ 46%]
+tests/test_cart_bulk.py::test_cart_total_38 PASSED                       [ 47%]
+tests/test_cart_bulk.py::test_cart_total_39 PASSED                       [ 48%]
+tests/test_cart_bulk.py::test_cart_total_40 PASSED                       [ 49%]
+tests/test_cart_bulk.py::test_cart_total_41 PASSED                       [ 50%]
+tests/test_cart_bulk.py::test_cart_total_42 PASSED                       [ 51%]
+tests/test_cart_bulk.py::test_cart_total_43 PASSED                       [ 52%]
+tests/test_cart_bulk.py::test_cart_total_44 PASSED                       [ 53%]
+tests/test_cart_bulk.py::test_cart_total_45 PASSED                       [ 54%]
+tests/test_cart_bulk.py::test_cart_total_46 PASSED                       [ 55%]
+tests/test_cart_bulk.py::test_cart_total_47 PASSED                       [ 56%]
+tests/test_cart_bulk.py::test_cart_total_48 PASSED                       [ 57%]
+tests/test_cart_bulk.py::test_cart_total_49 PASSED                       [ 58%]
+tests/test_cart_bulk.py::test_cart_total_50 PASSED                       [ 59%]
+tests/test_cart_bulk.py::test_cart_total_51 PASSED                       [ 60%]
+tests/test_cart_bulk.py::test_cart_total_52 PASSED                       [ 61%]
+tests/test_cart_bulk.py::test_cart_total_53 PASSED                       [ 62%]
+tests/test_cart_bulk.py::test_cart_total_54 PASSED                       [ 63%]
+tests/test_cart_bulk.py::test_cart_total_55 PASSED                       [ 64%]
+tests/test_cart_bulk.py::test_cart_total_56 PASSED                       [ 65%]
+tests/test_cart_bulk.py::test_cart_total_57 PASSED                       [ 67%]
+tests/test_cart_bulk.py::test_cart_total_58 PASSED                       [ 68%]
+tests/test_cart_bulk.py::test_cart_total_59 PASSED                       [ 69%]
+tests/test_cart_bulk.py::test_param[0] PASSED                            [ 70%]
+tests/test_cart_bulk.py::test_param[1] PASSED                            [ 71%]
+tests/test_cart_bulk.py::test_param[2] PASSED                            [ 72%]
+tests/test_cart_bulk.py::test_param[3] PASSED                            [ 73%]
+tests/test_cart_bulk.py::test_param[4] PASSED                            [ 74%]
+tests/test_cart_bulk.py::test_param[5] PASSED                            [ 75%]
+tests/test_cart_bulk.py::test_param[6] PASSED                            [ 76%]
+tests/test_cart_bulk.py::test_param[7] PASSED                            [ 77%]
+tests/test_cart_bulk.py::test_param[8] PASSED                            [ 78%]
+tests/test_cart_bulk.py::test_param[9] PASSED                            [ 79%]
+tests/test_cart_bulk.py::test_param[10] PASSED                           [ 80%]
+tests/test_cart_bulk.py::test_param[11] PASSED                           [ 81%]
+tests/test_cart_bulk.py::test_param[12] PASSED                           [ 82%]
+tests/test_cart_bulk.py::test_param[13] PASSED                           [ 83%]
+tests/test_cart_bulk.py::test_param[14] PASSED                           [ 84%]
+tests/test_cart_bulk.py::test_param[15] PASSED                           [ 85%]
+tests/test_cart_bulk.py::test_param[16] PASSED                           [ 86%]
+tests/test_cart_bulk.py::test_param[17] PASSED                           [ 87%]
+tests/test_cart_bulk.py::test_param[18] PASSED                           [ 88%]
+tests/test_cart_bulk.py::test_param[19] PASSED                           [ 89%]
+tests/test_cart_bulk.py::test_param[20] PASSED                           [ 90%]
+tests/test_cart_bulk.py::test_param[21] PASSED                           [ 91%]
+tests/test_cart_bulk.py::test_param[22] PASSED                           [ 92%]
+tests/test_cart_bulk.py::test_param[23] PASSED                           [ 93%]
+tests/test_cart_bulk.py::test_param[24] PASSED                           [ 94%]
+tests/test_cart_bulk.py::test_param[25] PASSED                           [ 95%]
+tests/test_cart_bulk.py::test_param[26] PASSED                           [ 96%]
+tests/test_cart_bulk.py::test_param[27] PASSED                           [ 97%]
+tests/test_cart_bulk.py::test_param[28] PASSED                           [ 98%]
+tests/test_cart_bulk.py::test_param[29] PASSED                           [100%]
+
+=================================== FAILURES ===================================
+______________________ TestAuth.test_login_wrong_password ______________________
+
+self = <test_auth.TestAuth object at 0x7fdec9d8fad0>
+
+    def test_login_wrong_password(self):
+        res = login("bob", "nope")
+>       assert res["status"] == 200
+E       assert 401 == 200
+
+tests/test_auth.py:10: AssertionError
+_________________________ TestAuth.test_expired_token __________________________
+
+self = <test_auth.TestAuth object at 0x7fdec9d981d0>
+
+    def test_expired_token(self):
+        token = {"sub": "bob", "exp": 1000}
+>       assert validate_token(token, now=2000)["status"] == 200
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_auth.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+token = {'sub': 'bob', 'exp': 1000}, now = 2000
+
+    def validate_token(token, now=None):
+        now = now or time.time()
+        if token["exp"] < now:
+>           raise TokenExpired(f"token expired at {token['exp']}")
+E           shop.auth.TokenExpired: token expired at 1000
+
+src/shop/auth.py:11: TokenExpired
+__________________________ test_discount_unknown_code __________________________
+
+    def test_discount_unknown_code():
+        cart = Cart()
+        cart.add(Item("book", 12.5, 2))
+>       assert cart.apply_discount("SAVE20") == 22.5
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_cart.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Cart(items=[Item(sku='book', price=12.5, qty=2)]), code = 'SAVE20'
+
+    def apply_discount(self, code):
+        rates = {"SAVE10": 0.10, "HALF": 0.5}
+>       rate = rates[code]
+               ^^^^^^^^^^^
+E       KeyError: 'SAVE20'
+
+src/shop/cart.py:23: KeyError
+___________________________ test_average_empty_cart ____________________________
+
+    def test_average_empty_cart():
+        cart = Cart()
+>       assert cart.average_price() == 0
+               ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_cart.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Cart(items=[])
+
+    def average_price(self):
+>       return self.total() / len(self.items)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ZeroDivisionError: division by zero
+
+src/shop/cart.py:27: ZeroDivisionError
+____________________________ test_total_with_items _____________________________
+
+    def test_total_with_items():
+        cart = Cart()
+        cart.add(Item("pen", 1.5, 4))
+        cart.add(Item("ink", 3.0))
+        print("cart items:", cart.items)
+>       assert cart.total() == 9.5
+E       AssertionError: assert 9.0 == 9.5
+E        +  where 9.0 = total()
+E        +    where total = Cart(items=[Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]).total
+
+tests/test_cart.py:21: AssertionError
+----------------------------- Captured stdout call -----------------------------
+cart items: [Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]
+______________________________ test_dict_compare _______________________________
+
+    def test_dict_compare():
+        expected = {"sku": "pen", "price": 1.5, "qty": 4, "tags": ["office", "write"]}
+        actual = {"sku": "pen", "price": 1.25, "qty": 4, "tags": ["office", "writing"]}
+>       assert actual == expected
+E       AssertionError: assert {'sku': 'pen'...', 'writing']} == {'sku': 'pen'...ce', 'write']}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'price': 1.25} != {'price': 1.5}
+E         {'tags': ['office', 'writing']} != {'tags': ['office', 'write']}
+E         
+E         Full diff:...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests/test_cart.py:27: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_auth.py::TestAuth::test_login_wrong_password - assert 401 =...
+FAILED tests/test_auth.py::TestAuth::test_expired_token - shop.auth.TokenExpi...
+FAILED tests/test_cart.py::test_discount_unknown_code - KeyError: 'SAVE20'
+FAILED tests/test_cart.py::test_average_empty_cart - ZeroDivisionError: divis...
+FAILED tests/test_cart.py::test_total_with_items - AssertionError: assert 9.0...
+FAILED tests/test_cart.py::test_dict_compare - AssertionError: assert {'sku':...
+========================= 6 failed, 91 passed in 0.09s =========================

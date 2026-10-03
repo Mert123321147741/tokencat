@@ -1,0 +1,78 @@
+[1G[0K[?25l
+ RUN  v5.0.3 /home/dev/vt
+
+stdout | src/auth.test.ts > AuthService > returns user object
+debug: validating
+
+ ❯ src/auth.test.ts (4 tests | 3 failed) 15ms
+   ❯ AuthService (4)
+     × rejects expired token 6ms
+     × accepts expired token 1ms
+     × returns user object 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/auth.test.ts > AuthService > rejects expired token
+AssertionError: expected 401 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 401
+
+ ❯ src/auth.test.ts:11:24
+      9|   it('rejects expired token', () => {
+     10|     const res = login('bob', 'nope');
+     11|     expect(res.status).toBe(200);
+       |                        ^
+     12|   });
+     13|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/auth.test.ts > AuthService > accepts expired token
+Error: token expired at 1000
+ ❯ validateToken src/auth.ts:5:11
+      3| export function validateToken(token: { sub: string; exp: number }, now…
+      4|   if (token.exp < now) {
+      5|     throw new UnauthorizedError(`token expired at ${token.exp}`);
+       |           ^
+      6|   }
+      7|   return { status: 200, user: token.sub };
+ ❯ src/auth.test.ts:15:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/auth.test.ts > AuthService > returns user object
+AssertionError: expected { status: 200, user: 'bob' } to deeply equal { status: 200, user: 'alice', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "roles": [
+-     "admin",
+-   ],
+    "status": 200,
+-   "user": "alice",
++   "user": "bob",
+  }
+
+ ❯ src/auth.test.ts:22:17
+     20|     console.log('debug: validating');
+     21|     const res = validateToken({ sub: 'bob', exp: 5000 }, 2000);
+     22|     expect(res).toEqual({ status: 200, user: 'alice', roles: ['admin']…
+       |                 ^
+     23|   });
+     24| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  3 failed | 101 passed (104)
+   Start at  16:29:12
+   Duration  402ms (transform 45%, import 26%, tests 19%, worker 9%)
+
+[?25h[1G[0K\[1G[0K

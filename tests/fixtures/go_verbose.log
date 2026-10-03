@@ -1,0 +1,119 @@
+=== RUN   TestValidateOK
+--- PASS: TestValidateOK (0.00s)
+=== RUN   TestValidateExpired
+    auth_test.go:14: Validate() status = 401, want 200 (err=token expired)
+--- FAIL: TestValidateExpired (0.00s)
+=== RUN   TestTable
+=== RUN   TestTable/fresh
+=== RUN   TestTable/stale
+    auth_test.go:26: got 401 want 200
+=== RUN   TestTable/edge
+--- FAIL: TestTable (0.00s)
+    --- PASS: TestTable/fresh (0.00s)
+    --- FAIL: TestTable/stale (0.00s)
+    --- PASS: TestTable/edge (0.00s)
+=== RUN   TestPrimaryRole
+--- FAIL: TestPrimaryRole (0.00s)
+panic: runtime error: index out of range [0] with length 0 [recovered]
+	panic: runtime error: index out of range [0] with length 0
+
+goroutine 12 [running]:
+testing.tRunner.func1.2({0x568280, 0xc0000202d0})
+	/usr/local/go1.24.7/src/testing/testing.go:1734 +0x21c
+testing.tRunner.func1()
+	/usr/local/go1.24.7/src/testing/testing.go:1737 +0x35e
+panic({0x568280?, 0xc0000202d0?})
+	/usr/local/go1.24.7/src/runtime/panic.go:792 +0x132
+example.com/shop/auth.PrimaryRole(...)
+	/home/dev/go/auth/auth.go:25
+example.com/shop/auth.TestPrimaryRole(0xc00013e700)
+	/home/dev/go/auth/auth_test.go:33 +0x178
+testing.tRunner(0xc00013e700, 0x5848b8)
+	/usr/local/go1.24.7/src/testing/testing.go:1792 +0xf4
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go1.24.7/src/testing/testing.go:1851 +0x413
+FAIL	example.com/shop/auth	0.004s
+=== RUN   TestSum0
+--- PASS: TestSum0 (0.00s)
+=== RUN   TestSum1
+--- PASS: TestSum1 (0.00s)
+=== RUN   TestSum2
+--- PASS: TestSum2 (0.00s)
+=== RUN   TestSum3
+--- PASS: TestSum3 (0.00s)
+=== RUN   TestSum4
+--- PASS: TestSum4 (0.00s)
+=== RUN   TestSum5
+--- PASS: TestSum5 (0.00s)
+=== RUN   TestSum6
+--- PASS: TestSum6 (0.00s)
+=== RUN   TestSum7
+--- PASS: TestSum7 (0.00s)
+=== RUN   TestSum8
+--- PASS: TestSum8 (0.00s)
+=== RUN   TestSum9
+--- PASS: TestSum9 (0.00s)
+=== RUN   TestSum10
+--- PASS: TestSum10 (0.00s)
+=== RUN   TestSum11
+--- PASS: TestSum11 (0.00s)
+=== RUN   TestSum12
+--- PASS: TestSum12 (0.00s)
+=== RUN   TestSum13
+--- PASS: TestSum13 (0.00s)
+=== RUN   TestSum14
+--- PASS: TestSum14 (0.00s)
+=== RUN   TestSum15
+--- PASS: TestSum15 (0.00s)
+=== RUN   TestSum16
+--- PASS: TestSum16 (0.00s)
+=== RUN   TestSum17
+--- PASS: TestSum17 (0.00s)
+=== RUN   TestSum18
+--- PASS: TestSum18 (0.00s)
+=== RUN   TestSum19
+--- PASS: TestSum19 (0.00s)
+=== RUN   TestSum20
+--- PASS: TestSum20 (0.00s)
+=== RUN   TestSum21
+--- PASS: TestSum21 (0.00s)
+=== RUN   TestSum22
+--- PASS: TestSum22 (0.00s)
+=== RUN   TestSum23
+--- PASS: TestSum23 (0.00s)
+=== RUN   TestSum24
+--- PASS: TestSum24 (0.00s)
+=== RUN   TestSum25
+--- PASS: TestSum25 (0.00s)
+=== RUN   TestSum26
+--- PASS: TestSum26 (0.00s)
+=== RUN   TestSum27
+--- PASS: TestSum27 (0.00s)
+=== RUN   TestSum28
+--- PASS: TestSum28 (0.00s)
+=== RUN   TestSum29
+--- PASS: TestSum29 (0.00s)
+=== RUN   TestSum30
+--- PASS: TestSum30 (0.00s)
+=== RUN   TestSum31
+--- PASS: TestSum31 (0.00s)
+=== RUN   TestSum32
+--- PASS: TestSum32 (0.00s)
+=== RUN   TestSum33
+--- PASS: TestSum33 (0.00s)
+=== RUN   TestSum34
+--- PASS: TestSum34 (0.00s)
+=== RUN   TestSum35
+--- PASS: TestSum35 (0.00s)
+=== RUN   TestSum36
+--- PASS: TestSum36 (0.00s)
+=== RUN   TestSum37
+--- PASS: TestSum37 (0.00s)
+=== RUN   TestSum38
+--- PASS: TestSum38 (0.00s)
+=== RUN   TestSum39
+--- PASS: TestSum39 (0.00s)
+PASS
+ok  	example.com/shop/cart	0.003s
+?   	example.com/shop/util	[no test files]
+FAIL

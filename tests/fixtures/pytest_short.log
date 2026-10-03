@@ -1,0 +1,64 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: /home/dev/py
+collected 97 items
+
+tests/test_auth.py .FF                                                   [  3%]
+tests/test_cart.py FFFF                                                  [  7%]
+tests/test_cart_bulk.py ................................................ [ 56%]
+..........................................                               [100%]
+
+=================================== FAILURES ===================================
+______________________ TestAuth.test_login_wrong_password ______________________
+tests/test_auth.py:10: in test_login_wrong_password
+    assert res["status"] == 200
+E   assert 401 == 200
+_________________________ TestAuth.test_expired_token __________________________
+tests/test_auth.py:14: in test_expired_token
+    assert validate_token(token, now=2000)["status"] == 200
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/shop/auth.py:11: in validate_token
+    raise TokenExpired(f"token expired at {token['exp']}")
+E   shop.auth.TokenExpired: token expired at 1000
+__________________________ test_discount_unknown_code __________________________
+tests/test_cart.py:8: in test_discount_unknown_code
+    assert cart.apply_discount("SAVE20") == 22.5
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/shop/cart.py:23: in apply_discount
+    rate = rates[code]
+           ^^^^^^^^^^^
+E   KeyError: 'SAVE20'
+___________________________ test_average_empty_cart ____________________________
+tests/test_cart.py:13: in test_average_empty_cart
+    assert cart.average_price() == 0
+           ^^^^^^^^^^^^^^^^^^^^
+src/shop/cart.py:27: in average_price
+    return self.total() / len(self.items)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ZeroDivisionError: division by zero
+____________________________ test_total_with_items _____________________________
+tests/test_cart.py:21: in test_total_with_items
+    assert cart.total() == 9.5
+E   AssertionError: assert 9.0 == 9.5
+E    +  where 9.0 = total()
+E    +    where total = Cart(items=[Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]).total
+----------------------------- Captured stdout call -----------------------------
+cart items: [Item(sku='pen', price=1.5, qty=4), Item(sku='ink', price=3.0, qty=1)]
+______________________________ test_dict_compare _______________________________
+tests/test_cart.py:27: in test_dict_compare
+    assert actual == expected
+E   AssertionError: assert {'sku': 'pen'...', 'writing']} == {'sku': 'pen'...ce', 'write']}
+E     
+E     Omitting 2 identical items, use -vv to show
+E     Differing items:
+E     {'tags': ['office', 'writing']} != {'tags': ['office', 'write']}
+E     {'price': 1.25} != {'price': 1.5}
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED tests/test_auth.py::TestAuth::test_login_wrong_password - assert 401 =...
+FAILED tests/test_auth.py::TestAuth::test_expired_token - shop.auth.TokenExpi...
+FAILED tests/test_cart.py::test_discount_unknown_code - KeyError: 'SAVE20'
+FAILED tests/test_cart.py::test_average_empty_cart - ZeroDivisionError: divis...
+FAILED tests/test_cart.py::test_total_with_items - AssertionError: assert 9.0...
+FAILED tests/test_cart.py::test_dict_compare - AssertionError: assert {'sku':...
+========================= 6 failed, 91 passed in 0.09s =========================

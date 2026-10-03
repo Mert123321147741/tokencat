@@ -1,0 +1,69 @@
+  console.log
+    debug: validating
+
+      at Object.log (src/auth.test.js:21:13)
+
+FAIL src/auth.test.js
+  ● AuthService › rejects wrong password with 200
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 401
+
+      10 |   it('rejects wrong password with 200', () => {
+      11 |     const res = login('bob', 'nope');
+    > 12 |     expect(res.status).toBe(200);
+         |                        ^
+      13 |   });
+      14 |
+      15 |   it('accepts expired token', () => {
+
+      at Object.toBe (src/auth.test.js:12:24)
+
+  ● AuthService › accepts expired token
+
+    token expired at 1000
+
+       8 |   const payload = decode(token);
+       9 |   if (payload.exp < now) {
+    > 10 |     throw new UnauthorizedError(`token expired at ${payload.exp}`);
+         |           ^
+      11 |   }
+      12 |   return { status: 200, user: payload.sub };
+      13 | }
+
+      at validateToken (src/auth.js:10:11)
+      at Object.validateToken (src/auth.test.js:16:17)
+
+  ● AuthService › returns user object
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 4
+    + Received  + 1
+
+      Object {
+    -   "roles": Array [
+    -     "admin",
+    -   ],
+        "status": 200,
+    -   "user": "alice",
+    +   "user": "bob",
+      }
+
+      21 |     console.log('debug: validating');
+      22 |     const res = validateToken(enc({ sub: 'bob', exp: 5000 }), 2000);
+    > 23 |     expect(res).toEqual({ status: 200, user: 'alice', roles: ['admin'] });
+         |                 ^
+      24 |   });
+      25 | });
+      26 |
+
+      at Object.toEqual (src/auth.test.js:23:17)
+
+Test Suites: 1 failed, 6 passed, 7 total
+Tests:       3 failed, 121 passed, 124 total
+Snapshots:   0 total
+Time:        0.622 s, estimated 1 s
+Ran all test suites matching src.

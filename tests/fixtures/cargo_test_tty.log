@@ -1,0 +1,93 @@
+[1m[92m    Finished[0m `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+[1m[92m     Running[0m unittests src/lib.rs (target/debug/deps/rs-ffdf3d4f8e2db1ed)
+
+running 4 tests
+test tests::ok_one ... [32mok[m
+test tests::greets ... [31mFAILED[m
+test tests::ratio_by_zero ... [31mFAILED[m
+test tests::parses_port ... [31mFAILED[m
+
+failures:
+
+---- tests::greets stdout ----
+
+thread 'tests::greets' (3330) panicked at src/lib.rs:19:9:
+assertion `left == right` failed
+  left: "Hello, Ada"
+ right: "Hello, Ada!"
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/std/src/panicking.rs:689:5
+   1: core::panicking::panic_fmt
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/panicking.rs:80:14
+   2: core::panicking::assert_failed_inner
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/panicking.rs:439:17
+   3: core::panicking::assert_failed::<alloc::string::String, &str>
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/panicking.rs:394:5
+   4: rs::tests::greets
+             at ./src/lib.rs:19:9
+   5: rs::tests::greets::{closure#0}
+             at ./src/lib.rs:18:16
+   6: <rs::tests::greets::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/ops/function.rs:250:5
+   7: <fn() -> core::result::Result<(), alloc::string::String> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- tests::ratio_by_zero stdout ----
+
+thread 'tests::ratio_by_zero' (3333) panicked at src/lib.rs:6:5:
+attempt to divide by zero
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/std/src/panicking.rs:689:5
+   1: core::panicking::panic_fmt
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/panicking.rs:80:14
+   2: core::panicking::panic_const::panic_const_div_by_zero
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/panicking.rs:175:17
+   3: rs::ratio
+             at ./src/lib.rs:6:5
+   4: rs::tests::ratio_by_zero
+             at ./src/lib.rs:29:20
+   5: rs::tests::ratio_by_zero::{closure#0}
+             at ./src/lib.rs:28:23
+   6: <rs::tests::ratio_by_zero::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/ops/function.rs:250:5
+   7: <fn() -> core::result::Result<(), alloc::string::String> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+---- tests::parses_port stdout ----
+
+thread 'tests::parses_port' (3332) panicked at src/lib.rs:2:22:
+called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/std/src/panicking.rs:689:5
+   1: core::panicking::panic_fmt
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/panicking.rs:80:14
+   2: core::result::unwrap_failed
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/result.rs:1867:5
+   3: <core::result::Result<u16, core::num::error::ParseIntError>>::unwrap
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/result.rs:1233:23
+   4: rs::parse_port
+             at ./src/lib.rs:2:22
+   5: rs::tests::parses_port
+             at ./src/lib.rs:24:20
+   6: rs::tests::parses_port::{closure#0}
+             at ./src/lib.rs:23:21
+   7: <rs::tests::parses_port::{closure#0} as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/ops/function.rs:250:5
+   8: <fn() -> core::result::Result<(), alloc::string::String> as core::ops::function::FnOnce<()>>::call_once
+             at /rustc/2d8144b7880597b6e6d3dfd63a9a9efae3f533d3/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+
+
+failures:
+    tests::greets
+    tests::parses_port
+    tests::ratio_by_zero
+
+test result: [31mFAILED[m. 1 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+[1m[91merror[0m: test failed, to rerun pass `--lib`
