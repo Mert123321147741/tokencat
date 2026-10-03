@@ -1,15 +1,15 @@
 #!/bin/sh
 # Install the latest tokencat release binary.
 #
-#   curl -fsSL https://raw.githubusercontent.com/OWNER/tokencat/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/Mert123321147741/tokencat/main/install.sh | sh
 #
 # Environment:
-#   TOKENCAT_REPO     GitHub repository to download from (default: OWNER/tokencat)
+#   TOKENCAT_REPO     GitHub repository to download from (default: Mert123321147741/tokencat)
 #   TOKENCAT_VERSION  release tag such as v0.1.0 (default: latest)
 #   TOKENCAT_BIN_DIR  install directory (default: ~/.local/bin)
 set -eu
 
-repo="${TOKENCAT_REPO:-OWNER/tokencat}"
+repo="${TOKENCAT_REPO:-Mert123321147741/tokencat}"
 version="${TOKENCAT_VERSION:-latest}"
 bin_dir="${TOKENCAT_BIN_DIR:-$HOME/.local/bin}"
 

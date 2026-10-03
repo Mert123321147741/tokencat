@@ -39,16 +39,16 @@ did not match 1.2.4
 
 Prebuilt binaries for Linux (x86_64, arm64, static musl), macOS (Intel,
 Apple silicon) and Windows (x86_64) are attached to every
-[release](https://github.com/OWNER/tokencat/releases).
+[release](https://github.com/Mert123321147741/tokencat/releases).
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/OWNER/tokencat/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/Mert123321147741/tokencat/main/install.sh | sh
 ```
 
 or with a Rust toolchain:
 
 ```sh
-cargo install --locked --git https://github.com/OWNER/tokencat
+cargo install --locked --git https://github.com/Mert123321147741/tokencat
 ```
 
 It is a single ~2.7 MB binary with no runtime dependencies.
